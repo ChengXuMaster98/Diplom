@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 using Zenject;
 
 public class EnemyAI : MonoBehaviour, IInitializable, ITickable
@@ -7,15 +6,14 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
     private EnemyStateMachine _stateMachine;
 
     private IEnemyState _idleState;
-    private IEnemyState _chaseState;
-    private IEnemyState _attackState;
+    private EnemyChaseState _chaseState;
+    private EnemyAttackState _attackState;
     private IEnemyState _dieState;
 
-    private Transform _player;
-    private Enemy _enemy;
+    private DetectionArea _detectionArea;
+    private IPlayerDamageable _damageable;
 
-    private EnemyAnimatorController _animator;
-    private NavMeshAgent _agent;
+    private Transform _target;
 
     [Inject]
     public void Construct(
@@ -24,47 +22,49 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
         EnemyChaseState chase,
         EnemyAttackState attack,
         EnemyDieState die,
-        Transform player)
+        DetectionArea detectionArea)
     {
         _stateMachine = stateMachine;
 
+        _dieState = die;
         _idleState = idle;
         _chaseState = chase;
         _attackState = attack;
-        _dieState = die;
-
-        _player = player;
-    }
-
-    private void Awake()
-    {
-        _enemy = GetComponent<Enemy>();
-        _animator = GetComponent<EnemyAnimatorController>();
-        _agent = GetComponent<NavMeshAgent>();
+        _detectionArea = detectionArea;
     }
 
     public void Initialize()
     {
-        Debug.Log("FSM ��������������� � IdleState");
+        _detectionArea.PlayerEntered += OnPlayerEntered;
+        _detectionArea.PlayerExited += OnPlayerExited;
         _stateMachine.Initialize(_idleState);
     }
 
     public void Tick()
     {
-        if (_enemy.IsDead)
-        {
-            _stateMachine.SetState(_dieState);
-            return;
-        }
-        float distance = Vector3.Distance(transform.position, _player.position);
-
-        if (distance < 1.5f)
-            _stateMachine.SetState(_attackState);
-        else if (distance < 10f)
-            _stateMachine.SetState(_chaseState);
-        else
-            _stateMachine.SetState(_idleState);
-
         _stateMachine.Tick();
+    }
+
+    public void Die()
+    {
+        _detectionArea.PlayerEntered -= OnPlayerEntered;
+        _detectionArea.PlayerExited -= OnPlayerExited;
+        _stateMachine.SetState(_dieState);
+    }
+
+    private void OnPlayerEntered(Transform player)
+    {
+
+        _damageable = player.GetComponent<IPlayerDamageable>();
+        _target = player;
+        _chaseState.SetTarget(player);
+        _attackState.SetTarget(player);
+        _stateMachine.SetState(_chaseState);
+    }
+
+    private void OnPlayerExited()
+    {
+        _target = null;
+        _stateMachine.SetState(_idleState);
     }
 }

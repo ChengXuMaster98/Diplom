@@ -14,7 +14,6 @@ public class ThirdPersonCameraController : ITickable
     private const float TopClamp = -50f;
     private const float BottomClamp = 50f;
 
-    [Inject]
     public ThirdPersonCameraController(CinemachineFreeLook camera, Transform cameraTarget, PlayerStats stats)
     {
         _camera = camera;

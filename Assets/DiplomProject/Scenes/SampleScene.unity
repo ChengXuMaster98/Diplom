@@ -302,6 +302,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5735059964028855307, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5735059964028855307, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8743069246851005407, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
       propertyPath: m_Name
       value: Player
@@ -327,7 +335,6 @@ GameObject:
   - component: {fileID: 279256954}
   - component: {fileID: 279256953}
   - component: {fileID: 279256955}
-  - component: {fileID: 279256956}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -403,20 +410,6 @@ MonoBehaviour:
   _cameraTransform: {fileID: 1483413671}
   _cameraTarget: {fileID: 1293872741}
   _freeLookCamera: {fileID: 1142570581}
---- !u!114 &279256956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 279256952}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c90847ce20c428c42998bf7a0bd46f66, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 2820553116987822619, guid: f4664ecdcc8b5634daba0ff796e7261c, type: 3}
-  _transform: {fileID: 0}
 --- !u!4 &292138538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5180162629390603385, guid: 9f57b261625f4db46b1e86d9a852c66b, type: 3}

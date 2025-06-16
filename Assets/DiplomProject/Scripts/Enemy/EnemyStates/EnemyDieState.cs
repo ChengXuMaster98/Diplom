@@ -11,6 +11,7 @@ public class EnemyDieState : IEnemyState
 
     public void Enter()
     {
+        Debug.Log($"[Enemy] Умирает здесь?");
         _animator.PlayDie();
     }
 

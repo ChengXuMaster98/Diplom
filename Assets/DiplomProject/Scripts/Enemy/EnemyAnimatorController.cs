@@ -5,6 +5,7 @@ public class EnemyAnimatorController: IEnemyAnimator, IInitializable
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _transform;
+    private bool _isInitialized;
 
     public Transform Transform => _transform;
 
@@ -18,7 +19,21 @@ public class EnemyAnimatorController: IEnemyAnimator, IInitializable
 
     public void Initialize()
     {
+        if (_isInitialized) return;
+        Debug.Log("Animator Controller: " + _animator.runtimeAnimatorController?.name);
+
+        if (_animator.runtimeAnimatorController == null)
+        {
+            Debug.LogError("[Animator] Контроллер НЕ установлен!");
+        }
+        else
+        {
+            Debug.Log("[Animator] Контроллер установлен корректно.");
+        }
+
+        _isInitialized = true;
         Debug.Log("[AnimatorController] Initialized");
+
     }
 
     public void PlayIdle() => SetBool("IsIdle", true);
