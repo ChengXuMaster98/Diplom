@@ -13,7 +13,7 @@ public class PlayerMoveState : IPlayerState
 
     public void Enter()
     {
-        _animator.SetBool("isWalking", true);
+
     }
 
     public void Tick()

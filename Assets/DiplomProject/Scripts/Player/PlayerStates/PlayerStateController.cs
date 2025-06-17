@@ -14,7 +14,8 @@ public class PlayerStateController : ITickable
         PlayerStateMachine stateMachine,
         Player player,
         CharacterMovementController movement,
-        AttackHitBox attackHitBox)
+        AttackHitBox attackHitBox,
+        IPlayerStaminaConsumer staminaConsumer)
     {
         _stateMachine = stateMachine;
 
@@ -22,7 +23,7 @@ public class PlayerStateController : ITickable
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
-        _attackState = new PlayerAttackState(player.Animator, attackHitBox);
+        _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine);
 
         // По умолчанию входим в состояние Idle
         _stateMachine.SetState(_idleState);

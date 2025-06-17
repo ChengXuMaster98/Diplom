@@ -21,13 +21,17 @@ public class CharacterMovementController : ITickable
 
     public void Move(Vector2 input)
     {
-        Vector3 camForward = Vector3.Scale(_cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 camRight = Vector3.Scale(_cameraTransform.right, new Vector3(1, 0, 1)).normalized;
+        if(input.magnitude > 0.1f)
+        {
+            Vector3 camForward = Vector3.Scale(_cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
+            Vector3 camRight = Vector3.Scale(_cameraTransform.right, new Vector3(1, 0, 1)).normalized;
+            _direction = (camRight * input.x + camForward * input.y).normalized;
+        }
 
-        Vector3 moveDirection = camRight * input.x + camForward * input.y;
-        _direction = moveDirection.normalized;
-
-
+        else
+        {
+            _direction = Vector3.zero;
+        }
         //Debug.Log($"MoveDir: {_direction}, CamFwd: {_cameraTransform.forward}, CamRight: {_cameraTransform.right}");
     }
 

@@ -11,7 +11,7 @@ public class PlayerIdleState : IPlayerState
 
     public void Enter()
     {
-        _animator.SetBool("isWalking", false);
+
     }
 
     public void Tick() { }

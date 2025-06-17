@@ -17,11 +17,21 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private CinemachineFreeLook _freeLookCamera;
 
+    [SerializeField] private StaminaConfig _staminaConfig;
+
 
     public override void InstallBindings()
     {
         // ScriptableObject
         Container.Bind<PlayerStats>().FromInstance(_playerStats).AsSingle();
+        Container.Bind<StaminaConfig>().FromInstance(_staminaConfig).AsSingle();
+
+        Container.BindInterfacesAndSelfTo<StaminaSystem>().AsSingle();
+
+        Container.Bind<IPlayerStaminaConsumer>().To<PlayerStaminaAdapter>().AsSingle();
+
+        Container.BindTickableExecutionOrder<StaminaSystem>(-100);
+
 
         // Player Health
         Container.BindInterfacesAndSelfTo<PlayerHealth>().AsSingle();

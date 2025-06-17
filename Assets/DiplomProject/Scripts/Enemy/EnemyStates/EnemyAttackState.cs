@@ -4,14 +4,14 @@ public class EnemyAttackState : IEnemyState
 {
     private readonly IEnemyAnimator _animator;
     private readonly IPlayerDamageable _playerDamageable;
-    private readonly float _damage;
+    private readonly EnemyStats _enemyStats;
 
     private Transform _target;
 
-    public EnemyAttackState(IPlayerDamageable playerDamageable, IEnemyAnimator animator, float damage)
+    public EnemyAttackState(IPlayerDamageable playerDamageable, IEnemyAnimator animator, EnemyStats stats)
     {
         _playerDamageable = playerDamageable;
-        _damage = damage;
+        _enemyStats = stats;
         _animator = animator;
     }
 
@@ -31,7 +31,7 @@ public class EnemyAttackState : IEnemyState
             _animator.LookAt(_target.position);
         }
         
-        _playerDamageable.TakeDamage((int)_damage);
+        _playerDamageable.TakeDamage(_enemyStats.Damage);
     }
 
     public void Tick() { }

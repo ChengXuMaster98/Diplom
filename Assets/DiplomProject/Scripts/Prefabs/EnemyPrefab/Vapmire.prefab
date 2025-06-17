@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 879615964168817807}
   - component: {fileID: 4394347422545985013}
   - component: {fileID: 1071158720332334283}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: DetectionArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -610,6 +610,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330d8808ee15f404da5056febd971da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: {fileID: 1406523275906367273}
 --- !u!1 &1447964140058209255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1913,8 +1914,8 @@ SkinnedMeshRenderer:
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 5348549955769079626}
   m_AABB:
-    m_Center: {x: -0.00086963177, y: -0.2426827, z: -0.032546014}
-    m_Extent: {x: 1.3530898, y: 1.1227266, z: 0.4077076}
+    m_Center: {x: -0.00086963177, y: -0.2426827, z: -0.13029155}
+    m_Extent: {x: 1.3530898, y: 1.1227266, z: 0.30996206}
   m_DirtyAABB: 0
 --- !u!1 &4624038082042933210
 GameObject:
@@ -2334,7 +2335,7 @@ Transform:
   m_GameObject: {fileID: 5403837724672572775}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0, z: -0.43}
+  m_LocalPosition: {x: -0.1, y: -0.3, z: -0.43}
   m_LocalScale: {x: 1.5, y: 1.3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
