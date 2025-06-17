@@ -9,8 +9,7 @@ public class CharacterMovementController : ITickable
     private readonly Transform _modelTransform;
 
     private Vector3 _direction;
-
-    [Inject]
+    
     public CharacterMovementController(PlayerStats stats, Player player, Transform cameraTransform)
     {
         _stats = stats;

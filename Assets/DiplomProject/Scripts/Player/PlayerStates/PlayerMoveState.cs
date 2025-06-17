@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class PlayerMoveState : IPlayerState
 {
+    private static readonly int IsWalking = Animator.StringToHash("isWalking");
+    
     private readonly Animator _animator;
     private readonly CharacterMovementController _movement;
+    private const string HORIZONTAL_AXIS = "Horizontal";
+    private const string VERTICAL_AXIS = "Vertical";
 
     public PlayerMoveState(Animator animator, CharacterMovementController movement)
     {
@@ -13,26 +17,23 @@ public class PlayerMoveState : IPlayerState
 
     public void Enter()
     {
-
+        _animator.SetBool(IsWalking, true);
     }
 
     public void Tick()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+     
+        float moveX = Input.GetAxis(HORIZONTAL_AXIS);
+        float moveZ = Input.GetAxis(VERTICAL_AXIS);
         Vector2 input = new Vector2(moveX, moveZ);
 
         _movement.Move(input);
-
-        if (input.magnitude == 0)
-        {
-            _animator.SetBool("isWalking", false);
-        }
+        _animator.SetBool(IsWalking, input.magnitude != 0);
     }
 
     public void Exit()
     {
-        _animator.SetBool("isWalking", false);
+        _animator.SetBool(IsWalking, false);
         _movement.Move(Vector3.zero);
     }
 }

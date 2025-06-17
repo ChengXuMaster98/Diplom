@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class PlayerAttackState : IPlayerState
 {
+    private static readonly int Attack = Animator.StringToHash("Attack");
     private readonly Animator _animator;
     private readonly AttackHitBox _attackHitBox;
     private readonly PlayerStateMachine _stateMachine;
@@ -22,7 +23,7 @@ public class PlayerAttackState : IPlayerState
         {
             Debug.Log("Not enough stamina for attack");
 
-            _animator.SetBool("Attack", false);
+            _animator.SetTrigger(Attack);
 
             _stateMachine.RevertToPreviousState();
             return;
@@ -31,10 +32,10 @@ public class PlayerAttackState : IPlayerState
         _staminaConsumer.ConsumeStaminaForAttack();
 
         //Debug.Log($"Stamina after attack: {_staminaConsumer.CurrentStamina}");
-        
+
+        _animator.SetTrigger(Attack);
         _attackStarted = true;
-        _animator.SetBool("Attack", true);
-        
+
         Debug.Log("PlayerAttackState: Enter()");
 
     }
@@ -56,14 +57,14 @@ public class PlayerAttackState : IPlayerState
     public void AnimationAttackStart()
     {
         _attackHitBox.EnableHitbox();
-        Debug.Log("Хитбокс включен");
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
     }
 
     public void AnimationAttackEnd()
     {
         _attackHitBox.DisableHitbox();
 
-        Debug.Log("Хитбокс выключен");
+        Debug.Log("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 
         if ( _attackStarted )
         {

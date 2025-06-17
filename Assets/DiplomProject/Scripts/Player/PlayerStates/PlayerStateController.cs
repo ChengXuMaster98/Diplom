@@ -3,6 +3,9 @@ using Zenject;
 
 public class PlayerStateController : ITickable
 {
+    private const string HORIZONTAL_AXIS = "Horizontal";
+    private const string VERTICAL_AXIS = "Vertical";
+    
     private readonly PlayerStateMachine _stateMachine;
     private readonly PlayerIdleState _idleState;
     private readonly PlayerMoveState _moveState;
@@ -19,13 +22,13 @@ public class PlayerStateController : ITickable
     {
         _stateMachine = stateMachine;
 
-        // Создаём состояния напрямую, без использования Resolve()
+        // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Resolve()
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
         _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine);
 
-        // По умолчанию входим в состояние Idle
+        // пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Idle
         _stateMachine.SetState(_idleState);
     }
 
@@ -35,25 +38,26 @@ public class PlayerStateController : ITickable
         {
             _stateMachine.SetState(_jumpState);
         }
-        else if (Input.GetMouseButtonDown(0))
+        
+        if (Input.GetMouseButtonDown(0))
         {
             _stateMachine.SetState(_attackState);
         }
+        _stateMachine?.Tick();
+        return;
+        var moveX = Input.GetAxis(HORIZONTAL_AXIS);
+        var moveZ = Input.GetAxis(VERTICAL_AXIS);
+        var input = new Vector2(moveX, moveZ);
+
+        if (input.magnitude == 0)
+        {
+            _stateMachine.SetState(_idleState);
+        }
         else
         {
-            float moveX = Input.GetAxis("Horizontal");
-            float moveZ = Input.GetAxis("Vertical");
-
-            if (moveX != 0 || moveZ != 0)
-            {
-                _stateMachine.SetState(_moveState);
-            }
-            else
-            {
-                _stateMachine.SetState(_idleState);
-            }
+            _stateMachine.SetState(_moveState);
         }
-
-        _stateMachine.Tick();
+        
+        _stateMachine?.Tick();
     }
 }
