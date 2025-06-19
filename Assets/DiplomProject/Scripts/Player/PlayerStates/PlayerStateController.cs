@@ -22,13 +22,13 @@ public class PlayerStateController : ITickable
     {
         _stateMachine = stateMachine;
 
-        // ������ ��������� ��������, ��� ������������� Resolve()
+        
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
         _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine);
 
-        // �� ��������� ������ � ��������� Idle
+        
         _stateMachine.SetState(_idleState);
     }
 
@@ -37,14 +37,16 @@ public class PlayerStateController : ITickable
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _stateMachine.SetState(_jumpState);
+            return; // Skip movement if jumping
         }
         
         if (Input.GetMouseButtonDown(0))
         {
             _stateMachine.SetState(_attackState);
+            return;
+            // Skip other inputs if attacking
         }
-        _stateMachine?.Tick();
-        return;
+
         var moveX = Input.GetAxis(HORIZONTAL_AXIS);
         var moveZ = Input.GetAxis(VERTICAL_AXIS);
         var input = new Vector2(moveX, moveZ);

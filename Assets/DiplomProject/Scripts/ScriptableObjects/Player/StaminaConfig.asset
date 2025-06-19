@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbe71815c4643047ba3e58b1c587ad8, type: 3}
   m_Name: StaminaConfig
   m_EditorClassIdentifier: 
-  _maxStamina: 300
-  _staminaRegenPerSecond: 20
-  _attackCoast: 30
+  _maxStamina: 100
+  _staminaRegenPerSecond: 1
+  _attackCoast: 10

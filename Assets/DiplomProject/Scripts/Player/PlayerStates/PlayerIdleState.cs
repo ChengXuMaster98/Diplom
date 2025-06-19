@@ -17,4 +17,9 @@ public class PlayerIdleState : IPlayerState
     public void Tick() { }
 
     public void Exit() { }
+
+    public bool CanExit()
+    {
+        return true;
+    }
 }

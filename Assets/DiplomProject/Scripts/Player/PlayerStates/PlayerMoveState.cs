@@ -18,6 +18,7 @@ public class PlayerMoveState : IPlayerState
     public void Enter()
     {
         _animator.SetBool(IsWalking, true);
+        return;
     }
 
     public void Tick()
@@ -35,5 +36,11 @@ public class PlayerMoveState : IPlayerState
     {
         _animator.SetBool(IsWalking, false);
         _movement.Move(Vector3.zero);
+    }
+
+    public bool CanExit()
+    {
+        // Can exit if not moving (transition to idle will be handled by controller)
+        return true;
     }
 }

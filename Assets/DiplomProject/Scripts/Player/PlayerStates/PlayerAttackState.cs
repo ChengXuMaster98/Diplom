@@ -9,6 +9,7 @@ public class PlayerAttackState : IPlayerState
     private readonly PlayerStateMachine _stateMachine;
     private readonly IPlayerStaminaConsumer _staminaConsumer;
     private bool _attackStarted;
+    private bool _attackComplete;
     public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine)
     {
         _animator = animator;
@@ -31,11 +32,9 @@ public class PlayerAttackState : IPlayerState
         
         _staminaConsumer.ConsumeStaminaForAttack();
 
-        //Debug.Log($"Stamina after attack: {_staminaConsumer.CurrentStamina}");
-
         _animator.SetTrigger(Attack);
         _attackStarted = true;
-
+        _attackComplete = false;
         Debug.Log("PlayerAttackState: Enter()");
 
     }
@@ -45,6 +44,11 @@ public class PlayerAttackState : IPlayerState
 
     }
 
+    public bool CanExit()
+    {
+        // Can only exit when attack animation is complete
+        return _attackComplete;
+    }
 
     public void Exit()
     {
@@ -57,18 +61,14 @@ public class PlayerAttackState : IPlayerState
     public void AnimationAttackStart()
     {
         _attackHitBox.EnableHitbox();
-        Debug.Log("������� �������");
     }
 
     public void AnimationAttackEnd()
     {
         _attackHitBox.DisableHitbox();
+        _attackComplete = true;
 
-        Debug.Log("������� ��������");
+        _stateMachine.RevertToPreviousState();
 
-        if ( _attackStarted )
-        {
-            _stateMachine.SetState(new PlayerIdleState(_animator));
-        }
     }
 }

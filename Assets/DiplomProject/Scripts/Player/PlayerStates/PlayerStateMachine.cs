@@ -10,6 +10,14 @@ public class PlayerStateMachine : ITickable
 
     public void SetState(IPlayerState newState)
     {
+        if (_currentState != null && !_currentState.CanExit())
+        {
+            return;
+        }
+
+        if (_currentState == newState)
+            return;
+
         _previousState = _currentState;
         _currentState?.Exit();
         _currentState = newState;
