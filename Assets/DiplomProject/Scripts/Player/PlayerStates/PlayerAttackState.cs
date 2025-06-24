@@ -8,14 +8,18 @@ public class PlayerAttackState : IPlayerState
     private readonly AttackHitBox _attackHitBox;
     private readonly PlayerStateMachine _stateMachine;
     private readonly IPlayerStaminaConsumer _staminaConsumer;
+    private readonly AttackAnimationEventReceiver _animationEventReceiver;
+
+
     private bool _attackStarted;
     private bool _attackComplete;
-    public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine)
+    public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, AttackAnimationEventReceiver animationEventReceiver)
     {
         _animator = animator;
         _attackHitBox = attackHitBox;
         _staminaConsumer = staminaConsumer;
         _stateMachine = stateMachine;
+        _animationEventReceiver = animationEventReceiver;
     }
 
     public void Enter()
@@ -35,6 +39,10 @@ public class PlayerAttackState : IPlayerState
         _animator.SetTrigger(Attack);
         _attackStarted = true;
         _attackComplete = false;
+
+        _animationEventReceiver.OnAttackStart += AnimationAttackStart;
+        _animationEventReceiver.OnAttackEnd += AnimationAttackEnd;
+
         Debug.Log("PlayerAttackState: Enter()");
 
     }
@@ -46,7 +54,6 @@ public class PlayerAttackState : IPlayerState
 
     public bool CanExit()
     {
-        // Can only exit when attack animation is complete
         return _attackComplete;
     }
 
@@ -54,6 +61,9 @@ public class PlayerAttackState : IPlayerState
     {
         _attackStarted = false;
         _animator.SetBool("Attack", false);
+
+        _animationEventReceiver.OnAttackStart -= AnimationAttackStart;
+        _animationEventReceiver.OnAttackEnd -= AnimationAttackEnd;
 
         _attackHitBox.DisableHitbox();
     }

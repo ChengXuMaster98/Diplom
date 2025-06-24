@@ -33,7 +33,7 @@ public class EnemyInstaller : MonoInstaller
 
         // База префабов по типам
         Container.Bind<EnemyHealth>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<EnemyAI>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesTo<EnemyAI>().FromComponentInHierarchy().AsSingle();
         Debug.Log("Зависимость EnemyAI прокает");
 
 

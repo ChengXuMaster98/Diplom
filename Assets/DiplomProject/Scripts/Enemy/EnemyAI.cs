@@ -54,11 +54,14 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 
     private void OnPlayerEntered(Transform player)
     {
+        Debug.Log($"[EnemyAI] Игрок вошёл в DetectionArea: {player.name}");
 
         _damageable = player.GetComponent<IPlayerDamageable>();
         _target = player;
         _chaseState.SetTarget(player);
         _attackState.SetTarget(player);
+
+        Debug.Log("[EnemyAI] Переход в ChaseState");
         _stateMachine.SetState(_chaseState);
     }
 
