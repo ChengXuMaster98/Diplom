@@ -1,73 +1,82 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 {
-    private EnemyStateMachine _stateMachine;
+    private readonly VampireEnemyStateMachine _stateMachine;
+    private readonly IEnemyStateFactory _stateFactory;
+    private readonly IPlayerDetector _playerDetector;
 
     private IEnemyState _idleState;
-    private EnemyChaseState _chaseState;
-    private EnemyAttackState _attackState;
+    private IEnemyState _chaseState;
+    private IEnemyState _attackState;
     private IEnemyState _dieState;
 
-    private DetectionArea _detectionArea;
-    private IPlayerDamageable _damageable;
-
-    private Transform _target;
+    private Transform _targetPlayer;
+    private Enemy _enemy;
 
     [Inject]
-    public void Construct(
-        EnemyStateMachine stateMachine,
-        EnemyIdleState idle,
-        EnemyChaseState chase,
-        EnemyAttackState attack,
-        EnemyDieState die,
-        DetectionArea detectionArea)
+    public EnemyAI(VampireEnemyStateMachine stateMachine, IEnemyStateFactory stateFactory, IPlayerDetector playerDetector)
     {
         _stateMachine = stateMachine;
+        _stateFactory = stateFactory;
+        _playerDetector = playerDetector;
 
-        _dieState = die;
-        _idleState = idle;
-        _chaseState = chase;
-        _attackState = attack;
-        _detectionArea = detectionArea;
     }
 
     public void Initialize()
     {
-        _detectionArea.PlayerEntered += OnPlayerEntered;
-        _detectionArea.PlayerExited += OnPlayerExited;
+        _idleState = _stateFactory.CreateIdleState();
+        _chaseState = _stateFactory.CreateChaseState();
+        _attackState = _stateFactory.CreateAttackState();
+        _dieState = _stateFactory.CreateDieState();
+
         _stateMachine.Initialize(_idleState);
+
+        _playerDetector.PlayerDetected += OnPlayerDetected;
+        _playerDetector.PlayerLost += OnPlayerLost;
     }
 
-    public void Tick()
+    private void OnPlayerDetected(Transform player)
     {
-        _stateMachine.Tick();
-    }
-
-    public void Die()
-    {
-        _detectionArea.PlayerEntered -= OnPlayerEntered;
-        _detectionArea.PlayerExited -= OnPlayerExited;
-        _stateMachine.SetState(_dieState);
-    }
-
-    private void OnPlayerEntered(Transform player)
-    {
-        Debug.Log($"[EnemyAI] Игрок вошёл в DetectionArea: {player.name}");
-
-        _damageable = player.GetComponent<IPlayerDamageable>();
-        _target = player;
-        _chaseState.SetTarget(player);
-        _attackState.SetTarget(player);
-
-        Debug.Log("[EnemyAI] Переход в ChaseState");
+        _targetPlayer = player;
         _stateMachine.SetState(_chaseState);
     }
 
-    private void OnPlayerExited()
+    private void OnPlayerLost()
     {
-        _target = null;
+        _targetPlayer = null;
         _stateMachine.SetState(_idleState);
+    }
+
+
+    public void Tick()
+    {
+        if (_enemy == null)
+            _enemy = GetComponent<Enemy>();
+
+
+        if (_enemy.IsDead)
+        {
+            _stateMachine.SetState(_dieState);
+            return;
+        }
+
+        _stateMachine.Tick();
+
+        if (_targetPlayer != null)
+        {
+            float distance = Vector3.Distance(transform.position, _targetPlayer.position);
+
+            if (distance < 1.5f)
+            {
+                _stateMachine.SetState(_attackState);
+            }
+            else if (_stateMachine.CurrentState == _attackState && distance > 1.5f)
+            {
+                _stateMachine.SetState(_chaseState);
+            }              
+        }
     }
 }

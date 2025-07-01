@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class EnemyAttackState : IEnemyState
+public class VampireAttackState : IEnemyState
 {
     private readonly IEnemyAnimator _animator;
     private readonly IPlayerDamageable _playerDamageable;
-    private readonly EnemyStats _enemyStats;
+    private readonly EnemyStats _stats;
+    private readonly IPlayerDetector _detector;
+
 
     private Transform _target;
 
-    public EnemyAttackState(IPlayerDamageable playerDamageable, IEnemyAnimator animator, EnemyStats stats)
+    public VampireAttackState(IPlayerDamageable playerDamageable, IEnemyAnimator animator, IPlayerDetector detector, EnemyStats stats)
     {
         _playerDamageable = playerDamageable;
-        _enemyStats = stats;
+        _stats = stats;
         _animator = animator;
+        _detector = detector;
     }
 
     public void SetTarget(Transform target)
@@ -30,8 +33,8 @@ public class EnemyAttackState : IEnemyState
             Vector3 direction = (_target.position - _animator.Transform.position).normalized;
             _animator.LookAt(_target.position);
         }
-        
-        _playerDamageable.TakeDamage(_enemyStats.Damage);
+
+        _playerDamageable.TakeDamage(_stats.Damage);
     }
 
     public void Tick() { }

@@ -6,8 +6,14 @@ MonoImporter:
   defaultReferences:
   - _playerStats: {fileID: 11400000, guid: f75432606d0427b45a01a44ce94faa50, type: 2}
   - _playerState: {fileID: 11400000, guid: a73030947d6e62a42809446fc5e081b9, type: 2}
-  - _playerPrefab: {instanceID: 0}
-  - _spawnPoint: {instanceID: 0}
+  - _player: {instanceID: 0}
+  - _enemyStatsDatabase: {fileID: 11400000, guid: 60fd8cb34e2d87242aab59b0bbf8cee7, type: 2}
+  - _enemyPrefabDatabase: {fileID: 11400000, guid: 54f0da85c4ed9c64a9afa2e0dcc356c1, type: 2}
+  - _attackHitBox: {instanceID: 0}
+  - _cameraTransform: {instanceID: 0}
+  - _cameraTarget: {instanceID: 0}
+  - _freeLookCamera: {instanceID: 0}
+  - _staminaConfig: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -36,17 +36,28 @@ public class EnemyAnimatorController: IEnemyAnimator, IInitializable
 
     }
 
-    public void PlayIdle() => SetBool("IsIdle", true);
-    public void StopIdle() => SetBool("IsIdle", false);
+    public void PlayIdle()
+    {
+        _animator.SetBool("IsIdle", true);
+        _animator.SetBool("IsChasing", false);
+        _animator.SetBool("IsAttacking", false);
+    }
 
-    public void PlayChase() => SetBool("IsChasing", true);
-    public void StopChase() => SetBool("IsChasing", false);
+    public void PlayChase()
+    {
+        _animator.SetBool("IsIdle", false);
+        _animator.SetBool("IsChasing", true);
+        _animator.SetBool("IsAttacking", false);
+    } 
 
-    public void PlayAttack() => SetBool("IsAttacking", true);
-    public void StopAttack() => SetBool("IsAttacking", false);
-
-    public void StopDie() => SetBool("IsDead", true);
-    public void PlayDie() => SetBool("IsDead", false);
+    public void PlayAttack()
+    {
+        _animator.SetTrigger("Attack");
+    }
+    public void PlayDie()
+    {
+        _animator.SetTrigger("Die");
+    }
 
     private void SetBool(string param, bool value)
     {

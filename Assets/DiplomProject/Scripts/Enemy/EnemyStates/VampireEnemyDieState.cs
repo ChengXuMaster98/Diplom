@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyDieState : IEnemyState
+public class VampireEnemyDieState : IEnemyState
 {
     private readonly IEnemyAnimator _animator;
 
-    public EnemyDieState(IEnemyAnimator animator)
+    public VampireEnemyDieState(IEnemyAnimator animator)
     {
         _animator = animator;
     }

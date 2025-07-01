@@ -1,16 +1,21 @@
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyChaseState : IEnemyState
+public class VampireEnemyChaseState : IEnemyState
 {
     private readonly NavMeshAgent _agent;
     private readonly IEnemyAnimator _animator;
     private Transform _target;
+    private readonly IPlayerDetector _detector;
+    private EnemyStats _enemyStats;
 
-    public EnemyChaseState(NavMeshAgent agent, IEnemyAnimator animator)
+    public VampireEnemyChaseState(IEnemyAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats)
     {
         _agent = agent;
         _animator = animator;
+        _detector = detector;
+        _enemyStats = enemyStats;
     }
 
     public void SetTarget(Transform target)
