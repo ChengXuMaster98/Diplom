@@ -7,5 +7,6 @@ public class EnemyStats : ScriptableObject
     public int Damage;
     public float MoveSpeed;
     public float AttackRange = 1.5f;
-    public float DetectionRadius = 5f;
+    public float DetectionRadius = 3f;
+    public LayerMask PlayerMask;
 }

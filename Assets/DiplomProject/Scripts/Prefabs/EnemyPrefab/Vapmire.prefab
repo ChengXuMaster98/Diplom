@@ -1152,7 +1152,7 @@ Transform:
   m_GameObject: {fileID: 2603255559198457369}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01, y: 1.585, z: -0.06}
+  m_LocalPosition: {x: -0.01, y: 5.9, z: -0.3}
   m_LocalScale: {x: 0.6666667, y: 0.7692308, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1191,6 +1191,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330d8808ee15f404da5056febd971da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectionRadius: 10
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &2646642601575230331
 GameObject:
   m_ObjectHideFlags: 0
@@ -2319,7 +2323,8 @@ GameObject:
   - component: {fileID: 9077128375306796328}
   - component: {fileID: -5057268135802422578}
   - component: {fileID: -7797339039129433794}
-  - component: {fileID: 6814269876967195839}
+  - component: {fileID: 5626399375636317741}
+  - component: {fileID: 5651574404718724129}
   m_Layer: 0
   m_Name: Vapmire
   m_TagString: Vampire
@@ -2386,7 +2391,7 @@ NavMeshAgent:
   m_AutoRepath: 1
   m_Height: 2
   m_BaseOffset: 0
-  m_WalkableMask: 4294967295
+  m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!136 &6645424953796619915
 CapsuleCollider:
@@ -2441,6 +2446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c90847ce20c428c42998bf7a0bd46f66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _enemyStats: {fileID: 11400000, guid: 4d413f99e35afc04a80b9fb630e854aa, type: 2}
 --- !u!114 &-5057268135802422578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2465,7 +2471,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c02d864bff9be4a43a61535aafcca03e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6814269876967195839
+  _stateMachine: {fileID: 0}
+--- !u!114 &5626399375636317741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403837724672572775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fd78031c7b90404ba0d38fed4f018b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 2820553116987822619}
+  _transform: {fileID: 1010875838455635022}
+--- !u!114 &5651574404718724129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

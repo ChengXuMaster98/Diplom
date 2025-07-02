@@ -16,15 +16,17 @@ public class EnemyFactory : IEnemyFactory
 
     public Enemy Create(EnemyType type, Vector3 position)
     {
+        
         var prefab = _enemyPrefabDatabase.GetPrefabByType(type);
-        var enemy = _container.InstantiatePrefabForComponent<Enemy>(prefab, position, Quaternion.identity, null);
-
-
         var stats = _enemyStatsDatabase.GetStatsByType(type);
 
+        var instance = _container.InstantiatePrefabForComponent<Enemy>(prefab, position, Quaternion.identity, null, new object[] { stats });
 
-        enemy.Initialize(stats);
 
-        return enemy;
+        instance.Initialize(stats);
+
+        _container.Inject(instance);
+
+        return instance;
     }
 }

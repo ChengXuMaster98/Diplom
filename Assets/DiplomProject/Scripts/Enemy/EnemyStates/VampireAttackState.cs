@@ -8,7 +8,7 @@ public class VampireAttackState : IEnemyState
     private readonly IPlayerDetector _detector;
 
 
-    private Transform _target;
+    private Transform _targetPlayer;
 
     public VampireAttackState(IPlayerDamageable playerDamageable, IEnemyAnimator animator, IPlayerDetector detector, EnemyStats stats)
     {
@@ -20,7 +20,7 @@ public class VampireAttackState : IEnemyState
 
     public void SetTarget(Transform target)
     {
-        _target = target;
+        _targetPlayer = target;
     }
 
 
@@ -28,10 +28,10 @@ public class VampireAttackState : IEnemyState
     {
         _animator.PlayAttack();
 
-        if (_target != null)
+        if (_targetPlayer != null)
         {
-            Vector3 direction = (_target.position - _animator.Transform.position).normalized;
-            _animator.LookAt(_target.position);
+            Vector3 direction = (_targetPlayer.position - _animator.Transform.position).normalized;
+            _animator.LookAt(_targetPlayer.position);
         }
 
         _playerDamageable.TakeDamage(_stats.Damage);

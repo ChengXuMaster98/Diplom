@@ -1,42 +1,55 @@
-using UnityEngine;
 using System;
-using Zenject;
+using Unity.VisualScripting;
+using UnityEngine;
 
-public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, ITickable
+public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector
 {
-    private readonly float _detectionRadius;
-    private readonly LayerMask _playerMask;
-    private Transform _lastDetectedPlayer;
+    [SerializeField] private float detectionRadius = 10f;
+    [SerializeField] private LayerMask playerLayer;
 
     public event Action<Transform> PlayerDetected;
     public event Action PlayerLost;
-    public Transform LastKnownPlayer => _lastDetectedPlayer;
 
-    public SpherePlayerDetector(EnemyStats stats)
+    private Transform _player;
+    private bool _isPlayerInRange;
+
+
+    private void OnDrawGizmosSelected()
     {
-        _detectionRadius = stats.DetectionRadius;
-        _playerMask = LayerMask.GetMask("Player");
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 
-    public void Tick()
+    private void Update()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _playerMask);
+        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+        bool playerFound = false;
 
-        if (hits.Length > 0)
+        foreach (var hit in hits)
         {
-            if (_lastDetectedPlayer == null)
+            Debug.Log(hits.Length);
+            Debug.Log(hit.name);
+
+            if (hit.CompareTag("Player"))
             {
-                _lastDetectedPlayer = hits[0].transform;
-                PlayerDetected?.Invoke(_lastDetectedPlayer);
+                playerFound = true;
+                if (!_isPlayerInRange)
+                {
+                    _isPlayerInRange = true;
+                    _player = hit.transform;
+                    PlayerDetected?.Invoke(_player);
+                    Debug.Log(">> PlayerDetected invoked with: " + _player.name);
+                }
+                break;
             }
         }
-        else
+
+        if (!playerFound && _isPlayerInRange)
         {
-            if (_lastDetectedPlayer != null)
-            {
-                _lastDetectedPlayer = null;
-                PlayerLost?.Invoke();
-            }
+            _isPlayerInRange = false;
+            _player = null;
+            PlayerLost?.Invoke();
         }
+
     }
 }

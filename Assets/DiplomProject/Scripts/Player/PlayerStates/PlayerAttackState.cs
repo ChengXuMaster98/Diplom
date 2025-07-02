@@ -10,8 +10,6 @@ public class PlayerAttackState : IPlayerState
     private readonly IPlayerStaminaConsumer _staminaConsumer;
     private readonly AttackAnimationEventReceiver _animationEventReceiver;
 
-
-    private bool _attackStarted;
     private bool _attackComplete;
     public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, AttackAnimationEventReceiver animationEventReceiver)
     {
@@ -37,7 +35,6 @@ public class PlayerAttackState : IPlayerState
         _staminaConsumer.ConsumeStaminaForAttack();
 
         _animator.SetTrigger(Attack);
-        _attackStarted = true;
         _attackComplete = false;
 
         _animationEventReceiver.OnAttackStart += AnimationAttackStart;
@@ -59,7 +56,6 @@ public class PlayerAttackState : IPlayerState
 
     public void Exit()
     {
-        _attackStarted = false;
         _animator.SetBool("Attack", false);
 
         _animationEventReceiver.OnAttackStart -= AnimationAttackStart;

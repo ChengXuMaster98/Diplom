@@ -258,14 +258,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1160996456647056696, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3471279541748161472, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-      propertyPath: Animator
-      value: 
-      objectReference: {fileID: 1483413675}
     - target: {fileID: 4583708705958956074, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.29
@@ -306,24 +298,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5735059964028855307, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5735059964028855307, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8743069246851005407, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 8743069246851005407, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1510022478258347835, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1460,11 +1439,6 @@ MonoBehaviour:
 --- !u!4 &1483413671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4583708705958956074, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
-  m_PrefabInstance: {fileID: 134593071}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1483413675 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 7071633729840237399, guid: f645f9f0bdbeedc458ba14ca49b110ed, type: 3}
   m_PrefabInstance: {fileID: 134593071}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1530032595 stripped

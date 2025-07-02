@@ -1,12 +1,13 @@
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class VampireEnemyChaseState : IEnemyState
 {
     private readonly NavMeshAgent _agent;
     private readonly IEnemyAnimator _animator;
-    private Transform _target;
+    private Transform _targetPlayer;
     private readonly IPlayerDetector _detector;
     private EnemyStats _enemyStats;
 
@@ -18,25 +19,26 @@ public class VampireEnemyChaseState : IEnemyState
         _enemyStats = enemyStats;
     }
 
-    public void SetTarget(Transform target)
+    public void SetTarget(Transform player)
     {
-        _target = target;
+        _targetPlayer = player;
     }
 
     public void Enter()
     {
         _animator.PlayChase();
         _agent.isStopped = false;
+
     }
 
     public void Tick()
     {
-        if (_target != null)
-            _agent.SetDestination(_target.position);
+        if (_targetPlayer != null)
+            _agent.SetDestination(_targetPlayer.position);
     }
 
     public void Exit()
     {
-        _agent.ResetPath();
+        //_agent.ResetPath();
     }
 }

@@ -9,6 +9,8 @@ public class EnemyInstaller : MonoInstaller
 {
     private Animator _animator;
     private Transform _transform;
+    [SerializeField] private EnemyStats _enemyStats;
+
     public override void InstallBindings()
     {
 
@@ -19,15 +21,19 @@ public class EnemyInstaller : MonoInstaller
 
         // EnemyAnimatorController как интерфейс
         //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_animator, _transform);
-       
+
+        Container.Bind<EnemyStats>().FromInstance(_enemyStats).AsSingle();
+
+        Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
         //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_transform);
-        Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().AsSingle().WithArguments(_animator, _transform).NonLazy();
+        Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().FromComponentInHierarchy().AsSingle();
 
         // Бинд NavMeshAgent и DetectionArea
         Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
-        //Container.Bind<SpherePlayerDetector>().FromComponentInChildren().AsSingle();
 
-        Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInChildren().AsSingle();
+        //Container.Bind<SpherePlayerDetector>().FromComponentInChildren().AsSingle();
+        //Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().AsSingle();
+
         Container.Bind<IEnemyStateFactory>().To<VampireEnemyStateFactory>().AsSingle();
 
 
@@ -36,8 +42,10 @@ public class EnemyInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<VampireEnemyStateMachine>().AsSingle();
 
         // База префабов по типам
+        Container.Bind<Enemy>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnemyHealth>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<EnemyAI>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<EnemyAI>().FromComponentOnRoot().AsSingle().WithArguments(_enemyStats);
+
         Debug.Log("Зависимость EnemyAI прокает");
 
 
