@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -6,18 +7,20 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _transform;
 
+    private Action _onAttackHit;
+
     public Transform Transform => _transform;
 
-    private void Awake()
+    public void SetAttackHitCallback(Action onHit)
     {
-        if (_animator == null)
-            _animator = GetComponent<Animator>();
+        _onAttackHit = onHit;
     }
 
-    private void Update()
-{
-    Debug.Log($"Animator State => IsIdle: {_animator.GetBool("IsIdle")}, IsChasing: {_animator.GetBool("IsChasing")}");
-}
+    public void DealDamage()
+    {
+        _onAttackHit?.Invoke();
+    }
+
 
     public void LookAt(Vector3 position)
     {
@@ -29,26 +32,34 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
             _transform.rotation = Quaternion.LookRotation(direction);
         }
     }
+
+    public bool IsPlayingAttackAnimation()
+    {
+        return 
+        _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") &&
+        _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f;
+    }
     public void PlayIdle()
     {
         Debug.Log("PlayIdle called");
-        _animator.SetBool("IsIdle", true);
         _animator.SetBool("IsChasing", false);
+        //_animator.SetBool("IsIdle", true);
+        //_animator.SetBool("IsChasing", false);
     }
 
     public void PlayChase()
     {
         Debug.Log("PlayChase called");
         _animator.SetBool("IsChasing", true);
-        _animator.SetBool("IsIdle", false);
     }
 
     public void PlayAttack()
     {
-        _animator.SetTrigger("Attack");
+        _animator.SetBool("IsChasing", false);
+        _animator.SetTrigger("Attacking");
     }
     public void PlayDie()
     {
-        _animator.SetTrigger("Die");
+        _animator.SetTrigger("D");
     }
 }

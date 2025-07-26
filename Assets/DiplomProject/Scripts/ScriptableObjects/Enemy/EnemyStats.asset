@@ -12,6 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aed2e3f0a592c439d1fe154b4de9cd, type: 3}
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 0
   Damage: 0
   MoveSpeed: 0
+  AttackRange: 0
+  DetectionRadius: 0
+  AttackCooldown: 0
+  PlayerMask:
+    serializedVersion: 2
+    m_Bits: 0

@@ -10,12 +10,12 @@ public class GameOverUI : MonoBehaviour
     private void Start()
     {
         gameOverPanel.SetActive(false);
-        restartButton.onClick.AddListener(RestartGame);
     }
 
     public void ShowGameOverScreen()
     {
         gameOverPanel.SetActive(true);
+        restartButton.onClick.AddListener(RestartGame);
     }
 
     public void RestartGame()

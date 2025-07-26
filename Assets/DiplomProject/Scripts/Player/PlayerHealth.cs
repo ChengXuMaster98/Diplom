@@ -7,10 +7,12 @@ public class PlayerHealth : IInitializable, IPlayerDamageable
     public event Action OnDeath;
     public event Action<int> OnHealthChanged;
 
+
     private int _currentHealth;
     private readonly PlayerStats _stats;
     private readonly PlayerStateSaver _stateSaver;
     private readonly GameOverUI _gameOverUI;
+    public bool IsDead => _currentHealth <= 0;
 
     [Inject]
     public PlayerHealth(PlayerStats stats, PlayerStateSaver stateSaver)

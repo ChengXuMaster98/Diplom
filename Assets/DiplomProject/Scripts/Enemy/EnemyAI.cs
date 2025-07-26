@@ -12,8 +12,8 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
     private IEnemyState _chaseState;
     private IEnemyState _attackState;
     private IEnemyState _dieState;
-    
-    
+
+
     private EnemyStats _enemyStats;
 
     private Transform _targetPlayer;
@@ -40,7 +40,8 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
         _attackState = _stateFactory.CreateAttackState();
         _dieState = _stateFactory.CreateDieState();
 
-        _stateMachine.Initialize(_stateFactory.CreateIdleState());
+        var idleState = _stateFactory.CreateIdleState();
+        _stateMachine.Initialize(idleState);
     }
 
     private void OnPlayerDetected(Transform player)
@@ -65,21 +66,6 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
         {
             _stateMachine.SetState(_dieState);
             return;
-        }
-
-        if (_targetPlayer != null)
-        {
-            
-            float distance = Vector3.Distance(transform.position, _targetPlayer.position);
-
-            if (distance <= _enemyStats.AttackRange)
-            {
-                _stateMachine.SetState(_attackState);
-            }
-            else if (_stateMachine.CurrentState == _attackState && distance > _enemyStats.AttackRange)
-            {
-                _stateMachine.SetState(_chaseState);
-            }
         }
 
         _stateMachine.Tick();

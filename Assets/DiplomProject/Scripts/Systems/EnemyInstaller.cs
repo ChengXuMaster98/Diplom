@@ -24,7 +24,11 @@ public class EnemyInstaller : MonoInstaller
 
         Container.Bind<EnemyStats>().FromInstance(_enemyStats).AsSingle();
 
-        Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
+        //Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
+
+        Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
+
+
         //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_transform);
         Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().FromComponentInHierarchy().AsSingle();
 
@@ -44,7 +48,7 @@ public class EnemyInstaller : MonoInstaller
         // База префабов по типам
         Container.Bind<Enemy>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnemyHealth>().FromComponentInHierarchy().AsSingle();
-        Container.BindInterfacesAndSelfTo<EnemyAI>().FromComponentOnRoot().AsSingle().WithArguments(_enemyStats);
+        Container.BindInterfacesAndSelfTo<EnemyAI>().FromComponentOnRoot().AsSingle();
 
         Debug.Log("Зависимость EnemyAI прокает");
 
@@ -53,7 +57,7 @@ public class EnemyInstaller : MonoInstaller
         Container.Bind<IEnemyState>().To<VampireEnemyIdleState>().AsTransient().WhenInjectedInto<VampireEnemyStateMachine>();
         Container.Bind<VampireEnemyIdleState>().AsTransient();
         Container.Bind<VampireEnemyChaseState>().AsTransient();
-        Container.Bind<VampireAttackState>().AsTransient();
+        Container.Bind<VampireEnemyAttackState>().AsTransient();
         Container.Bind<VampireEnemyDieState>().AsTransient();
     }
 }

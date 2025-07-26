@@ -1,28 +1,40 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
+using System;
 
-public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector
+public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializable
 {
-    [SerializeField] private float detectionRadius = 10f;
-    [SerializeField] private LayerMask playerLayer;
+    //[SerializeField] private float detectionRadius = 10f;
+    //[SerializeField] private LayerMask playerLayer;
 
     public event Action<Transform> PlayerDetected;
     public event Action PlayerLost;
 
+    private float _detectionRadius;
+    private LayerMask _playerMask;
+
     private Transform _player;
+
+    public Transform Player => _player;
     private bool _isPlayerInRange;
 
+    private EnemyStats _stats;
 
-    private void OnDrawGizmosSelected()
+    [Inject]
+    public void Construct(EnemyStats stats)
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+        _stats = stats;
+    }
+
+    public void Initialize()
+    {
+        _detectionRadius = _stats.DetectionRadius;
+        _playerMask = _stats.PlayerMask;
     }
 
     private void Update()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _playerMask);
         bool playerFound = false;
 
         foreach (var hit in hits)
