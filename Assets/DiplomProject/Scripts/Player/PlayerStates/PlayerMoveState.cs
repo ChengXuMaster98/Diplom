@@ -26,7 +26,7 @@ public class PlayerMoveState : IPlayerState
      
         float moveX = Input.GetAxis(HORIZONTAL_AXIS);
         float moveZ = Input.GetAxis(VERTICAL_AXIS);
-        Vector2 input = new Vector2(moveX, moveZ);
+        Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")); ;
 
         _movement.Move(input);
         _animator.SetBool(IsWalking, input.magnitude != 0);

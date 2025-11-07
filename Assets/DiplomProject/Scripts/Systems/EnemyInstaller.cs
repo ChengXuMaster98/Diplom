@@ -59,5 +59,6 @@ public class EnemyInstaller : MonoInstaller
         Container.Bind<VampireEnemyChaseState>().AsTransient();
         Container.Bind<VampireEnemyAttackState>().AsTransient();
         Container.Bind<VampireEnemyDieState>().AsTransient();
+        Container.Bind<VampireImpactState>().AsTransient();
     }
 }

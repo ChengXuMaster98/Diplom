@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using TMPro;
 
 public class Enemy : MonoBehaviour, IEnemy
 {
@@ -41,6 +42,6 @@ public class Enemy : MonoBehaviour, IEnemy
         Debug.Log($"[Enemy] ����! ������������� IsDead = true");
 
         OnDeath?.Invoke();
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

@@ -2,37 +2,43 @@ using UnityEngine;
 using Zenject;
 using System;
 
-public class PlayerHealth : IInitializable, IPlayerDamageable
+public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable
 {
     public event Action OnDeath;
     public event Action<int> OnHealthChanged;
 
 
     private int _currentHealth;
-    private readonly PlayerStats _stats;
-    private readonly PlayerStateSaver _stateSaver;
-    private readonly GameOverUI _gameOverUI;
+    private PlayerStats _stats;
+    private GameOverUI _gameOverUI;
+
+    private CharacterMovementController _movementController;
     public bool IsDead => _currentHealth <= 0;
 
     [Inject]
-    public PlayerHealth(PlayerStats stats, PlayerStateSaver stateSaver)
+    public void Construct(PlayerStats stats, GameOverUI gameOverUI, CharacterMovementController MovementController)
     {
+        Debug.Log("[PlayerHealth] Injected stats.MaxHealth = " + stats.MaxHealth);
         _stats = stats;
-        _stateSaver = stateSaver;
+        _gameOverUI = gameOverUI;
+        _movementController = MovementController;
         // Сделать здесь максимальное здоровье
         // Сделать PlayerController, он будет иметь зависимость на Player, прописать там логику отнимания здоровья
     }
 
     public void Initialize()
     {
-        _currentHealth = _stateSaver != null ? _stateSaver._currentHealth : _stats.MaxHealth;
+        Debug.Log("[PlayerHealth] Initialize called!");
+        _currentHealth = _stats.MaxHealth;
         OnHealthChanged?.Invoke(_currentHealth);
     }
 
     public void TakeDamage(int amount)
     {
+        Debug.Log($"[PlayerHealth] TakeDamage called, amount={amount}, current={_currentHealth}");
         _currentHealth -= amount;
         _currentHealth = Mathf.Max(_currentHealth, 0);
+        Debug.Log($"[PlayerHealth] After damage current={_currentHealth}");
         OnHealthChanged?.Invoke(_currentHealth);
 
         if (_currentHealth <= 0)
@@ -53,9 +59,13 @@ public class PlayerHealth : IInitializable, IPlayerDamageable
         Debug.Log("Player died");
 
         // Вызываем экран GameOver
-        _gameOverUI.ShowGameOverScreen();
+
+        _movementController.BlockMovement();
 
         // Запускаем событие смерти
         OnDeath?.Invoke();
+
+        _gameOverUI.ShowGameOverScreen();
+
     }
 }

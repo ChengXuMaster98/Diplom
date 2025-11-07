@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 using Cinemachine;
 
@@ -29,13 +29,6 @@ public class ThirdPersonCameraController : ITickable
 
     public void Tick()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _sensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * _sensitivity * Time.deltaTime;
 
-        _yRotation -= mouseX;
-        _xRotation += mouseY;
-        _xRotation = Mathf.Clamp(_xRotation, TopClamp, BottomClamp);
-
-        _target.rotation = Quaternion.Euler(0f, _yRotation, 0f);
     }
 }

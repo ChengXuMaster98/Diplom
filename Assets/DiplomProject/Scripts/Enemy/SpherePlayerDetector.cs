@@ -34,6 +34,7 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
     private void Update()
     {
+        
         Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _playerMask);
         bool playerFound = false;
 
@@ -52,6 +53,7 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
                     PlayerDetected?.Invoke(_player);
                     Debug.Log(">> PlayerDetected invoked with: " + _player.name);
                 }
+                playerFound = true;
                 break;
             }
         }
