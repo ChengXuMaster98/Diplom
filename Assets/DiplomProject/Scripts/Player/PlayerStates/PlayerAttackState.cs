@@ -56,7 +56,7 @@ public class PlayerAttackState : IPlayerState
 
     public void Exit()
     {
-        _animator.SetBool("Attack", false);
+        _animator.SetBool(Attack, false);
 
         _animationEventReceiver.OnAttackStart -= AnimationAttackStart;
         _animationEventReceiver.OnAttackEnd -= AnimationAttackEnd;

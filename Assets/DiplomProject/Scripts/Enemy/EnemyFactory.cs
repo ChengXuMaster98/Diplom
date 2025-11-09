@@ -20,7 +20,7 @@ public class EnemyFactory : IEnemyFactory
         var prefab = _enemyPrefabDatabase.GetPrefabByType(type);
         var stats = _enemyStatsDatabase.GetStatsByType(type);
 
-        var instance = _container.InstantiatePrefabForComponent<Enemy>(prefab, position, Quaternion.identity, null, new object[] { stats });
+        var instance = _container.InstantiatePrefabForComponent<Enemy>(prefab, position, Quaternion.identity, null);
 
 
         instance.Initialize(stats);

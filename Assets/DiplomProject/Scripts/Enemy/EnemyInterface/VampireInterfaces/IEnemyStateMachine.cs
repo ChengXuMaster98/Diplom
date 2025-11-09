@@ -5,4 +5,5 @@ public interface IEnemyStateMachine
     void SetState(IEnemyState newState);
     void Tick();
     void SetToDieState();
+    void Initialize(IEnemyState idleState);
 }

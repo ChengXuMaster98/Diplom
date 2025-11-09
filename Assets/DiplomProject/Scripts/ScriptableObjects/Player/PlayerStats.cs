@@ -7,5 +7,8 @@ public class PlayerStats : ScriptableObject
     public int attackDamage = 20;
     public float MoveSpeed = 5f;
     public float mouseSensitivity = 100f;
-    public float RotationSpeed = 10f;
+    public float RotationSpeed = 2f;
+    public float JumpHeight;
+    public float gravity = -9.81f;
+
 }

@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
     private IEnemyState _chaseState;
     private IEnemyState _attackState;
     private IEnemyState _dieState;
+    private IEnemyState _getImpactState;
 
 
     private EnemyStats _enemyStats;
@@ -39,6 +40,8 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
         _chaseState = _stateFactory.CreateChaseState();
         _attackState = _stateFactory.CreateAttackState();
         _dieState = _stateFactory.CreateDieState();
+        _getImpactState = _stateFactory.CreateGetDamageState();
+
 
         var idleState = _stateFactory.CreateIdleState();
         _stateMachine.Initialize(idleState);

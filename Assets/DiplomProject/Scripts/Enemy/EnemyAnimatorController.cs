@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 using Zenject;
 
@@ -8,6 +8,7 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     [SerializeField] private Transform _transform;
 
     private Action _onAttackHit;
+    private Action _onDeathAnimationEnd;
 
     public Transform Transform => _transform;
 
@@ -16,11 +17,21 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
         _onAttackHit = onHit;
     }
 
+    public void SetDeathEndCallback(Action onDeathEnd) // 👈 вызывать из DieState
+    {
+        _onDeathAnimationEnd = onDeathEnd;
+    }
+
     public void DealDamage()
     {
+        Debug.Log("[Animator] Attack animation event triggered");
         _onAttackHit?.Invoke();
     }
 
+    public void OnDeathAnimationEnd()
+    {
+        _onDeathAnimationEnd?.Invoke();
+    }
 
     public void LookAt(Vector3 position)
     {
@@ -60,6 +71,11 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     }
     public void PlayDie()
     {
-        _animator.SetTrigger("D");
+        _animator.SetTrigger("Dying");
+    }
+
+    public void PlayImpact()
+    {
+        _animator.SetTrigger("GetDamage");
     }
 }

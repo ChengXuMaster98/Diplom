@@ -1,9 +1,6 @@
-﻿using System.ComponentModel;
-using UnityEngine;
-using Zenject.SpaceFighter;
+﻿using UnityEngine;
 using Zenject;
 using UnityEngine.AI;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 public class EnemyInstaller : MonoInstaller
 {
@@ -30,7 +27,7 @@ public class EnemyInstaller : MonoInstaller
 
 
         //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_transform);
-        Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().FromComponentOnRoot().AsSingle();
 
         // Бинд NavMeshAgent и DetectionArea
         Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
@@ -59,5 +56,6 @@ public class EnemyInstaller : MonoInstaller
         Container.Bind<VampireEnemyChaseState>().AsTransient();
         Container.Bind<VampireEnemyAttackState>().AsTransient();
         Container.Bind<VampireEnemyDieState>().AsTransient();
+        Container.Bind<VampireImpactState>().AsTransient();
     }
 }

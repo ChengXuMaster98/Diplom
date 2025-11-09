@@ -11,6 +11,7 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
     private readonly EnemyStats _stats;
     private readonly IPlayerDamageable _playerDamageable;
     private readonly VampireEnemyStateMachine _stateMachine;
+    private readonly GameObject _enemyGO;
 
     public VampireEnemyStateFactory(
         IEnemyAnimator animator,
@@ -31,5 +32,6 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
     public IEnemyState CreateIdleState() => new VampireEnemyIdleState(_animator, _detector, _stateMachine, this);
     public IEnemyState CreateChaseState() => new VampireEnemyChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
     public IEnemyState CreateAttackState() => new VampireEnemyAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
-    public IEnemyState CreateDieState() => new VampireEnemyDieState(_animator);
+    public IEnemyState CreateDieState() => new VampireEnemyDieState(_animator, _enemyGO);
+    public IEnemyState CreateGetDamageState() => new VampireImpactState(_animator, _stateMachine, this);
 }

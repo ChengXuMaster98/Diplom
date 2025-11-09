@@ -23,6 +23,7 @@ public class VampireEnemyAttackState : IEnemyState
         IEnemyStateFactory stateFactory)
     {
         _playerDamageable = playerDamageable;
+        Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
         _animator = animator;
         _detector = detector;
         _stats = stats;
@@ -45,16 +46,22 @@ public class VampireEnemyAttackState : IEnemyState
     }
 
     private void PerformAttack()
-{
-    if (_detector.Player != null && !_playerDamageable.IsDead)
     {
-            Debug.Log($"[VampireEnemy] Наносит {_stats.Damage} урона игроку.");
+        if (_detector.Player != null && _playerDamageable != null)
+    {
+            Debug.Log("[ATTACK] About to call TakeDamage on _playerDamageable");
             _playerDamageable.TakeDamage(_stats.Damage);
+            Debug.Log("[ATTACK] After TakeDamage call");
+        }
+        else
+        {
+            Debug.LogWarning("[ATTACK] No player detected or player is already dead");
+        }
     }
-}
 
     public void Tick()
     {
+        Debug.Log($"[Attack Tick] Player: {_detector.Player}, Damageable: {_playerDamageable != null}");
         Transform player = _detector.Player;
         if (player == null)
             return;
@@ -64,8 +71,13 @@ public class VampireEnemyAttackState : IEnemyState
 
         if (distance > _stats.AttackRange + buffer)
         {
+            Debug.Log("[Attack] Too far, switching to Chase");
             _stateMachine.SetState(_stateFactory.CreateChaseState());
             return;
+        }
+        else
+        {
+            Debug.Log("[Attack] Player in AttackRange");
         }
 
         _animator.LookAt(player.position);

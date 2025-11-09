@@ -1,13 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 public class PlayerJumpState : IPlayerState
 {
+    private static readonly int Jump = Animator.StringToHash("Jump");
     private readonly Animator _animator;
     private readonly CharacterMovementController _movement;
-    private float _jumpForce = 5f;
-    private float _gravity = -9.8f;
-    private float _verticalVelocity;
-    private bool _isGrounded;
 
     public PlayerJumpState(Animator animator, CharacterMovementController movement)
     {
@@ -15,37 +13,26 @@ public class PlayerJumpState : IPlayerState
         _movement = movement;
     }
 
-    public bool CanExit()
-    {
-        // Can only exit when landed
-        return _isGrounded;
-    }
-
     public void Enter()
     {
-        _animator.SetTrigger("Jump");
-        _verticalVelocity = _jumpForce;
+        _animator.SetTrigger("IsJumping");
+        _movement.Jump();
     }
 
     public void Tick()
     {
-        _verticalVelocity += _gravity * Time.deltaTime;
-        _movement.Move(new Vector3(0, _verticalVelocity, 0));
-
-        if (_verticalVelocity <= 0 && CheckIfGrounded())
-        {
-            _isGrounded = true;
-        }
-    }
-
-    private bool CheckIfGrounded()
-    {
-        // Implement proper ground check here
-        return true;
+        _animator.SetBool("IsGrounded", _movement.IsGrounded);
+        _animator.SetBool("IsFalling", _movement.VerticalVelocity <= 0 && !_movement.IsGrounded);
     }
 
     public void Exit()
     {
-        _verticalVelocity = 0;
+        //_animator.SetTrigger("IsJumping");
+    }
+
+    public bool CanExit()
+    {
+        // Can only exit when landed
+        return _movement.VerticalVelocity <= 0 && !_movement.IsGrounded;
     }
 }
