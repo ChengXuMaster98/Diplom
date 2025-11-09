@@ -46,6 +46,10 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<EnemyStatsDatabase>().FromInstance(_enemyStatsDatabase).AsSingle();
         Container.Bind<EnemyPrefabDatabase>().FromInstance(_enemyPrefabDatabase).AsSingle();
 
+        
+        Container.Bind<AttackAnimationEventReceiver>().FromComponentInHierarchy().AsSingle();
+
+
         // Фабрика врагов
         Container.BindInterfacesAndSelfTo<EnemyFactory>().AsSingle().NonLazy();
 

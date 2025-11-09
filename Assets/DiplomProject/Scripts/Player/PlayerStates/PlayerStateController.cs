@@ -18,7 +18,8 @@ public class PlayerStateController : ITickable
         Player player,
         CharacterMovementController movement,
         AttackHitBox attackHitBox,
-        IPlayerStaminaConsumer staminaConsumer)
+        IPlayerStaminaConsumer staminaConsumer,
+        AttackAnimationEventReceiver attackAnimationEventReceiver)
     {
         _stateMachine = stateMachine;
 
@@ -26,7 +27,7 @@ public class PlayerStateController : ITickable
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
-        _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine);
+        _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine, attackAnimationEventReceiver);
 
         
         _stateMachine.SetState(_idleState);

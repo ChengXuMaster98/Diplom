@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: StaminaConfig
   m_EditorClassIdentifier: 
   _maxStamina: 100
-  _staminaRegenPerSecond: 1
-  _attackCoast: 10
+  _staminaRegenPerSecond: 2
+  _attackCoast: 2

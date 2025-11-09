@@ -1,59 +1,26 @@
+using System;
 using UnityEngine;
 using Zenject;
 
-public class EnemyAnimatorController: IEnemyAnimator, IInitializable
+public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
 {
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _transform;
-    private bool _isInitialized;
+
+    private Action _onAttackHit;
 
     public Transform Transform => _transform;
 
-    [Inject]
-    public EnemyAnimatorController(Animator animator, Transform transform)
+    public void SetAttackHitCallback(Action onHit)
     {
-        Debug.Log($"[EnemyAnimatorController] Animator injected: {animator}");
-        _animator = animator;
-        _transform = transform;
+        _onAttackHit = onHit;
     }
 
-    public void Initialize()
+    public void DealDamage()
     {
-        if (_isInitialized) return;
-        Debug.Log("Animator Controller: " + _animator.runtimeAnimatorController?.name);
-
-        if (_animator.runtimeAnimatorController == null)
-        {
-            Debug.LogError("[Animator] Контроллер НЕ установлен!");
-        }
-        else
-        {
-            Debug.Log("[Animator] Контроллер установлен корректно.");
-        }
-
-        _isInitialized = true;
-        Debug.Log("[AnimatorController] Initialized");
-
+        _onAttackHit?.Invoke();
     }
 
-    public void PlayIdle() => SetBool("IsIdle", true);
-    public void StopIdle() => SetBool("IsIdle", false);
-
-    public void PlayChase() => SetBool("IsChasing", true);
-    public void StopChase() => SetBool("IsChasing", false);
-
-    public void PlayAttack() => SetBool("IsAttacking", true);
-    public void StopAttack() => SetBool("IsAttacking", false);
-
-    public void StopDie() => SetBool("IsDead", true);
-    public void PlayDie() => SetBool("IsDead", false);
-
-    private void SetBool(string param, bool value)
-    {
-        Debug.Log($"[Animator] SetBool: {param} = {value}");
-        if (_animator != null && _animator.HasParameter(param))
-            _animator.SetBool(param, value);
-    }
 
     public void LookAt(Vector3 position)
     {
@@ -64,5 +31,35 @@ public class EnemyAnimatorController: IEnemyAnimator, IInitializable
         {
             _transform.rotation = Quaternion.LookRotation(direction);
         }
+    }
+
+    public bool IsPlayingAttackAnimation()
+    {
+        return 
+        _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack") &&
+        _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f;
+    }
+    public void PlayIdle()
+    {
+        Debug.Log("PlayIdle called");
+        _animator.SetBool("IsChasing", false);
+        //_animator.SetBool("IsIdle", true);
+        //_animator.SetBool("IsChasing", false);
+    }
+
+    public void PlayChase()
+    {
+        Debug.Log("PlayChase called");
+        _animator.SetBool("IsChasing", true);
+    }
+
+    public void PlayAttack()
+    {
+        _animator.SetBool("IsChasing", false);
+        _animator.SetTrigger("Attacking");
+    }
+    public void PlayDie()
+    {
+        _animator.SetTrigger("D");
     }
 }
