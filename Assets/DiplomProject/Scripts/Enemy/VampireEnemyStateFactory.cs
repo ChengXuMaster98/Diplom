@@ -33,5 +33,5 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
     public IEnemyState CreateChaseState() => new VampireEnemyChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
     public IEnemyState CreateAttackState() => new VampireEnemyAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
     public IEnemyState CreateDieState() => new VampireEnemyDieState(_animator, _enemyGO);
-    public IEnemyState CreateGetDamageState() => new VampireImpactState(_animator);
+    public IEnemyState CreateGetDamageState() => new VampireImpactState(_animator, _stateMachine, this);
 }

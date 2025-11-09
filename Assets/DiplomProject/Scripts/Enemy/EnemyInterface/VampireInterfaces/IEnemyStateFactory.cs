@@ -4,5 +4,6 @@
     IEnemyState CreateChaseState();
     IEnemyState CreateAttackState();
     IEnemyState CreateDieState();
+
     IEnemyState CreateGetDamageState();
 }

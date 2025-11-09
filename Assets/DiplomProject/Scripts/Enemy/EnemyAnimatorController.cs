@@ -33,12 +33,6 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
         _onDeathAnimationEnd?.Invoke();
     }
 
-    public void GetDamageImpact()
-    {
-
-    }
-
-
     public void LookAt(Vector3 position)
     {
         Vector3 direction = (position - _transform.position).normalized;
