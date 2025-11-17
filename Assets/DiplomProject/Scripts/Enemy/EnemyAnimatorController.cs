@@ -54,8 +54,8 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     {
         Debug.Log("PlayIdle called");
         _animator.SetBool("IsChasing", false);
-        //_animator.SetBool("IsIdle", true);
-        //_animator.SetBool("IsChasing", false);
+        _animator.SetBool("IsIdle", true);
+        _animator.SetBool("IsChasing", false);
     }
 
     public void PlayChase()
@@ -72,6 +72,7 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     public void PlayDie()
     {
         _animator.SetTrigger("Dying");
+        _animator.SetBool("Ischasing", false);
     }
 
     public void PlayImpact()

@@ -2,36 +2,34 @@ using UnityEngine;
 
 public class SkeletonStateMachine : ISkeletonStateMachine
 {
-    private IEnemyState _currentState;
+    public IEnemyState CurrentState { get; private set; }
     private IEnemyState _dieState;
 
     public void Initialize(IEnemyState startState)
     {
-        _currentState = startState;
-        _currentState.Enter();
+        CurrentState = startState;
+        CurrentState.Enter();
     }
 
 
     public void SetState(IEnemyState newState)
     {
-        if (_currentState == newState)
+        if (CurrentState == newState)
             return;
 
-        _currentState?.Exit();
-        _currentState = newState;
-        _currentState?.Enter();
+        CurrentState?.Exit();
+        CurrentState = newState;
+        CurrentState?.Enter();
     }
 
     public void Tick()
     {
-        _currentState?.Tick();
+        CurrentState?.Tick();
     }
 
     public void SetToDieState()
     {
-        _currentState?.Exit();
-        _currentState = _dieState;
-        _currentState.Enter();
+        CurrentState?.Tick();
     }
 
 }

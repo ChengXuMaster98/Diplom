@@ -4,8 +4,6 @@ using System;
 
 public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializable
 {
-    //[SerializeField] private float detectionRadius = 10f;
-    //[SerializeField] private LayerMask playerLayer;
 
     public event Action<Transform> PlayerDetected;
     public event Action PlayerLost;

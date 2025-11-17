@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour, IEnemy
     public bool IsDead { get; private set; }
 
     public event Action OnDeath;
+    public event Action OnDamaged;
 
     public void Initialize(EnemyStats stats)
     {
@@ -22,12 +23,17 @@ public class Enemy : MonoBehaviour, IEnemy
     {
         if (IsDead)
         {
-            Debug.Log($"[Enemy] ��� ����, ���� �� �����������");
+            Debug.Log($"[Enemy] Уже мертв, урон не применяется");
             return;
         }
 
         _currentHealth -= damage;
-        Debug.Log($"[Enemy] ������� ����: {damage}, ������� HP: {_currentHealth}");
+
+        OnDamaged?.Invoke();
+
+        Debug.Log($"[Enemy] Получен урон: {damage}, Текущий HP: {_currentHealth}");
+
+
         if (_currentHealth <= 0)
         {
             Die();
@@ -39,7 +45,7 @@ public class Enemy : MonoBehaviour, IEnemy
         if (IsDead) return;
 
         IsDead = true;
-        Debug.Log($"[Enemy] ����! ������������� IsDead = true");
+        Debug.Log($"[Enemy] Умер! Установлено IsDead = true");
 
         OnDeath?.Invoke();
         //Destroy(gameObject);

@@ -4,22 +4,29 @@ using UnityEngine;
 
     public class SkeletonDieState : IEnemyState
 {
-    private readonly ISkeletonStateMachine _machine;
-    private readonly ISkeletonStateFactory _factory;
-    private readonly Transform _transform;
-    private readonly Animator _animator;
+    private readonly ISkeletonAnimator _animator;
+    private readonly GameObject _enemyGO;
 
-    public SkeletonDieState(ISkeletonStateMachine machine, ISkeletonStateFactory factory, Transform transform, Animator animator)
+    public SkeletonDieState(ISkeletonAnimator animator, GameObject enemyGO)
     {
-        _machine = machine;
-        _factory = factory;
-        _transform = transform;
         _animator = animator;
+        _enemyGO = enemyGO;
     }
 
     public void Enter()
     {
-        _animator.Play("Die");
+        _animator.PlayDie();
+        
+        if (_animator is SkeletonAnimatorController controller)
+        {
+            controller.SetDeathEndCallback(OnDeathAnimationEnd);
+        }
+    }
+
+    private void OnDeathAnimationEnd()
+    {
+        Debug.Log("[Enemy] Анимация смерти завершена, уничтожаем объект.");
+        Object.Destroy(_enemyGO);
     }
 
     public void Tick() { }

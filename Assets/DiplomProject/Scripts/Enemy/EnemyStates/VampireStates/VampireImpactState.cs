@@ -21,7 +21,7 @@ public class VampireImpactState : IEnemyState
 
     public void Enter()
     {
-        _timer = 0.3f;   // длительность анимации удара
+        _timer = 0.5f;   // длительность анимации получения урона
         _animator.PlayImpact();
     }
     
@@ -36,7 +36,7 @@ public class VampireImpactState : IEnemyState
         if (_timer <= 0)
         {
             // Возврат в Idle или Chase
-            _stateMachine.SetState(_factory.CreateIdleState());
+            _stateMachine.SetState(_factory.CreateChaseState());
         }
     }
 }

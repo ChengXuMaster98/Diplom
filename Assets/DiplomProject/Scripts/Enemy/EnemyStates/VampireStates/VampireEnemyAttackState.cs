@@ -36,27 +36,31 @@ public class VampireEnemyAttackState : IEnemyState
 
     public void Enter()
     {
+
         _attackCooldown = 0f;
         _agent.isStopped = true;
         _agent.ResetPath();
 
         _animator.SetAttackHitCallback(PerformAttack);
+        _animator.PlayAttack();
 
         Debug.Log("[ATTACK STATE] Entered");
     }
 
     private void PerformAttack()
     {
-        if (_detector.Player != null && _playerDamageable != null)
-    {
-            Debug.Log("[ATTACK] About to call TakeDamage on _playerDamageable");
-            _playerDamageable.TakeDamage(_stats.Damage);
-            Debug.Log("[ATTACK] After TakeDamage call");
-        }
-        else
+        if (_detector.Player == null || _playerDamageable == null)
+            return;
+
+        float distance = Vector3.Distance(_detector.Player.position, _animator.Transform.position);
+        if (distance > _stats.AttackRange)
         {
-            Debug.LogWarning("[ATTACK] No player detected or player is already dead");
+            Debug.Log("[Attack] Player escaped before hit!");
+            return;
         }
+
+        _playerDamageable.TakeDamage(_stats.Damage);
+        Debug.Log("[Attack] Damage applied");
     }
 
     public void Tick()
@@ -67,9 +71,9 @@ public class VampireEnemyAttackState : IEnemyState
             return;
 
         float distance = Vector3.Distance(player.position, _animator.Transform.position);
-        float buffer = 0.5f;
+        //float buffer = 0.1f;
 
-        if (distance > _stats.AttackRange + buffer)
+        if (distance > _stats.AttackRange)
         {
             Debug.Log("[Attack] Too far, switching to Chase");
             _stateMachine.SetState(_stateFactory.CreateChaseState());
@@ -80,6 +84,7 @@ public class VampireEnemyAttackState : IEnemyState
             Debug.Log("[Attack] Player in AttackRange");
         }
 
+
         _animator.LookAt(player.position);
 
         _attackCooldown -= Time.deltaTime;
@@ -87,7 +92,7 @@ public class VampireEnemyAttackState : IEnemyState
         if (_attackCooldown <= 0f && !_animator.IsPlayingAttackAnimation())
         {
             Debug.Log("[ATTACK] Performing attack!");
-            //_playerDamageable.TakeDamage(_stats.Damage);
+
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
         }

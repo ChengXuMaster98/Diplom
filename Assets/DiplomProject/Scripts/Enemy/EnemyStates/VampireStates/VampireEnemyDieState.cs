@@ -25,6 +25,7 @@ public class VampireEnemyDieState : IEnemyState
 
     private void OnDeathAnimationEnd()
     {
+
         Debug.Log("[Enemy] Анимация смерти завершена, уничтожаем объект.");
         Object.Destroy(_enemyGO);
     }

@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SkeletonGetDamageState : IEnemyState
 {
-    private readonly Animator _animator;
+    private readonly ISkeletonAnimator _animator;
     private readonly ISkeletonStateMachine _stateMachine;
     private readonly ISkeletonStateFactory _factory;
 
     private float _timer;
 
 
-    public SkeletonGetDamageState(Animator animator, ISkeletonStateMachine stateMachine, ISkeletonStateFactory factory)
+    public SkeletonGetDamageState(ISkeletonAnimator animator, ISkeletonStateMachine stateMachine, ISkeletonStateFactory factory)
     {
         _animator = animator;
         _stateMachine = stateMachine;
@@ -21,8 +21,10 @@ public class SkeletonGetDamageState : IEnemyState
 
     public void Enter()
     {
-        _timer = 0.3f;   // длительность анимации удара
-        _animator.Play("Impact");
+        _timer = 0.5f;   // длительность анимации получения урона
+        
+        
+        _animator.PlayImpact();
     }
 
     public void Exit()
@@ -36,7 +38,7 @@ public class SkeletonGetDamageState : IEnemyState
         if (_timer <= 0)
         {
             // Возврат в Idle или Chase
-            _stateMachine.SetState(_factory.CreateIdleState());
+            _stateMachine.SetState(_factory.CreateChaseState());
         }
     }
 }

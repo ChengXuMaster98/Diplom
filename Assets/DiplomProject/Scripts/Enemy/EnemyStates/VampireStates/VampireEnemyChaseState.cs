@@ -56,7 +56,7 @@ public class VampireEnemyChaseState : IEnemyState
             return;
         }
 
-        _agent.isStopped = false;
+        //_agent.isStopped = false;
         _agent.SetDestination(player.position);
     }
 

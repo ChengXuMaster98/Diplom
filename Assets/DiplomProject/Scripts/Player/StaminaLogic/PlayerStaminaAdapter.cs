@@ -13,6 +13,24 @@ public class PlayerStaminaAdapter : IPlayerStaminaConsumer
         Debug.Log("Стамина адаптер создан");
     }
 
+    public bool CanBlock()
+    {
+        bool canBlock = _staminaSystem.CanPerformBlock();
+
+        Debug.Log($"CanBlock: {canBlock}, Current Stamina: {_staminaSystem.CurrentStamina}");
+
+        return canBlock;
+    }
+
+    public void ConsumeStaminaForBlock()
+    {
+        Debug.Log($"Consuming stamina for block. Before: {_staminaSystem.CurrentStamina}");
+
+        _staminaSystem.SpendStaminaForBlock();
+
+        Debug.Log($"After Consumption: {_staminaSystem.CurrentStamina}");
+    }
+
     public bool CanAttack()
     {
         bool canAttack = _staminaSystem.CanPerformAttack();
@@ -24,7 +42,7 @@ public class PlayerStaminaAdapter : IPlayerStaminaConsumer
 
     public void ConsumeStaminaForAttack()
     {
-        Debug.Log($"Consuming stamina. Before: {_staminaSystem.CurrentStamina}");
+        Debug.Log($"Consuming stamina for attack. Before: {_staminaSystem.CurrentStamina}");
 
         _staminaSystem.SpendStaminaForAttack();
 

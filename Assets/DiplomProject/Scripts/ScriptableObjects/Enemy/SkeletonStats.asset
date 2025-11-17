@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SkeletonStats
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  Damage: 10
-  MoveSpeed: 3
-  AttackRange: 2
+  Damage: 1
+  MoveSpeed: 2
+  AttackRange: 1.9
   DetectionRadius: 10
-  AttackCooldown: 3
+  AttackCooldown: 1
   PlayerMask:
     serializedVersion: 2
     m_Bits: 8

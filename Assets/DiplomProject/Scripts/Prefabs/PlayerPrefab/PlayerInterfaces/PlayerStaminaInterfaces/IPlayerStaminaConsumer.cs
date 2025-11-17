@@ -6,4 +6,7 @@ using UnityEngine;
 {
     bool CanAttack();
     void ConsumeStaminaForAttack();
+
+    bool CanBlock();
+    void ConsumeStaminaForBlock();
 }

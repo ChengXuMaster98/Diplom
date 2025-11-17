@@ -7,6 +7,7 @@ public class SkeletonEnemyAI : EnemyAIBase<SkeletonStateMachine, ISkeletonStateF
     private IEnemyState _attackState;
     private IEnemyState _flyState;
     private IEnemyState _dieState;
+    private IEnemyState _getDamageState;
 
     public override void Initialize()
     {
@@ -14,7 +15,9 @@ public class SkeletonEnemyAI : EnemyAIBase<SkeletonStateMachine, ISkeletonStateF
         _chaseState = _stateFactory.CreateChaseState();
         _attackState = _stateFactory.CreateAttackState();
         _flyState = _stateFactory.CreateFlyState();
+        _getDamageState = _stateFactory.CreateGetDamageState();
         _dieState = _stateFactory.CreateDieState();
+
 
         _stateMachine.Initialize(_idleState);
     }

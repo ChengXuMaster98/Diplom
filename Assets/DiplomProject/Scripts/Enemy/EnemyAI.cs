@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
@@ -11,14 +12,17 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
     private IEnemyState _idleState;
     private IEnemyState _chaseState;
     private IEnemyState _attackState;
-    private IEnemyState _dieState;
     private IEnemyState _getImpactState;
+
+    private bool _isDead = false;
+    private IEnemyState _dieState;
 
 
     private EnemyStats _enemyStats;
 
     private Transform _targetPlayer;
     private Enemy _enemy;
+
 
     [Inject]
     public void Construct(VampireEnemyStateMachine stateMachine, IEnemyStateFactory stateFactory, IPlayerDetector playerDetector, EnemyStats enemyStats, Enemy enemy)
@@ -31,6 +35,9 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 
         _playerDetector.PlayerDetected += OnPlayerDetected;
         _playerDetector.PlayerLost += OnPlayerLost;
+
+        _enemy.OnDamaged += OnDamaged;
+        _enemy.OnDeath += HandleDeath;
     }
 
     public void Initialize()
@@ -45,6 +52,30 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 
         var idleState = _stateFactory.CreateIdleState();
         _stateMachine.Initialize(idleState);
+    }
+
+    private void HandleDeath()
+    {
+        if (_isDead)
+            return;
+
+        _isDead = true;
+
+        // создаём dieState один раз
+        _dieState = _stateFactory.CreateDieState();
+
+        // Переходим в состояние смерти
+        _stateMachine.SetState(_dieState);
+
+        // Отписываемся, чтобы не было утечек
+        _playerDetector.PlayerDetected -= OnPlayerDetected;
+        _playerDetector.PlayerLost -= OnPlayerLost;
+    }
+
+    private void OnDamaged()
+    {
+        if (!_enemy.IsDead)
+            _stateMachine.SetState(_stateFactory.CreateGetDamageState());
     }
 
     private void OnPlayerDetected(Transform player)
@@ -65,9 +96,9 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
     public void Tick()
     {
 
-        if (_enemy.IsDead)
+        if (_isDead)
         {
-            _stateMachine.SetState(_dieState);
+            // Мёртвый враг не тикает
             return;
         }
 

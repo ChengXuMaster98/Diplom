@@ -10,5 +10,5 @@ public class PlayerStats : ScriptableObject
     public float RotationSpeed = 2f;
     public float JumpHeight;
     public float gravity = -9.81f;
-
+    public float HealthRegenRate = 3f;
 }
