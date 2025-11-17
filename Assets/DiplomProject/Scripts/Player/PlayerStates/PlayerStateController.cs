@@ -11,6 +11,7 @@ public class PlayerStateController : ITickable
     private readonly PlayerMoveState _moveState;
     private readonly PlayerJumpState _jumpState;
     private readonly PlayerAttackState _attackState;
+    private readonly PlayerBlockState _blockState;
 
     [Inject]
     public PlayerStateController(
@@ -19,7 +20,8 @@ public class PlayerStateController : ITickable
         CharacterMovementController movement,
         AttackHitBox attackHitBox,
         IPlayerStaminaConsumer staminaConsumer,
-        AttackAnimationEventReceiver attackAnimationEventReceiver)
+        AttackAnimationEventReceiver attackAnimationEventReceiver,
+        DiContainer container)
     {
         _stateMachine = stateMachine;
 
@@ -28,8 +30,13 @@ public class PlayerStateController : ITickable
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
         _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine, attackAnimationEventReceiver);
+        _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine);
 
-        
+       container.Unbind<IBlockStatusProvider>();
+       container.Bind<IBlockStatusProvider>().FromInstance(_blockState).AsSingle();
+
+
+
         _stateMachine.SetState(_idleState);
     }
 
@@ -46,6 +53,12 @@ public class PlayerStateController : ITickable
             _stateMachine.SetState(_attackState);
             return;
             // Skip other inputs if attacking
+        }
+        if(Input.GetMouseButton(1))
+        {
+            if (!(_stateMachine.CurrentState is PlayerBlockState))
+                _stateMachine.SetState(_blockState);
+            return;
         }
 
         var moveX = Input.GetAxis(HORIZONTAL_AXIS);

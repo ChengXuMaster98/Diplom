@@ -1178,7 +1178,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1.4835172
-  m_Center: {x: 0, y: 0.017856399, z: 0}
+  m_Center: {x: 0, y: 0.01, z: 0}
 --- !u!114 &1151324325752628842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,8 +2320,9 @@ GameObject:
   - component: {fileID: -5057268135802422578}
   - component: {fileID: 5626399375636317741}
   - component: {fileID: 5651574404718724129}
-  - component: {fileID: -1296156616514903730}
   - component: {fileID: -1292860489363783877}
+  - component: {fileID: 6586469361191915720}
+  - component: {fileID: 485123798980917343}
   m_Layer: 0
   m_Name: Vapmire
   m_TagString: Vampire
@@ -2377,12 +2378,12 @@ NavMeshAgent:
   m_GameObject: {fileID: 5403837724672572775}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.4
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 1.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -2400,7 +2401,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2409,10 +2410,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.89527327
-  m_Height: 2.389404
+  m_Radius: 0.24874781
+  m_Height: 2.1320837
   m_Direction: 1
-  m_Center: {x: 0.14934817, y: 1.1656263, z: 0.1803273}
+  m_Center: {x: 0.03504403, y: 1.0513606, z: 0.034709334}
 --- !u!114 &7114115682643546241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2482,7 +2483,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ce0e66cee4b454ab10b611a8f71377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!54 &-1296156616514903730
+--- !u!114 &-1292860489363783877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403837724672572775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02d864bff9be4a43a61535aafcca03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &6586469361191915720
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2498,7 +2511,7 @@ Rigidbody:
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2509,7 +2522,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-1292860489363783877
+--- !u!114 &485123798980917343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2518,9 +2531,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5403837724672572775}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02d864bff9be4a43a61535aafcca03e, type: 3}
+  m_Script: {fileID: 11500000, guid: 943687c2318e91c48a5cfed57f745581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _soundData: {fileID: 11400000, guid: 74b155064c28d1545a221a2a554ea4ab, type: 2}
 --- !u!1 &5425151454104052109
 GameObject:
   m_ObjectHideFlags: 0

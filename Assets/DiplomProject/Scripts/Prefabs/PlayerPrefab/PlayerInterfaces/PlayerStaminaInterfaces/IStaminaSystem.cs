@@ -8,6 +8,11 @@ public interface IStaminaSystem
     float CurrentStamina { get; }
     float MaxStamina { get; }
     bool CanPerformAttack();
+
     void SpendStaminaForAttack();
+
+    bool CanPerformBlock();
+
+    void SpendStaminaForBlock();
     void Tick();
 }

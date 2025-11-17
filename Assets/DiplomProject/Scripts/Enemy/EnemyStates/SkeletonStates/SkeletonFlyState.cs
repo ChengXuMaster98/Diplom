@@ -7,12 +7,12 @@ using UnityEngine;
     private readonly ISkeletonStateMachine _machine;
     private readonly ISkeletonStateFactory _factory;
     private readonly Transform _transform;
-    private readonly Animator _animator;
+    private readonly ISkeletonAnimator _animator;
     private float _floatHeight = 2f;
     private float _floatSpeed = 2f;
     private float _startY;
 
-    public SkeletonFlyState(ISkeletonStateMachine machine, ISkeletonStateFactory factory, Transform transform, Animator animator)
+    public SkeletonFlyState(ISkeletonStateMachine machine, ISkeletonStateFactory factory, Transform transform, ISkeletonAnimator animator)
     {
         _machine = machine;
         _factory = factory;
@@ -23,7 +23,7 @@ using UnityEngine;
     public void Enter()
     {
         _startY = _transform.position.y;
-        _animator.Play("Float");
+        _animator.PlayFly();
     }
 
     public void Tick()

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 public class SkeletonEnemyInstaller : MonoInstaller
@@ -19,11 +20,24 @@ public class SkeletonEnemyInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<SkeletonStateMachine>().AsSingle();
 
+
+
+        Container.BindInterfacesAndSelfTo<SkeletonStateFactory>().AsSingle();
+       
+        
+
+        Container.Bind<ISkeletonAnimator>().To<SkeletonAnimatorController>().FromComponentOnRoot().AsSingle();
+
+
+
+
+        Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
+
         // Основные компоненты
         Container.BindInterfacesAndSelfTo<SkeletonEnemyAI>().FromComponentInHierarchy().AsSingle();
         Container.Bind<Enemy>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnemyHealth>().FromComponentInHierarchy().AsSingle();
-        Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
+        Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
 
     }
 }

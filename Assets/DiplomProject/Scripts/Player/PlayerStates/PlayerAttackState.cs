@@ -11,6 +11,7 @@ public class PlayerAttackState : IPlayerState
     private readonly AttackAnimationEventReceiver _animationEventReceiver;
 
     private bool _attackComplete;
+
     public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, AttackAnimationEventReceiver animationEventReceiver)
     {
         _animator = animator;
@@ -38,6 +39,7 @@ public class PlayerAttackState : IPlayerState
         _attackComplete = false;
 
         _animationEventReceiver.OnAttackStart += AnimationAttackStart;
+
         _animationEventReceiver.OnAttackEnd += AnimationAttackEnd;
 
         Debug.Log("PlayerAttackState: Enter()");

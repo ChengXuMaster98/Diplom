@@ -13,11 +13,11 @@ public class VampireEnemyStateMachine : IEnemyStateMachine
         CurrentState.Enter();
     }
 
-    public void Initialize(IEnemyState idle, IEnemyState chase, IEnemyState attack, IEnemyState die)
-    {
-        CurrentState = idle;
-        CurrentState.Enter();
-    }
+    //public void Initialize(IEnemyState idle, IEnemyState chase, IEnemyState attack, IEnemyState die)
+    //{
+    //    CurrentState = idle;
+    //    CurrentState.Enter();
+    //}
 
 
     public void SetState(IEnemyState newState)

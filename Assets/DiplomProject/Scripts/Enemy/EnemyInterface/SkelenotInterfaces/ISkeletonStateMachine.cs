@@ -1,4 +1,4 @@
 public interface ISkeletonStateMachine : IStateMachine
 {
-
+    
 }

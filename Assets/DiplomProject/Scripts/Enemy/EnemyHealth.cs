@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.UIElements;
+using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class EnemyHealth : MonoBehaviour
     {
         Debug.Log($"[{gameObject.name}] ������� ����: {amount}");
         _currentHealth -= amount;
+
+
         if (_currentHealth <= 0)
         {
             Die();

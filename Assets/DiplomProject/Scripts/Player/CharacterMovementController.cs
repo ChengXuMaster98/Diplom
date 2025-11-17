@@ -8,6 +8,8 @@ public class CharacterMovementController : ITickable
     private readonly Transform _cameraTransform;
     private readonly Transform _bodyTransform;
 
+    private readonly IUpgradeService _upgradeService;
+
     private Vector3 _direction;
 
     private bool _movementBlocked = false;
@@ -27,7 +29,7 @@ public class CharacterMovementController : ITickable
     public float VerticalVelocity => velocity.y;
 
 
-    public CharacterMovementController(PlayerStats stats, Player player, Transform cameraTarget, Transform groundCheck, LayerMask groundMask)
+    public CharacterMovementController(PlayerStats stats, Player player, Transform cameraTarget, Transform groundCheck, LayerMask groundMask, IUpgradeService upgradeService)
     {
         _stats = stats;
         _controller = player.Controller;
@@ -35,6 +37,7 @@ public class CharacterMovementController : ITickable
         _bodyTransform = player.BodyTransform;
         _groundCheck = groundCheck;
         _groundMask = groundMask;
+        _upgradeService = upgradeService;
     }
 
     public void Move(Vector2 input)
@@ -85,12 +88,28 @@ public class CharacterMovementController : ITickable
 
         //Executing the jump
         _controller.Move(velocity * Time.deltaTime);
-
-
-
         _controller.Move(_direction * _stats.MoveSpeed * Time.deltaTime);
+
+        float effectiveSpeed = _stats.MoveSpeed * _upgradeService.SpeedMultiplier;
+        _controller.Move(_direction * effectiveSpeed * Time.deltaTime);
+
+        HandleRotation();
+
+
 
 
         //Debug.Log($"Grounded: {isGrounded}, Velocity Y: {velocity.y}, Position Y: {_controller.transform.position.y}");
+    }
+
+    private void HandleRotation()
+    {
+        // Игрок поворачивается ТОЛЬКО при движении
+        if (_direction.sqrMagnitude > 0.1f)
+        {
+            // Мгновенный поворот тела в сторону камеры
+            Vector3 lookDirection = Vector3.Scale(_cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
+
+            _bodyTransform.rotation = Quaternion.Slerp(_bodyTransform.rotation, Quaternion.LookRotation(lookDirection), Time.deltaTime * _stats.RotationSpeed);
+        }
     }
 }

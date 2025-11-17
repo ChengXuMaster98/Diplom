@@ -11,6 +11,9 @@ using Zenject;
     protected TStateFactory _stateFactory;
     protected IPlayerDetector _playerDetector;
     protected Enemy _enemy;
+    
+    private bool _isDead = false;
+    private IEnemyState _dieState;
 
     [Inject]
     public virtual void Construct(
@@ -26,6 +29,34 @@ using Zenject;
 
         _playerDetector.PlayerDetected += OnPlayerDetected;
         _playerDetector.PlayerLost += OnPlayerLost;
+
+        _enemy.OnDamaged += OnDamaged;
+
+        _enemy.OnDeath += HandleDeath;
+    }
+
+    private void HandleDeath()
+    {
+        if (_isDead)
+            return;
+
+        _isDead = true;
+
+        // создаём dieState один раз
+        _dieState = _stateFactory.CreateDieState();
+
+        // Переходим в состояние смерти
+        _stateMachine.SetState(_dieState);
+
+        // Отписываемся, чтобы не было утечек
+        _playerDetector.PlayerDetected -= OnPlayerDetected;
+        _playerDetector.PlayerLost -= OnPlayerLost;
+    }
+
+    private void OnDamaged()
+    {
+        if (!_enemy.IsDead)
+            _stateMachine.SetState(_stateFactory.CreateGetDamageState());
     }
 
 
@@ -36,9 +67,9 @@ using Zenject;
 
     public virtual void Tick()
     {
-        if (_enemy.IsDead)
+        if (_isDead)
         {
-            _stateMachine.SetToDieState();
+            // Мёртвый враг не тикает
             return;
         }
 

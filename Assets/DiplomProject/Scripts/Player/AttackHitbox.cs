@@ -7,10 +7,13 @@ public class AttackHitBox : MonoBehaviour
     private PlayerStats _playerStats;
     private bool _canHit = false;
 
+    private IUpgradeService _upgradeService;
+
     [Inject]
-    public void Construct(PlayerStats stats)
+    public void Construct(PlayerStats stats, IUpgradeService upgradeService)
     {
         _playerStats = stats;
+        _upgradeService = upgradeService;
     }
 
     public void EnableHitbox()
@@ -32,7 +35,8 @@ public class AttackHitBox : MonoBehaviour
         
         if (other.TryGetComponent<IEnemy>(out var enemy))
         {
-            enemy.TakeDamage(_playerStats.attackDamage);
+            int damage = Mathf.RoundToInt(_playerStats.attackDamage * _upgradeService.DamageMultiplier);
+            enemy.TakeDamage(damage);
             _canHit = false;
             Debug.Log($"[AttackHitBox] ”рон по врагу:");
         }

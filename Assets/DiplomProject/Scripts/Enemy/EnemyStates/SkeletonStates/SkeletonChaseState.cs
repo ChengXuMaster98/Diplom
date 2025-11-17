@@ -1,53 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
     public class SkeletonChaseState : IEnemyState
 {
-    private readonly ISkeletonStateMachine _machine;
-    private readonly ISkeletonStateFactory _factory;
-    private readonly Transform _transform;
+    private readonly NavMeshAgent _agent;
+    private readonly ISkeletonAnimator _animator;
     private readonly IPlayerDetector _detector;
-    private readonly Animator _animator;
-    private readonly EnemyStats _stats;
+    private EnemyStats _enemyStats;
+    private readonly ISkeletonStateMachine _stateMachine;
+    private readonly ISkeletonStateFactory _stateFactory;
 
-    private Transform _target;
-
-    public SkeletonChaseState(ISkeletonStateMachine machine, ISkeletonStateFactory factory, Transform transform, IPlayerDetector detector, Animator animator, EnemyStats stats)
+    public SkeletonChaseState(ISkeletonAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats, ISkeletonStateMachine stateMachine,
+        ISkeletonStateFactory stateFactory)
     {
-        _machine = machine;
-        _factory = factory;
-        _transform = transform;
+        _stateMachine = stateMachine;
+        _stateFactory = stateFactory;
         _detector = detector;
         _animator = animator;
-        _stats = stats;
+        _agent = agent;
+        _enemyStats = enemyStats;
+
+        _detector.PlayerLost += OnPlayerLost;
     }
 
     public void Enter()
     {
-        _animator.Play("Run");
-        _detector.PlayerDetected += OnPlayerDetected;
-        _detector.PlayerLost += OnPlayerLost;
+        //Debug.Log($"[CHASE ENTER] Agent enabled: {_agent.enabled}, isStopped: {_agent.isStopped}, hasPath: {_agent.hasPath}");
+        _animator.PlayChase();
+
+        _agent.isStopped = false;
+        _agent.updatePosition = true;
+        _agent.updateRotation = true;
+        _agent.stoppingDistance = _enemyStats.AttackRange;
     }
 
     public void Tick()
     {
-        if (_target == null) return;
+        Transform player = _detector.Player;
+        if (player == null)
+            return;
 
-        Vector3 dir = (_target.position - _transform.position).normalized;
-        _transform.position += dir * _stats.MoveSpeed * Time.deltaTime;
 
-        float distance = Vector3.Distance(_transform.position, _target.position);
-        if (distance <= _stats.AttackRange)
-            _machine.SetState(_factory.CreateAttackState());
+
+        float distance = Vector3.Distance(_agent.transform.position, player.position);
+        //Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");
+
+        if (distance <= _enemyStats.AttackRange)
+        {
+            Debug.Log("[CHASE TICK] Switching to Attack state");
+            _agent.isStopped = true;
+            var attackState = _stateFactory.CreateAttackState() as SkeletonAttackState;
+            _stateMachine.SetState(attackState);
+            return;
+        }
+
+        _agent.isStopped = false;
+        _agent.SetDestination(player.position);
     }
 
     public void Exit()
     {
-        _detector.PlayerDetected -= OnPlayerDetected;
         _detector.PlayerLost -= OnPlayerLost;
+
     }
 
-    private void OnPlayerDetected(Transform player) => _target = player;
-    private void OnPlayerLost() => _target = null;
+    private void OnPlayerLost()
+    {
+        Debug.Log("[ATTACK STATE] Player lost, switching to Idle");
+        _stateMachine.SetState(_stateFactory.CreateIdleState());
+    }
 }

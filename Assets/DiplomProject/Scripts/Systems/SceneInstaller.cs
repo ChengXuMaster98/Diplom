@@ -14,7 +14,7 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private LayerMask Ground;
 
     //ThirdPersonCamera
-    [SerializeField] private Transform _cameraTransform;
+    [SerializeField] private Camera _camera;
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private CinemachineFreeLook _freeLookCamera;
 
@@ -27,21 +27,48 @@ public class SceneInstaller : MonoInstaller
 
     [SerializeField] private StaminaConfig _staminaConfig;
 
+    [SerializeField] private UpgradeDatabase _upgradeDatabase;
+
+
+    [SerializeField] private HealthBar _healthBar;
+    [SerializeField] private StaminaBar _staminaBar;
+    [SerializeField] private LowHealthEffect _lowHealthEffect;
 
     public override void InstallBindings()
     {
+
+
+        //PlayerUI
+        Container.Bind<HealthBar>().FromInstance(_healthBar).AsSingle();
+        Container.Bind<StaminaBar>().FromInstance(_staminaBar).AsSingle();
+        Container.Bind<LowHealthEffect>().FromInstance(_lowHealthEffect).AsSingle();
+
+        Container.BindInterfacesAndSelfTo<PlayerUIController>().AsSingle();
+
+
+        // Audio
+
+        Container.Bind<AudioSourcePool>().AsSingle().NonLazy();
+        Container.Bind<AudioManager>().AsSingle().NonLazy();
+
+
+
+
         // ScriptableObject
         Container.Bind<PlayerStats>().FromInstance(_playerStats).AsSingle();
         Container.Bind<StaminaConfig>().FromInstance(_staminaConfig).AsSingle();
+
+        Container.Bind<UpgradeDatabase>().FromInstance(_upgradeDatabase).AsSingle();
+
 
         Container.BindInterfacesAndSelfTo<StaminaSystem>().AsSingle();
         Container.BindTickableExecutionOrder<StaminaSystem>(-100);
 
         Container.Bind<IPlayerStaminaConsumer>().To<PlayerStaminaAdapter>().AsSingle();
 
-        Container.BindInterfacesAndSelfTo<PlayerHealth>()
-    .FromComponentInHierarchy()
-    .AsSingle();
+
+        Container.BindInterfacesAndSelfTo<PlayerHealth>().FromComponentInHierarchy().AsSingle();
+
 
         // Player
         Container.Bind<Player>().FromInstance(_player).AsSingle();
@@ -50,10 +77,12 @@ public class SceneInstaller : MonoInstaller
 
         // Input
         Container.Bind<IInputService>().To<InputService>().AsSingle();
+        
+        Container.BindInterfacesAndSelfTo<UpgradeService>().AsSingle().NonLazy();
 
         // First-person movement controller (Camera + Movement)
         Container.BindInterfacesTo<FirstPersonController>().AsSingle(); // ITickable
-        Container.BindInterfacesAndSelfTo<CharacterMovementController>().AsSingle().WithArguments(_cameraTransform, _groundCheck, Ground);
+        Container.BindInterfacesAndSelfTo<CharacterMovementController>().AsSingle().WithArguments(_camera.transform, _groundCheck, Ground);
 
         // First-person camera setup
         Container.Bind<CinemachineVirtualCamera>().FromInstance(_firstPersonCamera).AsSingle();
@@ -62,7 +91,7 @@ public class SceneInstaller : MonoInstaller
         // Third-person camera (если используешь)
         Container.Bind<CinemachineFreeLook>().FromInstance(_freeLookCamera).AsSingle();
         
-        Container.Bind<Transform>().FromInstance(_freeLookCamera.transform).AsSingle(); // cameraTransform
+        //Container.Bind<Transform>().FromInstance(_freeLookCamera.transform).AsSingle(); // cameraTransform
         Container.BindInterfacesTo<ThirdPersonCameraController>().AsSingle().WithArguments(_cameraTarget);
 
 
@@ -78,7 +107,7 @@ public class SceneInstaller : MonoInstaller
         // Player FSM
         Container.Bind<PlayerStateMachine>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerStateController>().AsSingle();
-        Container.Bind<PlayerAttackState>().AsSingle();
-        Container.Bind<PlayerJumpState>().AsSingle();
+        //Container.Bind<PlayerAttackState>().AsSingle();
+        //Container.Bind<PlayerJumpState>().AsSingle();
     }
 }

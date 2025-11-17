@@ -38,7 +38,6 @@ public class EnemyInstaller : MonoInstaller
         Container.Bind<IEnemyStateFactory>().To<VampireEnemyStateFactory>().AsSingle();
 
 
-
         // Состояния врага
         Container.BindInterfacesAndSelfTo<VampireEnemyStateMachine>().AsSingle();
 
@@ -48,14 +47,5 @@ public class EnemyInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<EnemyAI>().FromComponentOnRoot().AsSingle();
 
         Debug.Log("Зависимость EnemyAI прокает");
-
-
-
-        Container.Bind<IEnemyState>().To<VampireEnemyIdleState>().AsTransient().WhenInjectedInto<VampireEnemyStateMachine>();
-        Container.Bind<VampireEnemyIdleState>().AsTransient();
-        Container.Bind<VampireEnemyChaseState>().AsTransient();
-        Container.Bind<VampireEnemyAttackState>().AsTransient();
-        Container.Bind<VampireEnemyDieState>().AsTransient();
-        Container.Bind<VampireImpactState>().AsTransient();
     }
 }
