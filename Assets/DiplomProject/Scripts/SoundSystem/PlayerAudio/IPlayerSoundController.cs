@@ -4,5 +4,6 @@ public interface IPlayerSoundController
     void PlayIdle();
     void PlayHurt();
     void PlayDeath();
+
     void PlayAttack();
 }

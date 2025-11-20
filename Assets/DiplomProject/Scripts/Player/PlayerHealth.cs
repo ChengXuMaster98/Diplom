@@ -23,16 +23,19 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
 
     private IBlockStatusProvider _blockStatus;
     private IPlayerStaminaConsumer _staminaConsumer;
+
     public bool IsDead => _currentHealth <= 0;
 
     private IUpgradeService _upgradeService;
+
+    private WeaponSoundController _weaponSounds;
 
     public int MaxHealth => Mathf.RoundToInt(_stats.MaxHealth * _upgradeService.HealthMultiplier);
 
 
 
     [Inject]
-    public void Construct(PlayerStats stats, GameOverUI gameOverUI, CharacterMovementController MovementController, IBlockStatusProvider blockStatus, IPlayerStaminaConsumer staminaConsumer, IUpgradeService upgradeService)
+    public void Construct(PlayerStats stats, GameOverUI gameOverUI, CharacterMovementController MovementController, IBlockStatusProvider blockStatus, IPlayerStaminaConsumer staminaConsumer, IUpgradeService upgradeService, WeaponSoundController weaponSounds)
     {
         Debug.Log("[PlayerHealth] Injected stats.MaxHealth = " + stats.MaxHealth);
         _stats = stats;
@@ -41,6 +44,7 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
         _blockStatus = blockStatus;
         _staminaConsumer = staminaConsumer;
         _upgradeService = upgradeService;
+        _weaponSounds = weaponSounds;
     }
 
 
@@ -68,17 +72,26 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
         }
     }
 
+    public void ForceSetHealth(int value)
+    {
+        _currentHealth = Mathf.Clamp(value, 0, MaxHealth);
+        OnHealthChanged?.Invoke(_currentHealth);
+    }
+
     public void TakeDamage(int amount)
     {
 
 
         if (_blockStatus.IsBlocking && _staminaConsumer.CanBlock())
         {
+            _weaponSounds.PlayBlock();
             _staminaConsumer.ConsumeStaminaForBlock();
             Debug.Log("[Block] Damage blocked!");
             return;
         }
 
+        
+        GetComponent<PlayerSoundController>()?.PlayHurt();
         Debug.Log($"[PlayerHealth] TakeDamage called, amount={amount}, current={_currentHealth}");
 
 
@@ -116,6 +129,8 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
     private void Die()
     {
         Debug.Log("Player died");
+
+        GetComponent<PlayerSoundController>()?.PlayDeath();
 
         // Вызываем экран GameOver
 

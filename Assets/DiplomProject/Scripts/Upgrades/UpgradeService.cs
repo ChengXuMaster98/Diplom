@@ -42,4 +42,15 @@ public class UpgradeService : IUpgradeService, IInitializable, IDisposable
         StaminaMultiplier = 1f;
         OnUpgradesChanged?.Invoke();
     }
+
+
+
+    public void SetMultipliers(float health, float damage, float speed, float stamina)
+    {
+        HealthMultiplier = health;
+        DamageMultiplier = damage;
+        SpeedMultiplier = speed;
+        StaminaMultiplier = stamina;
+        OnUpgradesChanged?.Invoke();
+    }
 }

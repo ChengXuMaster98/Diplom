@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -19,7 +17,8 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
         IPlayerDetector detector,
         EnemyStats stats,
         IPlayerDamageable playerDamageable,
-        VampireEnemyStateMachine stateMachine)
+        VampireEnemyStateMachine stateMachine,
+        Enemy enemy)
     {
         _animator = animator;
         _agent = agent;
@@ -27,6 +26,7 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
         _stats = stats;
         _playerDamageable = playerDamageable;
         _stateMachine = stateMachine;
+        _enemyGO = enemy.gameObject;
     }
 
     public IEnemyState CreateIdleState() => new VampireEnemyIdleState(_animator, _detector, _stateMachine, this);

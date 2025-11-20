@@ -1,6 +1,5 @@
 ﻿using Cinemachine;
 using UnityEngine;
-using UnityEngine.AI;
 using Zenject;
 
 public class SceneInstaller : MonoInstaller
@@ -34,8 +33,24 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private StaminaBar _staminaBar;
     [SerializeField] private LowHealthEffect _lowHealthEffect;
 
+    public WeaponDatabase weaponDatabase;
+
     public override void InstallBindings()
     {
+
+
+        //WeaponSystem
+        Container.Bind<WeaponFactory>().AsSingle();
+        Container.Bind<PlayerWeaponInventory>().AsSingle();
+
+        Container.BindInstance(weaponDatabase).AsSingle();
+
+
+
+        //Save
+        Container.BindInterfacesAndSelfTo<SaveService>().AsSingle().NonLazy();
+        Container.Bind<EnemySaveSystem>().AsSingle();
+
 
 
         //PlayerUI
@@ -50,8 +65,13 @@ public class SceneInstaller : MonoInstaller
 
         Container.Bind<AudioSourcePool>().AsSingle().NonLazy();
         Container.Bind<AudioManager>().AsSingle().NonLazy();
+        Container.Bind<AnimationEventReceiver>().FromComponentInHierarchy().AsSingle();
 
 
+        Container.Bind<WeaponSoundController>().FromComponentInHierarchy().AsSingle();
+
+
+        Container.Bind<IPlayerAudio>().To<PlayerSoundController>().FromComponentInHierarchy().AsSingle();
 
 
         // ScriptableObject
@@ -62,7 +82,7 @@ public class SceneInstaller : MonoInstaller
 
 
         Container.BindInterfacesAndSelfTo<StaminaSystem>().AsSingle();
-        Container.BindTickableExecutionOrder<StaminaSystem>(-100);
+        //Container.BindTickableExecutionOrder<StaminaSystem>(-100);
 
         Container.Bind<IPlayerStaminaConsumer>().To<PlayerStaminaAdapter>().AsSingle();
 

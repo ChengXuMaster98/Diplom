@@ -11,4 +11,6 @@ public interface IUpgradeService
 
     void ApplyUpgrade(UpgradeType type, float addValue);
     void ResetUpgrades();
+
+    void SetMultipliers(float health, float damage, float speed, float stamina);
 }

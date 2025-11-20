@@ -17,11 +17,11 @@ MonoBehaviour:
   Attack:
   - {fileID: 0}
   Hurt:
-  - {fileID: 0}
-  Step:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 2997ccb22c18e35448915dee1b60672c, type: 3}
+  - {fileID: 8300000, guid: 15d8bc6cd6d45024491dcb3cce93d0e7, type: 3}
+  Step: []
   Death:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 70af5b2fa49fca64488c5a69995c626a, type: 3}
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

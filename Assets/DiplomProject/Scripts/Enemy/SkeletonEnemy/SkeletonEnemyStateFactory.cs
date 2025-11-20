@@ -1,4 +1,3 @@
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -22,7 +21,8 @@ public class SkeletonStateFactory : ISkeletonStateFactory
         EnemyStats stats,
         ISkeletonAnimator animator,
         IPlayerDamageable playerDamageable,
-        NavMeshAgent agent)
+        NavMeshAgent agent,
+        Enemy enemy)
     {
         _stateMachine = stateMachine;
         _detector = detector;
@@ -30,10 +30,11 @@ public class SkeletonStateFactory : ISkeletonStateFactory
         _animator = animator;
         _playerDamageable = playerDamageable;
         _agent = agent;
+        _enemyGO = enemy.gameObject;
     }
 
     public IEnemyState CreateIdleState() => new SkeletonIdleState(_animator, _detector, _stateMachine, this);
-    public IEnemyState CreateChaseState() => new SkeletonChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
+    public IEnemyState CreateChaseState() => new SkeletonChaseState(_animator, _agent, _detector, _stats, _stateMachine, this) ;
     public IEnemyState CreateAttackState() => new SkeletonAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
     public IEnemyState CreateDieState() => new SkeletonDieState(_animator, _enemyGO);
 

@@ -1,6 +1,4 @@
-﻿using TMPro;
-using UnityEngine;
-using UnityEngine.AI;
+﻿using UnityEngine;
 using Zenject;
 
 public class EnemyAI : MonoBehaviour, IInitializable, ITickable

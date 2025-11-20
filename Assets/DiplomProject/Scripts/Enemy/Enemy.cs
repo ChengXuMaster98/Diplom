@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-using TMPro;
+using Unity.VisualScripting;
 
 public class Enemy : MonoBehaviour, IEnemy
 {
@@ -12,12 +12,14 @@ public class Enemy : MonoBehaviour, IEnemy
     public event Action OnDeath;
     public event Action OnDamaged;
 
+
     public void Initialize(EnemyStats stats)
     {
         _stats = stats;
         _currentHealth = stats.MaxHealth;
         IsDead = false;
     }
+
 
     public void TakeDamage(int damage)
     {
@@ -28,6 +30,8 @@ public class Enemy : MonoBehaviour, IEnemy
         }
 
         _currentHealth -= damage;
+
+        GetComponent<EnemySoundController>()?.PlayHurt();
 
         OnDamaged?.Invoke();
 
@@ -47,7 +51,19 @@ public class Enemy : MonoBehaviour, IEnemy
         IsDead = true;
         Debug.Log($"[Enemy] Умер! Установлено IsDead = true");
 
+        GetComponent<EnemySoundController>()?.PlayDeath();
+
         OnDeath?.Invoke();
         //Destroy(gameObject);
+    }
+
+    public void ApplyStun(float stunDuration)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void ApplyDOT(float dOTDamagePerSecond, float dOTDuration)
+    {
+        throw new NotImplementedException();
     }
 }

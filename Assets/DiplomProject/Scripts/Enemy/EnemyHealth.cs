@@ -1,10 +1,10 @@
-﻿using UnityEditor.UIElements;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
     private EnemyStats _stats;
     private float _currentHealth;
+
 
     public void Initialize(EnemyStats stats)
     {

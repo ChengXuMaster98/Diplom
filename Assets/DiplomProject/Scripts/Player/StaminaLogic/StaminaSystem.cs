@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using Zenject;
 
-public class StaminaSystem : IStaminaSystem, ITickable
+public class StaminaSystem : IStaminaSystem, ITickable, IForceSetStamina
 {
     private readonly StaminaConfig _config;
     public float CurrentStamina { get; private set; }
@@ -32,8 +32,6 @@ public class StaminaSystem : IStaminaSystem, ITickable
         if (!CanPerformBlock())
             throw new
         InvalidOperationException("Not enough stamina to perrform block");
-
-
         CurrentStamina -= _config.BlockCoast;
         CurrentStamina = Mathf.Max(0, CurrentStamina);
         OnStaminaChanged?.Invoke(CurrentStamina);
@@ -70,5 +68,11 @@ public class StaminaSystem : IStaminaSystem, ITickable
 
             //Debug.Log($"Реген стамины: {before} -> {CurrentStamina}");
         }    
+    }
+
+    public void ForceSetStamina(float value)
+    {
+        CurrentStamina = Mathf.Clamp(value, 0f, MaxStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina);
     }
 }

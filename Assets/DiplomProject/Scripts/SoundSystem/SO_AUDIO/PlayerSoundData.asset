@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40cca6377a0d2fb4895367c32ecbd03e, type: 3}
   m_Name: PlayerSoundData
   m_EditorClassIdentifier: 
-  Step: []
-  Hurt: []
-  Death: []
+  Step:
+  - {fileID: 8300000, guid: 443fd9a410d0e3a41800ce9c572e32aa, type: 3}
+  - {fileID: 8300000, guid: da7923799de28c541924ee443498192e, type: 3}
+  - {fileID: 8300000, guid: e79fc0f59d096f846a48ce8e88216783, type: 3}
+  - {fileID: 8300000, guid: fe11c3c87d4fd024da9e3a0fab661685, type: 3}
+  Hurt:
+  - {fileID: 8300000, guid: baad2055f9739524dac4255d38a7865e, type: 3}
+  - {fileID: 8300000, guid: 59f8910c39a7723498c9019dfbe2668e, type: 3}
+  Death:
+  - {fileID: 8300000, guid: b835009abd91d9142bd36939b9f57f0f, type: 3}
   Idle: []
   StepInterval: 0.55
   MaxDistance: 18

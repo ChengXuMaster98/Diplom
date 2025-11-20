@@ -1178,7 +1178,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 1.4835172
-  m_Center: {x: 0, y: 0.01, z: 0}
+  m_Center: {x: 0, y: 0.00999996, z: 0}
 --- !u!114 &1151324325752628842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2323,6 +2323,7 @@ GameObject:
   - component: {fileID: -1292860489363783877}
   - component: {fileID: 6586469361191915720}
   - component: {fileID: 485123798980917343}
+  - component: {fileID: 2386627906522633105}
   m_Layer: 0
   m_Name: Vapmire
   m_TagString: Vampire
@@ -2410,10 +2411,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.24874781
-  m_Height: 2.1320837
+  m_Radius: 0.56
+  m_Height: 2.091947
   m_Direction: 1
-  m_Center: {x: 0.03504403, y: 1.0513606, z: 0.034709334}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &7114115682643546241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2535,6 +2536,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundData: {fileID: 11400000, guid: 74b155064c28d1545a221a2a554ea4ab, type: 2}
+--- !u!114 &2386627906522633105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403837724672572775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6a755f410732bd40869edd306492395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5425151454104052109
 GameObject:
   m_ObjectHideFlags: 0

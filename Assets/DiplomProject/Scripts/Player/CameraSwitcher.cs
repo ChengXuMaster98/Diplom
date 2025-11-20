@@ -1,7 +1,6 @@
 using UnityEngine;
 using Cinemachine;
 using Zenject;
-using System.Threading;
 
 public class CameraSwitcher : ITickable
 {

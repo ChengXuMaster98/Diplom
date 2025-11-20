@@ -10,7 +10,7 @@ public class FirstPersonController : ITickable
     private readonly PlayerStats _stats;
 
     private float _xRotation = 0f;
-    private float _yRotation = 0f;
+    //private float _yRotation = 0f;
 
     public float topClamp = -90f;
     public float bottomClamp = 90f;

@@ -2,7 +2,7 @@ using UnityEngine;
 using Zenject;
 
 [RequireComponent(typeof(Transform))]
-public class PlayerSoundController : MonoBehaviour
+public class PlayerSoundController : MonoBehaviour, IPlayerAudio
 {
     [SerializeField] private PlayerSoundData _soundData;
 
