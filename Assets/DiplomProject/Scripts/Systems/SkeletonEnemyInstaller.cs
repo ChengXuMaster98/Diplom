@@ -28,6 +28,7 @@ public class SkeletonEnemyInstaller : MonoInstaller
 
         Container.Bind<ISkeletonAnimator>().To<SkeletonAnimatorController>().FromComponentOnRoot().AsSingle();
 
+        Container.BindInterfacesTo<SkeletonStunBinder>().FromNew().AsSingle().NonLazy();
 
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class SaveService : ISaveService
     private readonly string _path;
 
     private readonly EnemySaveSystem _enemySave;
+
+    public event Action OnLoadFinished;
 
     [Inject]
     public SaveService(Player player, PlayerHealth health, IStaminaSystem stamina, IUpgradeService upgrades, DiContainer container, EnemySaveSystem enemySave,
@@ -69,7 +72,7 @@ public class SaveService : ISaveService
         // Слоты оружия
         for (int i = 0; i < 3; i++)
         {
-            data.WeaponSlots[i] = _inventory.Slots[i]?.Type ?? WeaponType.Axe; // Axe=none?
+            data.WeaponSlots[i] = _inventory.Slots[i] != null ? _inventory.Slots[i].Data.Type :WeaponType.None; // Оружие=none?
         }
         data.ActiveWeaponSlot = _inventory.ActiveSlot;
 
@@ -101,7 +104,8 @@ public class SaveService : ISaveService
 
         for (int i = 0; i < 3; i++)
         {
-            if (data.WeaponSlots[i] != WeaponType.Axe) // Axe может быть "none"
+            if (data.WeaponSlots[i] != WeaponType.None) // Оружие может быть "none"
+
                 _inventory.Slots[i] = _factory.Create(_weaponDatabase.GetData(data.WeaponSlots[i]));
         }
 
@@ -136,6 +140,10 @@ public class SaveService : ISaveService
         _player.transform.eulerAngles = new Vector3(_player.transform.eulerAngles.x, data.PlayerRotY, _player.transform.eulerAngles.z);
 
         Debug.Log("[SaveService] Save loaded.");
+
+        OnLoadFinished?.Invoke();
+
+
     }
 
     public void DeleteSave()
@@ -154,6 +162,14 @@ public class SaveService : ISaveService
 
         // Очищаем список убитых врагов
         _enemySave.LoadStates(new Dictionary<string, bool>());
+
+        _inventory.Clear();
+
+        // ДОБАВЛЯЕМ ТОПОР В СЛОТ 0
+        var axe = _factory.Create(_weaponDatabase.GetData(WeaponType.Axe));
+        _inventory.Slots[0] = axe;
+        _inventory.ActiveSlot = 0;
+
 
         Debug.Log("[SaveService] NewGame: прогресс сброшен.");
     }

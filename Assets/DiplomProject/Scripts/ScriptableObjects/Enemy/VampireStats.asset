@@ -15,7 +15,7 @@ MonoBehaviour:
   MaxHealth: 100
   Damage: 20
   MoveSpeed: 2
-  AttackRange: 1.9
+  AttackRange: 2.2
   DetectionRadius: 10
   AttackCooldown: 1
   PlayerMask:

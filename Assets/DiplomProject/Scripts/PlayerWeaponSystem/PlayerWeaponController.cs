@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -9,20 +10,31 @@ public class PlayerWeaponController : MonoBehaviour
     private Animator _animator;
     private AttackHitBox _hitbox;
 
+    private AttackAnimationEventReceiver _attackEventReceiver;
+    private WeaponSoundController _soundController;
+
     private GameObject _currentWeaponModel;
 
+
     [Inject]
-    public void Construct(PlayerWeaponInventory inventory)
+    public void Construct(PlayerWeaponInventory inventory, SaveService save)
     {
         _inventory = inventory;
+        save.OnLoadFinished += () => EquipSlot(_inventory.ActiveSlot);
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         _animator = GetComponentInChildren<Animator>();
-        _hitbox = GetComponentInChildren<AttackHitBox>();
+        _attackEventReceiver = GetComponentInChildren<AttackAnimationEventReceiver>();
+        _soundController = GetComponentInChildren<WeaponSoundController>();
+
+        yield return null;
 
         EquipSlot(_inventory.ActiveSlot);
+
+        if (_attackEventReceiver != null)
+            _attackEventReceiver.OnSwing += PlaySwingSound;
     }
 
     private void Update()
@@ -38,6 +50,14 @@ public class PlayerWeaponController : MonoBehaviour
 
             _animator.SetTrigger(weapon.Data.AttackTriggerName);
         }
+    }
+
+    private void PlaySwingSound()
+    {
+        var weapon = _inventory.GetActiveWeapon();
+        if (weapon == null) return;
+
+        _soundController.PlayLightAttack(weapon.Data.SoundData);
     }
 
     public void EquipSlot(int index)
@@ -63,6 +83,11 @@ public class PlayerWeaponController : MonoBehaviour
         _hitbox = null;
     }
 
+    public void RefreshEquippedWeapon()
+    {
+        EquipSlot(_inventory.ActiveSlot);
+    }
+
     private void SpawnWeaponModel(IWeapon weapon)
     {
         RemoveWeaponModel();
@@ -72,12 +97,16 @@ public class PlayerWeaponController : MonoBehaviour
             weaponSocket
         );
 
-        _currentWeaponModel.transform.localPosition = Vector3.zero;
-        _currentWeaponModel.transform.localRotation = Quaternion.identity;
+        _currentWeaponModel.transform.localPosition = weapon.Data.PositionOffset;
+        _currentWeaponModel.transform.localEulerAngles = weapon.Data.RotationOffset;
+
 
         // захватываем HitBox внутри нового оружия
         _hitbox = _currentWeaponModel.GetComponentInChildren<AttackHitBox>();
         _hitbox.SetOwnerWeapon(weapon);
+
+        // 2) передаём этот хитбокс обработчику анимации
+        _attackEventReceiver.SetHitBox(_hitbox);
 
         Debug.Log($"[Weapon] Equipped: {weapon.Data.WeaponName}");
     }

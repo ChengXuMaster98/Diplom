@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   WeaponName: 
-  BaseDamage: 0
+  BaseDamage: 100
   CanStun: 0
   StunChance: 0
   StunDuration: 0
-  CanElectroDOT: 0
-  DOTDamagePerSecond: 0
-  DOTDuration: 0
-  DOTChance: 0
-  WeaponPrefab: {fileID: 0}
+  CanElectroDOT: 1
+  DOTDamagePerSecond: 10
+  DOTDuration: 10
+  DOTChance: 100
+  WeaponPrefab: {fileID: 2839524829476184550, guid: b31cf3d5ac315214a950e823cb9e2b9f, type: 3}
+  SoundData: {fileID: 11400000, guid: 94bc4adc41f48244bb88c97bb0deca28, type: 2}
   AttackTriggerName: 
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}

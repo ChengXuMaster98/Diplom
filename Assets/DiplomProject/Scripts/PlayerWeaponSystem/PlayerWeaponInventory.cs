@@ -13,13 +13,13 @@ public class PlayerWeaponInventory
         _factory = factory;
     }
 
-    public bool TryAddWeapon(WeaponData data)
+    public bool TryAddWeapon(IWeapon weapon)
     {
         for (int i = 0; i < Slots.Length; i++)
         {
             if (Slots[i] == null)
             {
-                Slots[i] = _factory.Create(data);
+                Slots[i] = weapon;
                 return true;
             }
         }
@@ -29,5 +29,13 @@ public class PlayerWeaponInventory
     public IWeapon GetActiveWeapon()
     {
         return Slots[ActiveSlot];
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < Slots.Length; i++)
+            Slots[i] = null;
+
+        ActiveSlot = 0;
     }
 }

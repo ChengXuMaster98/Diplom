@@ -1,50 +1,35 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 public class AttackHitBox : MonoBehaviour
 {
-    private PlayerStats _playerStats;
     private bool _canHit = false;
 
-    private IUpgradeService _upgradeService;
+    private IWeapon _weapon;
 
-    private WeaponSoundController _weaponSoundController;
-
-    [Inject]
-    public void Construct(PlayerStats stats, IUpgradeService upgradeService, WeaponSoundController weaponSoundController)
+    public void SetOwnerWeapon(IWeapon weapon)
     {
-        _playerStats = stats; 
-        _upgradeService = upgradeService;
-        _weaponSoundController = weaponSoundController;
+        _weapon = weapon;
     }
 
-    public void EnableHitbox()
-    {
-        _canHit = true;
-        gameObject.SetActive(true);
-    }
-
-    public void DisableHitbox()
-    {
-        _canHit = false;
-        gameObject.SetActive(false);
-    }
+    public void EnableHitbox() => _canHit = true;
+    public void DisableHitbox() => _canHit = false;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!_canHit)
-            return;
-
+        if (!_canHit || _weapon == null) return;
 
         if (other.TryGetComponent<IEnemy>(out var enemy))
         {
-            int damage = Mathf.RoundToInt(_playerStats.attackDamage * _upgradeService.DamageMultiplier);
-            enemy.TakeDamage(damage);
-            _weaponSoundController.PlayHit();
-
+            _weapon.Attack(enemy);    // теперь урон идёт через конкретное оружие
+            Debug.Log($"Hit enemy using {_weapon.Data.WeaponName}");
+            var soundCtrl = GetComponentInParent<WeaponSoundController>();
+            if (soundCtrl != null && _weapon.Data.SoundData != null)
+            {
+                soundCtrl.PlayHit(_weapon.Data.SoundData);
+            }
 
             _canHit = false;
-            Debug.Log($"[AttackHitBox] ���� �� �����:");
         }
     }
 }

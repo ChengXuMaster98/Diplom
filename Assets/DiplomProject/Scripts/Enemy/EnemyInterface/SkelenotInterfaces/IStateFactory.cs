@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
     public interface IStateFactory
 {
     IEnemyState CreateIdleState();
@@ -10,4 +6,6 @@ using UnityEngine;
     IEnemyState CreateDieState();
 
     IEnemyState CreateGetDamageState();
+
+    IEnemyState CreateStunState(float duration);
 }

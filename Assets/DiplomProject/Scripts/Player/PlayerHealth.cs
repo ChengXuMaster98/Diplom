@@ -29,13 +29,15 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
     private IUpgradeService _upgradeService;
 
     private WeaponSoundController _weaponSounds;
+    private PlayerWeaponInventory _weaponInventory;
 
     public int MaxHealth => Mathf.RoundToInt(_stats.MaxHealth * _upgradeService.HealthMultiplier);
 
 
 
     [Inject]
-    public void Construct(PlayerStats stats, GameOverUI gameOverUI, CharacterMovementController MovementController, IBlockStatusProvider blockStatus, IPlayerStaminaConsumer staminaConsumer, IUpgradeService upgradeService, WeaponSoundController weaponSounds)
+    public void Construct(PlayerStats stats, GameOverUI gameOverUI, CharacterMovementController MovementController, IBlockStatusProvider blockStatus, 
+        IPlayerStaminaConsumer staminaConsumer, IUpgradeService upgradeService, WeaponSoundController weaponSounds, PlayerWeaponInventory weaponInventory)
     {
         Debug.Log("[PlayerHealth] Injected stats.MaxHealth = " + stats.MaxHealth);
         _stats = stats;
@@ -45,6 +47,7 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
         _staminaConsumer = staminaConsumer;
         _upgradeService = upgradeService;
         _weaponSounds = weaponSounds;
+        _weaponInventory = weaponInventory;
     }
 
 
@@ -84,7 +87,11 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
 
         if (_blockStatus.IsBlocking && _staminaConsumer.CanBlock())
         {
-            _weaponSounds.PlayBlock();
+            var weapon = _weaponInventory.GetActiveWeapon();
+            if (weapon != null)
+
+                _weaponSounds.PlayBlock(weapon.Data.SoundData);
+
             _staminaConsumer.ConsumeStaminaForBlock();
             Debug.Log("[Block] Damage blocked!");
             return;

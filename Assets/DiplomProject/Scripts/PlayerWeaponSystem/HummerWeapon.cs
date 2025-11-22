@@ -2,23 +2,36 @@ using UnityEngine;
 
 public class HammerWeapon : IWeapon
 {
-    public WeaponType Type => WeaponType.Hammer;
     public WeaponData Data { get; }
+    private PlayerStats _stats;
+    private IUpgradeService _upgrade;
+    private WeaponSoundController _sound;
 
-    private System.Random rnd = new();
-
-    public HammerWeapon(WeaponData data)
+    public HammerWeapon(WeaponData data, PlayerStats stats, IUpgradeService upgrade, WeaponSoundController sound)
     {
         Data = data;
+        _stats = stats;
+        _upgrade = upgrade;
+        _sound = sound;
     }
 
     public void Attack(IEnemy enemy)
     {
-        enemy.TakeDamage(Mathf.RoundToInt(Data.BaseDamage));
+        int damage = Mathf.RoundToInt(
+            (_stats.attackDamage + Data.BaseDamage) * _upgrade.DamageMultiplier
+        );
 
-        if (Data.CanStun && rnd.NextDouble() < Data.StunChance)
+        enemy.TakeDamage(damage);
+
+        // шанс стана
+        if (Data.CanStun && enemy is IStunnable stunnable)
         {
-            enemy.ApplyStun(Data.StunDuration);
+            float chance = Random.value;
+            if (chance <= Data.StunChance)
+            {
+                stunnable.ApplyStun(Data.StunDuration);
+                Debug.Log("[Hammer] STUN applied");
+            }
         }
     }
 }

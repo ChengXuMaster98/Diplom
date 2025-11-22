@@ -5,24 +5,37 @@ public class PlayerAttackState : IPlayerState
 {
     private static readonly int Attack = Animator.StringToHash("Attack");
     private readonly Animator _animator;
-    private readonly AttackHitBox _attackHitBox;
     private readonly PlayerStateMachine _stateMachine;
     private readonly IPlayerStaminaConsumer _staminaConsumer;
     private readonly AttackAnimationEventReceiver _animationEventReceiver;
+    private readonly WeaponSoundController _sound;
+    private readonly PlayerWeaponInventory _inventory;
 
     private bool _attackComplete;
 
-    public PlayerAttackState(Animator animator, AttackHitBox attackHitBox, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, AttackAnimationEventReceiver animationEventReceiver)
+    public PlayerAttackState(Animator animator, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, AttackAnimationEventReceiver animationEventReceiver, WeaponSoundController sound, PlayerWeaponInventory inventory)
     {
         _animator = animator;
-        _attackHitBox = attackHitBox;
         _staminaConsumer = staminaConsumer;
         _stateMachine = stateMachine;
         _animationEventReceiver = animationEventReceiver;
+        _sound = sound;
+        _inventory = inventory;
     }
 
     public void Enter()
     {
+
+        var weapon = _inventory.GetActiveWeapon();
+        if (weapon == null)
+        {
+            Debug.Log("[Attack] Нет оружия — атака невозможна");
+            _stateMachine.RevertToPreviousState();
+            return;
+        }
+
+        //_sound.PlayLightAttack(weapon.Data.SoundData);
+
         if (!_staminaConsumer.CanAttack())
         {
             Debug.Log("Not enough stamina for attack");
@@ -32,7 +45,8 @@ public class PlayerAttackState : IPlayerState
             _stateMachine.RevertToPreviousState();
             return;
         }
-        
+
+
         _staminaConsumer.ConsumeStaminaForAttack();
 
         _animator.SetTrigger(Attack);
@@ -62,18 +76,16 @@ public class PlayerAttackState : IPlayerState
 
         _animationEventReceiver.OnAttackStart -= AnimationAttackStart;
         _animationEventReceiver.OnAttackEnd -= AnimationAttackEnd;
-
-        _attackHitBox.DisableHitbox();
     }
 
     public void AnimationAttackStart()
     {
-        _attackHitBox.EnableHitbox();
+        //_sound.PlayLightAttack();
+
     }
 
     public void AnimationAttackEnd()
     {
-        _attackHitBox.DisableHitbox();
         _attackComplete = true;
 
         _stateMachine.RevertToPreviousState();

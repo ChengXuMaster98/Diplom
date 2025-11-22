@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc438c2526b30748b37269f696684c6, type: 3}
   m_Name: AxeWeaponData
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 1
   WeaponName: 
-  BaseDamage: 0
+  BaseDamage: 20
   CanStun: 0
   StunChance: 0
   StunDuration: 0
@@ -22,5 +22,8 @@ MonoBehaviour:
   DOTDamagePerSecond: 0
   DOTDuration: 0
   DOTChance: 0
-  WeaponPrefab: {fileID: 0}
+  WeaponPrefab: {fileID: 2657625865324565839, guid: 8b619c2273fa4e1478003dbcbaf3223b, type: 3}
+  SoundData: {fileID: 11400000, guid: 6aa594a659ed3974da99d6e5b57e7c0b, type: 2}
   AttackTriggerName: 
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}

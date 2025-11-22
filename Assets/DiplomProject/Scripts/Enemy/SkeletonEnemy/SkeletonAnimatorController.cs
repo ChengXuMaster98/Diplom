@@ -82,4 +82,9 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
     {
         _animator.SetTrigger("Fly");
     }
+
+    public void PlayStun()
+    {
+        _animator.SetTrigger("Stun");
+    }
 }

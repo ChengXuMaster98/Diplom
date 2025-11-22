@@ -25,6 +25,9 @@ public class SaveLoadController : MonoBehaviour
         {
             Debug.Log("[SaveLoadController] ќбнаружен сейв Ч загружаем автоматически");
             _saveService.Load();
+
+            var weaponController = FindObjectOfType<PlayerWeaponController>();
+            weaponController?.RefreshEquippedWeapon();
         }
         else
         {
@@ -55,6 +58,9 @@ public class SaveLoadController : MonoBehaviour
 
            foreach (var spawner in _spawners)
                spawner.TrySpawn();
+
+            var weaponController = FindObjectOfType<PlayerWeaponController>();
+            weaponController?.RefreshEquippedWeapon();
         }
 
         // Delete - удал€ем сейв

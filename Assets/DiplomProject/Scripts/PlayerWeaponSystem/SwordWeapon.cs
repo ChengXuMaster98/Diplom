@@ -2,23 +2,37 @@ using UnityEngine;
 
 public class SwordWeapon : IWeapon
 {
-    public WeaponType Type => WeaponType.Sword;
     public WeaponData Data { get; }
+    private PlayerStats _stats;
+    private IUpgradeService _upgrade;
+    private WeaponSoundController _sound;
 
-    private System.Random rnd = new();
-
-    public SwordWeapon(WeaponData data)
+    public SwordWeapon(WeaponData data, PlayerStats stats, IUpgradeService upgrade, WeaponSoundController sound)
     {
         Data = data;
+        _stats = stats;
+        _upgrade = upgrade;
+        _sound = sound;
     }
 
     public void Attack(IEnemy enemy)
     {
-        enemy.TakeDamage(Mathf.RoundToInt(Data.BaseDamage));
+        int damage = Mathf.RoundToInt(
+            (_stats.attackDamage + Data.BaseDamage) * _upgrade.DamageMultiplier
+        );
 
-        if (Data.CanElectroDOT && rnd.NextDouble() < Data.DOTChance)
+        enemy.TakeDamage(damage);
+
+
+        // шанс DOT
+        if (Data.CanElectroDOT && enemy is IDamageOverTime dot)
         {
-            enemy.ApplyDOT(Data.DOTDamagePerSecond, Data.DOTDuration);
+            float chance = Random.value;
+            if (chance <= Data.DOTChance)
+            {
+                dot.ApplyDoT(Data.DOTDamagePerSecond, Data.DOTDuration);
+                Debug.Log("[Sword] ELECTRO DOT applied");
+            }
         }
     }
 }

@@ -7,16 +7,20 @@ public class PlayerBlockState : IPlayerState, IBlockStatusProvider
     private readonly Animator _animator;
     private readonly PlayerStateMachine _stateMachine;
     private readonly IPlayerStaminaConsumer _staminaConsumer;
+    private readonly WeaponSoundController _soundController;
+    private readonly PlayerWeaponInventory _inventory;
 
     private bool _isBlocking;
 
     public bool IsBlocking => _isBlocking;
 
-    public PlayerBlockState(Animator animator, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine)
+    public PlayerBlockState(Animator animator, IPlayerStaminaConsumer staminaConsumer, PlayerStateMachine stateMachine, WeaponSoundController soundController, PlayerWeaponInventory inventory)
     {
         _animator = animator;
         _staminaConsumer = staminaConsumer;
         _stateMachine = stateMachine;
+        _soundController = soundController;
+        _inventory = inventory;
     }
 
     public void Enter()
@@ -30,6 +34,7 @@ public class PlayerBlockState : IPlayerState, IBlockStatusProvider
 
         _isBlocking = true;
         _animator.SetBool(Block, true);
+
         Debug.Log("[Block] Started");
     }
 

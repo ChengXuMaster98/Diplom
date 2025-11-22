@@ -21,6 +21,13 @@ public class WeaponData : ScriptableObject
     [Header("Модель оружия")]
     public GameObject WeaponPrefab;
 
+    [Header("Звук")]
+    public WeaponSoundData SoundData;
+
     [Header("Анимации")]
     public string AttackTriggerName;
+
+    [Header("Положение при спавне")]
+    public Vector3 PositionOffset;
+    public Vector3 RotationOffset;
 }

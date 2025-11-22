@@ -1,7 +1,7 @@
 public enum WeaponType
 {
-    None,
-    Axe,
-    Hammer,
-    Sword
+    None = 0,
+    Axe = 1,
+    Hammer = 2,
+    Sword = 3,
 }

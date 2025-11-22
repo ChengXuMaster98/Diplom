@@ -4,7 +4,6 @@ using Zenject;
 [RequireComponent(typeof(Transform))]
 public class WeaponSoundController : MonoBehaviour
 {
-    [SerializeField] private WeaponSoundData _soundData;
 
     private AudioManager _audio;
     private Transform _self;
@@ -16,10 +15,10 @@ public class WeaponSoundController : MonoBehaviour
         _self = transform;
     }
 
-    public void PlayHit() => PlayRandom(_soundData.Hit);
-    public void PlayLightAttack() => PlayRandom(_soundData.LightAttack);
-    public void PlayHeavyAttack() => PlayRandom(_soundData.HeavyAttack);
-    public void PlayBlock() => PlayRandom(_soundData.Block);
+    public void PlayHit(WeaponSoundData data) => PlayRandom(data?.Hit);
+    public void PlayLightAttack(WeaponSoundData data) => PlayRandom(data.LightAttack);
+    public void PlayHeavyAttack(WeaponSoundData data) => PlayRandom(data.HeavyAttack);
+    public void PlayBlock(WeaponSoundData data) => PlayRandom(data.Block);
 
     private void PlayRandom(AudioClip[] clips)
     {

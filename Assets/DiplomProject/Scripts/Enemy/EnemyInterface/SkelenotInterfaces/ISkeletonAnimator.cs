@@ -11,6 +11,8 @@ public interface ISkeletonAnimator
 
     void PlayFly();
     void PlayImpact();
+
+    void PlayStun();
     void LookAt(Vector3 position);
     bool IsPlayingAttackAnimation();
 

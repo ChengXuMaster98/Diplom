@@ -15,12 +15,15 @@ MonoBehaviour:
   Type: 2
   WeaponName: 
   BaseDamage: 0
-  CanStun: 0
-  StunChance: 0
-  StunDuration: 0
+  CanStun: 1
+  StunChance: 100
+  StunDuration: 5
   CanElectroDOT: 0
   DOTDamagePerSecond: 0
   DOTDuration: 0
   DOTChance: 0
-  WeaponPrefab: {fileID: 5882740418562934682, guid: dea89ad487fba0d43998917fd5f30879, type: 3}
+  WeaponPrefab: {fileID: 1861438766611039662, guid: 7c00ffe9e23045445bb2ae04626ddfd5, type: 3}
+  SoundData: {fileID: 11400000, guid: 48dd78a540a4c2d4ea8f93d859608306, type: 2}
   AttackTriggerName: 
+  PositionOffset: {x: 0, y: 0, z: 0}
+  RotationOffset: {x: 0, y: 0, z: 0}

@@ -7,22 +7,25 @@ public class AttackAnimationEventReceiver : MonoBehaviour
 
     public event System.Action OnAttackStart;
     public event System.Action OnAttackEnd;
+    public event System.Action OnSwing;
 
-    public WeaponSoundController _weaponSoundController;
 
-    [Inject]
-    public void Construct(AttackHitBox attackHitBox, WeaponSoundController weaponSoundController)
+    public void SetHitBox(AttackHitBox hitbox)
     {
-        _attackHitBox = attackHitBox;
-        _weaponSoundController = weaponSoundController;
+        _attackHitBox = hitbox;
     }
+
 
     // ЭТОТ метод вызывается из анимации
     public void AnimationAttackStart()
     {
+        if (_attackHitBox == null)
+        {
+            Debug.LogError("[AttackEvent] HitBox не назначен!");
+            return;
+        }
+
         _attackHitBox.EnableHitbox();
-        _weaponSoundController.PlayLightAttack();
-        
         OnAttackStart?.Invoke();
     }
 
@@ -31,5 +34,10 @@ public class AttackAnimationEventReceiver : MonoBehaviour
     {
         _attackHitBox.DisableHitbox();
         OnAttackEnd?.Invoke();
+    }
+
+    public void AnimationSwing()
+    {
+        OnSwing?.Invoke();
     }
 }

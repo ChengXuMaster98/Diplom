@@ -41,4 +41,10 @@ public class SkeletonStateFactory : ISkeletonStateFactory
     public IEnemyState CreateGetDamageState() => new SkeletonGetDamageState(_animator, _stateMachine, this);
 
     public IEnemyState CreateFlyState() => new SkeletonFlyState(_stateMachine, this, _transform, _animator);
+
+    public IEnemyState CreateStunState(float duration)
+    {
+        var resume = _stateMachine.CurrentState;
+        return new SkeletonStunState(_animator, _stateMachine, _agent, resume, duration);
+    }
 }

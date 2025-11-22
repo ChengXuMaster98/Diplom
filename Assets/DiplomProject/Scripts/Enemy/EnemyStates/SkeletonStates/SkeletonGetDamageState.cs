@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SkeletonGetDamageState : IEnemyState
@@ -42,4 +40,3 @@ public class SkeletonGetDamageState : IEnemyState
         }
     }
 }
-

@@ -18,10 +18,11 @@ public class PlayerStateController : ITickable
         PlayerStateMachine stateMachine,
         Player player,
         CharacterMovementController movement,
-        AttackHitBox attackHitBox,
         IPlayerStaminaConsumer staminaConsumer,
         AttackAnimationEventReceiver attackAnimationEventReceiver,
-        DiContainer container)
+        DiContainer container,
+        WeaponSoundController sound,
+        PlayerWeaponInventory inventory)
     {
         _stateMachine = stateMachine;
 
@@ -29,8 +30,8 @@ public class PlayerStateController : ITickable
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
-        _attackState = new PlayerAttackState(player.Animator, attackHitBox, staminaConsumer, stateMachine, attackAnimationEventReceiver);
-        _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine);
+        _attackState = new PlayerAttackState(player.Animator, staminaConsumer, stateMachine, attackAnimationEventReceiver, sound, inventory);
+        _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine, sound, inventory);
 
        container.Unbind<IBlockStatusProvider>();
        container.Bind<IBlockStatusProvider>().FromInstance(_blockState).AsSingle();
@@ -56,6 +57,7 @@ public class PlayerStateController : ITickable
         }
         if(Input.GetMouseButton(1))
         {
+
             if (!(_stateMachine.CurrentState is PlayerBlockState))
                 _stateMachine.SetState(_blockState);
             return;

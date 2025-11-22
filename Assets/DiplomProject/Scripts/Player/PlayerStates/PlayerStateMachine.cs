@@ -8,6 +8,12 @@ public class PlayerStateMachine : ITickable
 
     public IPlayerState CurrentState => _currentState;
 
+    public void Initialize(IPlayerState startState)
+    {
+        _currentState = startState;
+        _currentState.Enter();
+    }
+
     public void SetState(IPlayerState newState)
     {
         if (_currentState != null && !_currentState.CanExit())
