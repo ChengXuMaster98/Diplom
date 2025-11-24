@@ -38,8 +38,8 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
         foreach (var hit in hits)
         {
-            Debug.Log(hits.Length);
-            Debug.Log(hit.name);
+            //Debug.Log(hits.Length);
+            //Debug.Log(hit.name);
 
             if (hit.CompareTag("Player"))
             {

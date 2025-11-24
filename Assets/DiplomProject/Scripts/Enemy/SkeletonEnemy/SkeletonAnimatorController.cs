@@ -21,6 +21,11 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
         _onDeathAnimationEnd = onDeathEnd;
     }
 
+    public void UpdateSpeed(float speed)
+    {
+        _animator.SetFloat("Speed", speed);
+    }
+
     public void DealDamage()
     {
         Debug.Log("[Animator] Attack animation event triggered");
@@ -53,6 +58,7 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
     {
         Debug.Log("PlayIdle called");
         _animator.SetBool("IsChasing", false);
+        _animator.SetBool("IsPatroling", false);
         //_animator.SetBool("IsIdle", true);
         //_animator.SetBool("IsChasing", false);
     }
@@ -60,6 +66,7 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
     public void PlayChase()
     {
         Debug.Log("PlayChase called");
+        _animator.SetBool("IsPatroling", false);
         _animator.SetBool("IsChasing", true);
     }
 
@@ -86,5 +93,11 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
     public void PlayStun()
     {
         _animator.SetTrigger("Stun");
+    }
+
+    public void PlayPatrol()
+    {
+        _animator.SetBool("IsChasing", false);
+        _animator.SetBool("IsPatroling", true);
     }
 }

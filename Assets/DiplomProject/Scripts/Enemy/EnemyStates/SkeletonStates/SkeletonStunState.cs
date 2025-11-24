@@ -39,14 +39,18 @@ public class SkeletonStunState : IEnemyState
 
     public void Tick()
     {
+
         _timer += Time.deltaTime;
         if (_timer < _duration) return;
 
         if (_agent != null)
             _agent.isStopped = false;
 
-        _stateMachine.SetState(_resumeState); // возврат куда должен
+        _stateMachine.RevertToPreviousState(); // возврат куда должен
     }
 
-    public void Exit() { }
+    public void Exit()
+    {
+
+    }
 }

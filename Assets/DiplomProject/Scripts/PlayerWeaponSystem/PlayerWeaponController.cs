@@ -97,6 +97,9 @@ public class PlayerWeaponController : MonoBehaviour
             weaponSocket
         );
 
+        _inventory.GetActiveWeapon().SetTip(
+    _currentWeaponModel.transform.Find("TipPoint"));
+
         _currentWeaponModel.transform.localPosition = weapon.Data.PositionOffset;
         _currentWeaponModel.transform.localEulerAngles = weapon.Data.RotationOffset;
 

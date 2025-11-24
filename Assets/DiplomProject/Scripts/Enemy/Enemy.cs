@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
 
     private float _dotTimer = 0f;
     private float _dotDamagePerSecond = 0f;
+    private float _dotDamageAccum;
 
     public bool IsStunned => _stunTimer > 0f;
     public event Action<float> OnStunned; // продолжительность ивента стана
@@ -19,7 +20,9 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
 
     public event Action OnDeath;
     public event Action OnDamaged;
+    public event Action<float> DotApplied;
 
+    public Vector3 CenterPoint => transform.position + Vector3.up * 1.2f;
 
 
     public void Initialize(EnemyStats stats)
@@ -80,15 +83,59 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
         _dotDamagePerSecond = damagePerSecond;
         _dotTimer = duration;
 
+        DotApplied?.Invoke(duration); // Вот здесь событие вызывается дота.
+
         Debug.Log($"[Enemy] DOT applied ({damagePerSecond} DPS, {duration}s)");
     }
 
     private void TickDoT()
     {
-        if (_dotTimer <= 0f) return;
+        if (_dotTimer <= 0f || _dotDamagePerSecond <= 0f)
+            return;
 
         _dotTimer -= Time.deltaTime;
-        TakeDamage(Mathf.RoundToInt(_dotDamagePerSecond * Time.deltaTime));
+
+        // Накапливаем дробный урон
+        float dmgThisFrame = _dotDamagePerSecond * Time.deltaTime;
+        _dotDamageAccum += dmgThisFrame;
+
+        int intDamage = Mathf.FloorToInt(_dotDamageAccum);
+        if (intDamage > 0)
+        {
+            _dotDamageAccum -= intDamage;
+            ApplyDamageInternal(intDamage, triggerHitReaction: false);
+        }
+
+        if (_dotTimer <= 0f)
+        {
+            _dotDamagePerSecond = 0f;
+            _dotDamageAccum = 0f;
+        }
+    }
+
+    private void ApplyDamageInternal(int damage, bool triggerHitReaction) // Короче, просто костыльная обёртка для DOT урона, чтобы различался обычный урон от DOT.
+    {
+        if (IsDead)
+        {
+            Debug.Log($"[Enemy] Уже мертв, урон не применяется");
+            return;
+        }
+
+        _currentHealth -= damage;
+        _currentHealth = Mathf.Max(_currentHealth, 0);
+
+        if (triggerHitReaction)
+        {
+            GetComponent<EnemySoundController>()?.PlayHurt();
+            OnDamaged?.Invoke();
+        }
+
+        Debug.Log($"[Enemy] Получен урон: {damage}, Текущий HP: {_currentHealth}");
+
+        if (_currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
 
@@ -103,6 +150,8 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
         _currentHealth -= damage;
 
         GetComponent<EnemySoundController>()?.PlayHurt();
+
+        ApplyDamageInternal(damage, triggerHitReaction: true);
 
         OnDamaged?.Invoke();
 

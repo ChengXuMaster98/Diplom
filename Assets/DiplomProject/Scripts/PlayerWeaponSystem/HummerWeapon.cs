@@ -34,4 +34,9 @@ public class HammerWeapon : IWeapon
             }
         }
     }
+
+    public void SetTip(Transform tip)
+    {
+        
+    }
 }

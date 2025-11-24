@@ -72,6 +72,9 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 
     private void OnDamaged()
     {
+        if (_enemy.IsStunned )
+            return;
+
         if (!_enemy.IsDead)
             _stateMachine.SetState(_stateFactory.CreateGetDamageState());
     }

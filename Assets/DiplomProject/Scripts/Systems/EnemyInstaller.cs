@@ -37,6 +37,12 @@ public class EnemyInstaller : MonoInstaller
 
         Container.Bind<IEnemyStateFactory>().To<VampireEnemyStateFactory>().AsSingle();
 
+        Container.BindInterfacesTo<VampireStunBinder>().FromNew().AsSingle().NonLazy();
+
+        // VFX эффекты
+
+        Container.Bind<EnemyVFXController>().FromComponentOnRoot().AsSingle();
+
 
         // Состояния врага
         Container.BindInterfacesAndSelfTo<VampireEnemyStateMachine>().AsSingle();

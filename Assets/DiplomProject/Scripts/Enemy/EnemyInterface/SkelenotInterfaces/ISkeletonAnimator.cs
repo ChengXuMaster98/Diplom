@@ -9,6 +9,8 @@ public interface ISkeletonAnimator
     void PlayAttack();
     void PlayDie();
 
+    void PlayPatrol();
+
     void PlayFly();
     void PlayImpact();
 

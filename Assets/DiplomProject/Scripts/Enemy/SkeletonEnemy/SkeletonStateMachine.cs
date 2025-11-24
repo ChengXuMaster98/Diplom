@@ -6,6 +6,7 @@ public class SkeletonStateMachine : ISkeletonStateMachine
     private IEnemyState _dieState;
     private IEnemyState _previousState;
 
+
     public void Initialize(IEnemyState startState)
     {
         CurrentState = startState;

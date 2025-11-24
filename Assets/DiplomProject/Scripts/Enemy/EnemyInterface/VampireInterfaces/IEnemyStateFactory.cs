@@ -6,4 +6,6 @@
     IEnemyState CreateDieState();
 
     IEnemyState CreateGetDamageState();
+
+    IEnemyState CreateStunState(float duration);
 }

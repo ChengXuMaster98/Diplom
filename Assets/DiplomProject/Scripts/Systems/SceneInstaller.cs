@@ -38,6 +38,17 @@ public class SceneInstaller : MonoInstaller
     public override void InstallBindings()
     {
 
+        //Menu
+        
+        // Pause
+        Container.Bind<IPauseService>().To<PauseService>().AsSingle();
+        
+        // SaveLoadController, чтобы можно было инжектить в UI и др.
+        Container.Bind<SaveLoadController>().FromComponentInHierarchy().AsSingle();
+
+
+
+
 
         //WeaponSystem
         Container.Bind<WeaponFactory>().AsSingle();

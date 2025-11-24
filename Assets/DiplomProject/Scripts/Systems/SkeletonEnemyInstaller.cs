@@ -31,6 +31,11 @@ public class SkeletonEnemyInstaller : MonoInstaller
         Container.BindInterfacesTo<SkeletonStunBinder>().FromNew().AsSingle().NonLazy();
 
 
+        // VFX эффекты
+
+        Container.Bind<EnemyVFXController>().FromComponentOnRoot().AsSingle();
+
+
 
         Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
 

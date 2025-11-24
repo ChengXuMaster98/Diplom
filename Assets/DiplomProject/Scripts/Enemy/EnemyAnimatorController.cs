@@ -78,4 +78,9 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
     {
         _animator.SetTrigger("GetDamage");
     }
+
+    public void PlayStun()
+    {
+        _animator.SetTrigger("Stun");
+    }
 }

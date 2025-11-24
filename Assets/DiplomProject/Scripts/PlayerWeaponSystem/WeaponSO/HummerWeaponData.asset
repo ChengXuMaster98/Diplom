@@ -17,7 +17,7 @@ MonoBehaviour:
   BaseDamage: 0
   CanStun: 1
   StunChance: 100
-  StunDuration: 5
+  StunDuration: 3
   CanElectroDOT: 0
   DOTDamagePerSecond: 0
   DOTDuration: 0

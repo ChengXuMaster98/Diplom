@@ -23,4 +23,9 @@ public class AxeWeapon : IWeapon
 
         enemy.TakeDamage(damage);
     }
+
+    public void SetTip(Transform tip)
+    {
+        
+    }
 }

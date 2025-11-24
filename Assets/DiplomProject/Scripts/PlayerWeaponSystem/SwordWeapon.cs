@@ -6,6 +6,8 @@ public class SwordWeapon : IWeapon
     private PlayerStats _stats;
     private IUpgradeService _upgrade;
     private WeaponSoundController _sound;
+    public Transform TipPoint;
+    private Transform _tip;
 
     public SwordWeapon(WeaponData data, PlayerStats stats, IUpgradeService upgrade, WeaponSoundController sound)
     {
@@ -14,6 +16,8 @@ public class SwordWeapon : IWeapon
         _upgrade = upgrade;
         _sound = sound;
     }
+
+   
 
     public void Attack(IEnemy enemy)
     {
@@ -32,7 +36,18 @@ public class SwordWeapon : IWeapon
             {
                 dot.ApplyDoT(Data.DOTDamagePerSecond, Data.DOTDuration);
                 Debug.Log("[Sword] ELECTRO DOT applied");
+
+                // эффект дуги
+                LightningArc.Play(
+                    from: _tip.position,
+                    to: enemy.CenterPoint
+                );
             }
         }
+    }
+
+    public void SetTip(Transform tip)
+    {
+        _tip = tip;
     }
 }

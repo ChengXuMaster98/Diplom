@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
     public class SkeletonIdleState : IEnemyState
@@ -10,6 +8,8 @@ using UnityEngine;
     private readonly ISkeletonStateFactory _stateFactory;
 
     private Transform _player;
+
+    private bool _patrolStarted;
 
     public SkeletonIdleState(ISkeletonAnimator animator, IPlayerDetector detector, ISkeletonStateMachine stateMachine, ISkeletonStateFactory stateFactory)
     {
@@ -27,6 +27,14 @@ using UnityEngine;
     }
     public void Tick()
     {
+        if (!_patrolStarted)
+        {
+            _patrolStarted = true;
+            _stateMachine.SetState(_stateFactory.CreatePatrolState());
+            return;
+        }
+
+
         if (_player != null)
         {
             var chaseState = _stateFactory.CreateChaseState() as SkeletonChaseState;

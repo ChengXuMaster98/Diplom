@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 
@@ -42,6 +40,7 @@ using Zenject;
 
         _isDead = true;
 
+
         // создаём dieState один раз
         _dieState = _stateFactory.CreateDieState();
 
@@ -55,6 +54,9 @@ using Zenject;
 
     private void OnDamaged()
     {
+        if (_enemy.IsStunned)
+            return;
+
         if (!_enemy.IsDead)
             _stateMachine.SetState(_stateFactory.CreateGetDamageState());
     }

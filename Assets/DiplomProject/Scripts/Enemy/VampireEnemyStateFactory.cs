@@ -34,4 +34,10 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
     public IEnemyState CreateAttackState() => new VampireEnemyAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
     public IEnemyState CreateDieState() => new VampireEnemyDieState(_animator, _enemyGO);
     public IEnemyState CreateGetDamageState() => new VampireImpactState(_animator, _stateMachine, this);
+
+    public IEnemyState CreateStunState(float duration)
+    {
+        var resume = _stateMachine.CurrentState;
+        return new VampireEnemyStunState(_animator, _stateMachine, _agent, resume, duration);
+    }
 }

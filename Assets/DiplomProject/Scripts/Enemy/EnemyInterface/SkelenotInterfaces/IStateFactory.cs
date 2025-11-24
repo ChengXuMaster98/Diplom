@@ -8,4 +8,6 @@
     IEnemyState CreateGetDamageState();
 
     IEnemyState CreateStunState(float duration);
+
+    IEnemyState CreatePatrolState();
 }

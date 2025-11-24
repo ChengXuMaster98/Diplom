@@ -12,5 +12,7 @@ public interface IEnemyAnimator
     void LookAt(Vector3 position);
     bool IsPlayingAttackAnimation();
 
+    void PlayStun();
+
     void SetAttackHitCallback(Action onHit);
 }

@@ -47,4 +47,7 @@ public class SkeletonStateFactory : ISkeletonStateFactory
         var resume = _stateMachine.CurrentState;
         return new SkeletonStunState(_animator, _stateMachine, _agent, resume, duration);
     }
+
+    public IEnemyState CreatePatrolState()
+        => new SkeletonPatrolState(_animator, _stateMachine, this, _detector, _agent);
 }
