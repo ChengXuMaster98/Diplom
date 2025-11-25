@@ -10,15 +10,21 @@ public class CameraSwitcher : ITickable
 
     private bool _isFirstPerson;
 
-    public CameraSwitcher(CinemachineFreeLook freeLook, CinemachineVirtualCamera fpsCamera, Transform head)
+    private readonly IPauseService _pauseService;
+
+    public CameraSwitcher(CinemachineFreeLook freeLook, CinemachineVirtualCamera fpsCamera, Transform head, IPauseService pauseService)
     {
         _freeLookCamera = freeLook;
         _fpsCamera = fpsCamera;
         _headRenderers = head.GetComponentsInChildren<Renderer>();
+        _pauseService = pauseService;
     }
 
     public void Tick()
     {
+        if (_pauseService.IsPaused)
+            return;
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             _isFirstPerson = !_isFirstPerson;

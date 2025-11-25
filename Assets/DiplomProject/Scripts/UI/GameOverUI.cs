@@ -1,6 +1,7 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Zenject;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -8,10 +9,25 @@ public class GameOverUI : MonoBehaviour
     public Button restartButton;
     public GameObject blackScreen;
 
+    private SaveLoadController _saveLoadController;
+    private ISaveService _saveService;
+
+    private CharacterMovementController _movementController;
+
+    private PlayerHealth _playerHealth;
+
+    [Inject]
+    public void Construct(SaveLoadController saveLoadController, ISaveService saveService, CharacterMovementController movement, PlayerHealth playerHealth)
+    {
+        _saveLoadController = saveLoadController;
+        _saveService = saveService;
+        _movementController = movement;
+        _playerHealth = playerHealth;
+
+    }
 
     private void Awake()
     {
-        // Панель скрыта
         gameOverPanel.SetActive(false);
         blackScreen.SetActive(false);
     }
@@ -20,22 +36,39 @@ public class GameOverUI : MonoBehaviour
     {
         gameOverPanel.SetActive(true);
         blackScreen.SetActive(true);
-       
-        // Показываем курсор
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
 
-        // Останавливаем игру
         Time.timeScale = 0f;
 
+
+
+        restartButton.onClick.RemoveAllListeners();
         restartButton.onClick.AddListener(RestartGame);
     }
 
-    public void RestartGame()
+    private void RestartGame()
     {
-
         Time.timeScale = 1f;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);  // Перезапуск текущей сцены
+        gameOverPanel.SetActive(false);
+        blackScreen.SetActive(false);
+
+
+        _movementController.UnblockMovement();
+
+        _playerHealth.ForceSetHealth(_playerHealth.MaxHealth);
+
+        Cursor.visible = false;
+
+        if (_saveService.HasSave())
+        {
+            _saveLoadController.LoadLastSave();
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 }

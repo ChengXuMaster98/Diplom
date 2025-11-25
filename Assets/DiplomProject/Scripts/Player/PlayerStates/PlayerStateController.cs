@@ -13,6 +13,8 @@ public class PlayerStateController : ITickable
     private readonly PlayerAttackState _attackState;
     private readonly PlayerBlockState _blockState;
 
+    private readonly IPauseService _pauseService;
+
     [Inject]
     public PlayerStateController(
         PlayerStateMachine stateMachine,
@@ -22,11 +24,13 @@ public class PlayerStateController : ITickable
         AttackAnimationEventReceiver attackAnimationEventReceiver,
         DiContainer container,
         WeaponSoundController sound,
-        PlayerWeaponInventory inventory)
+        PlayerWeaponInventory inventory,
+        IPauseService pauseService)
     {
         _stateMachine = stateMachine;
+        _pauseService = pauseService;
 
-        
+
         _idleState = new PlayerIdleState(player.Animator);
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
@@ -43,6 +47,9 @@ public class PlayerStateController : ITickable
 
     public void Tick()
     {
+        if (_pauseService.IsPaused)
+            return;
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _stateMachine.SetState(_jumpState);

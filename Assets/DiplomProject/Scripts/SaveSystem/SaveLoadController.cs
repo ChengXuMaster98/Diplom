@@ -14,33 +14,56 @@ public class SaveLoadController : MonoBehaviour
 
     private void Awake()
     {
-        // Запоминаем все спавнеры врагов в сцене
         _spawners = FindObjectsOfType<EnemySpawner>();
     }
 
     private void Start()
     {
+        // Больше НИЧЕГО не делаем здесь.
+        // Старт игры контролируется MainMenuUI.
+    }
 
-        if (_saveService.HasSave())
-        {
-            Debug.Log("[SaveLoadController] Обнаружен сейв — загружаем автоматически");
-            _saveService.Load();
+    public void StartNewGame()
+    {
+        _saveService.NewGame();
 
-            var weaponController = FindObjectOfType<PlayerWeaponController>();
-            weaponController?.RefreshEquippedWeapon();
-        }
-        else
-        {
-            Debug.Log("[SaveLoadController] Сейва нет — новая игра");
-            _saveService.NewGame(); // очищает списки убитых врагов
-            DestroyAllExistingEnemies();
-        }
-        // Найдём всех спавнеров
-        //_spawners = FindObjectsOfType<EnemySpawner>();
+        DestroyAllExistingEnemies();
 
-        // Если хочешь автоматический запуск новой игры при отсутствии сейва:
         foreach (var spawner in _spawners)
             spawner.TrySpawn();
+
+        var weaponController = FindObjectOfType<PlayerWeaponController>();
+        weaponController?.RefreshEquippedWeapon();
+
+        Debug.Log("[SaveLoadController] New Game started from UI.");
+    }
+
+    public void LoadLastSave()
+    {
+        if (!_saveService.HasSave())
+        {
+            Debug.LogWarning("[SaveLoadController] Нет сейва для загрузки.");
+            return;
+        }
+
+        DestroyAllExistingEnemies();
+
+        _saveService.Load();
+
+        foreach (var spawner in _spawners)
+            spawner.TrySpawn();
+
+        var weaponController = FindObjectOfType<PlayerWeaponController>();
+        weaponController?.RefreshEquippedWeapon();
+
+        Debug.Log("[SaveLoadController] Save loaded from UI.");
+    }
+
+    private void DestroyAllExistingEnemies()
+    {
+        var enemies = FindObjectsOfType<Enemy>();
+        foreach (var enemy in enemies)
+            Destroy(enemy.gameObject);
     }
 
     private void Update()
@@ -54,10 +77,10 @@ public class SaveLoadController : MonoBehaviour
         // F9 - загрузить
         if (Input.GetKeyDown(KeyCode.F9))
         {
-           _saveService.Load();
+            _saveService.Load();
 
-           foreach (var spawner in _spawners)
-               spawner.TrySpawn();
+            foreach (var spawner in _spawners)
+                spawner.TrySpawn();
 
             var weaponController = FindObjectOfType<PlayerWeaponController>();
             weaponController?.RefreshEquippedWeapon();
@@ -76,23 +99,4 @@ public class SaveLoadController : MonoBehaviour
         }
     }
 
-    private void StartNewGame()
-    {
-        _saveService.NewGame();
-
-        DestroyAllExistingEnemies();
-
-        foreach (var spawner in _spawners)
-            spawner.TrySpawn(); // теперь все враги должны появиться
-
-        Debug.Log("[SaveLoadController] New Game started.");
-    }
-
-    private void DestroyAllExistingEnemies()
-    {
-        var enemies = FindObjectsOfType<Enemy>();
-
-        foreach (var enemy in enemies)
-            Destroy(enemy.gameObject);
-    }
 }

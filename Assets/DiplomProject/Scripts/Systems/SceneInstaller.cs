@@ -42,11 +42,17 @@ public class SceneInstaller : MonoInstaller
         
         // Pause
         Container.Bind<IPauseService>().To<PauseService>().AsSingle();
-        
+
         // SaveLoadController, чтобы можно было инжектить в UI и др.
         Container.Bind<SaveLoadController>().FromComponentInHierarchy().AsSingle();
 
+        // UI-меню
+        Container.Bind<MainMenuUI>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<PauseMenuUI>().FromComponentInHierarchy().AsSingle();
 
+
+        // Контроллер паузы (обрабатывает ESC)
+        Container.BindInterfacesAndSelfTo<PauseMenuController>().AsSingle();
 
 
 

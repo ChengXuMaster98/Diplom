@@ -19,6 +19,8 @@ public class CharacterMovementController : ITickable
     private readonly LayerMask _groundMask;
     public Transform _groundCheck;
 
+    private readonly IPauseService _pauseService;
+
     Vector3 velocity;
 
     bool isGrounded;
@@ -29,7 +31,7 @@ public class CharacterMovementController : ITickable
     public float VerticalVelocity => velocity.y;
 
 
-    public CharacterMovementController(PlayerStats stats, Player player, Transform cameraTarget, Transform groundCheck, LayerMask groundMask, IUpgradeService upgradeService)
+    public CharacterMovementController(PlayerStats stats, Player player, Transform cameraTarget, Transform groundCheck, LayerMask groundMask, IUpgradeService upgradeService, IPauseService pauseService)
     {
         _stats = stats;
         _controller = player.Controller;
@@ -38,6 +40,7 @@ public class CharacterMovementController : ITickable
         _groundCheck = groundCheck;
         _groundMask = groundMask;
         _upgradeService = upgradeService;
+        _pauseService = pauseService;
     }
 
     public void Move(Vector2 input)
@@ -69,8 +72,16 @@ public class CharacterMovementController : ITickable
         _movementBlocked = true;
     }
 
+    public void UnblockMovement()
+    {
+        _movementBlocked = false;
+    }
+
     public void Tick()
     {
+        if (_pauseService.IsPaused)
+            return;
+
         if (_movementBlocked)
             return;
 

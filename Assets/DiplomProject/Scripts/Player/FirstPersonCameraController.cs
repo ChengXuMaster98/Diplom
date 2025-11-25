@@ -9,6 +9,8 @@ public class FirstPersonController : ITickable
     private readonly Transform _bodyTransform;
     private readonly PlayerStats _stats;
 
+    private readonly IPauseService _pauseService;
+
     private float _xRotation = 0f;
     //private float _yRotation = 0f;
 
@@ -19,17 +21,22 @@ public class FirstPersonController : ITickable
     public FirstPersonController(
         IInputService input,
         Player player,
-        PlayerStats stats)
+        PlayerStats stats,
+        IPauseService pauseService)
     {
         _input = input;
         _controller = player.Controller;
         _cameraTransform = player.CameraTransform;
         _bodyTransform = player.BodyTransform;
         _stats = stats;
+        _pauseService = pauseService;
     }
 
     public void Tick()
     {
+        if (_pauseService.IsPaused)
+            return;
+
         RotateCamera();
     }
 
