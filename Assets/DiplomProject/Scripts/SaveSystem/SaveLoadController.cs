@@ -5,11 +5,13 @@ public class SaveLoadController : MonoBehaviour
 {
     private ISaveService _saveService;
     private EnemySpawner[] _spawners;
+    private SaveExecutor _saveExecutor;
 
     [Inject]
-    public void Construct(ISaveService saveService)
+    public void Construct(ISaveService saveService, SaveExecutor saveExecutor)
     {
         _saveService = saveService;
+        _saveExecutor = saveExecutor;
     }
 
     private void Awake()
@@ -19,7 +21,6 @@ public class SaveLoadController : MonoBehaviour
 
     private void Start()
     {
-        // Больше НИЧЕГО не делаем здесь.
         // Старт игры контролируется MainMenuUI.
     }
 
@@ -38,6 +39,7 @@ public class SaveLoadController : MonoBehaviour
         Debug.Log("[SaveLoadController] New Game started from UI.");
     }
 
+
     public void LoadLastSave()
     {
         if (!_saveService.HasSave())
@@ -49,6 +51,7 @@ public class SaveLoadController : MonoBehaviour
         DestroyAllExistingEnemies();
 
         _saveService.Load();
+
 
         foreach (var spawner in _spawners)
             spawner.TrySpawn();
@@ -65,38 +68,4 @@ public class SaveLoadController : MonoBehaviour
         foreach (var enemy in enemies)
             Destroy(enemy.gameObject);
     }
-
-    private void Update()
-    {
-        // F5 - сохранить
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            _saveService.Save();
-        }
-
-        // F9 - загрузить
-        if (Input.GetKeyDown(KeyCode.F9))
-        {
-            _saveService.Load();
-
-            foreach (var spawner in _spawners)
-                spawner.TrySpawn();
-
-            var weaponController = FindObjectOfType<PlayerWeaponController>();
-            weaponController?.RefreshEquippedWeapon();
-        }
-
-        // Delete - удаляем сейв
-        if (Input.GetKeyDown(KeyCode.Delete))
-        {
-            _saveService.DeleteSave();
-        }
-
-        // Нажимаем N - новая игра
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            StartNewGame();
-        }
-    }
-
 }

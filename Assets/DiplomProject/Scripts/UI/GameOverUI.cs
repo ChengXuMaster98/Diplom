@@ -9,21 +9,22 @@ public class GameOverUI : MonoBehaviour
     public Button restartButton;
     public GameObject blackScreen;
 
-    private SaveLoadController _saveLoadController;
+    private ISaveExecutor _saveExecutor;
     private ISaveService _saveService;
-
     private CharacterMovementController _movementController;
-
     private PlayerHealth _playerHealth;
 
     [Inject]
-    public void Construct(SaveLoadController saveLoadController, ISaveService saveService, CharacterMovementController movement, PlayerHealth playerHealth)
+    public void Construct(
+        ISaveExecutor saveExecutor,
+        ISaveService saveService,
+        CharacterMovementController movement,
+        PlayerHealth playerHealth)
     {
-        _saveLoadController = saveLoadController;
+        _saveExecutor = saveExecutor;
         _saveService = saveService;
         _movementController = movement;
         _playerHealth = playerHealth;
-
     }
 
     private void Awake()
@@ -42,8 +43,6 @@ public class GameOverUI : MonoBehaviour
 
         Time.timeScale = 0f;
 
-
-
         restartButton.onClick.RemoveAllListeners();
         restartButton.onClick.AddListener(RestartGame);
     }
@@ -55,16 +54,14 @@ public class GameOverUI : MonoBehaviour
         gameOverPanel.SetActive(false);
         blackScreen.SetActive(false);
 
-
         _movementController.UnblockMovement();
-
         _playerHealth.ForceSetHealth(_playerHealth.MaxHealth);
 
         Cursor.visible = false;
 
         if (_saveService.HasSave())
         {
-            _saveLoadController.LoadLastSave();
+            _saveExecutor.RequestLoadLastSave();
         }
         else
         {

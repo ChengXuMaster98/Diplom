@@ -54,6 +54,8 @@ public class SceneInstaller : MonoInstaller
         // Контроллер паузы (обрабатывает ESC)
         Container.BindInterfacesAndSelfTo<PauseMenuController>().AsSingle();
 
+        Container.BindInterfacesAndSelfTo<SaveExecutor>().AsSingle();
+
 
 
         //WeaponSystem
@@ -67,6 +69,7 @@ public class SceneInstaller : MonoInstaller
         //Save
         Container.BindInterfacesAndSelfTo<SaveService>().AsSingle().NonLazy();
         Container.Bind<EnemySaveSystem>().AsSingle();
+        Container.Bind<PickupSaveSystem>().AsSingle();
 
 
 

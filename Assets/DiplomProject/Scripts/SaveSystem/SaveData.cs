@@ -27,4 +27,6 @@ public class SaveData
     public float StaminaMultiplier;
 
     public List<string> DeadEnemies = new();
+
+    public List<string> CollectedPickups = new List<string>();
 }

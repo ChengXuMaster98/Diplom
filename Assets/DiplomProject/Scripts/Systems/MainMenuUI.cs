@@ -12,25 +12,24 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button _quitButton;
 
     private ISaveService _saveService;
-    private SaveLoadController _saveLoad;
+    private ISaveExecutor _saveExecutor;
     private IPauseService _pauseService;
 
     [Inject]
-    public void Construct(ISaveService saveService, SaveLoadController saveLoad, IPauseService pauseService)
+    public void Construct(ISaveService saveService, ISaveExecutor saveExecutor, IPauseService pauseService)
     {
         _saveService = saveService;
-        _saveLoad = saveLoad;
+        _saveExecutor = saveExecutor;
         _pauseService = pauseService;
     }
 
     private void Start()
     {
         Debug.Log("HasSave in Build = " + _saveService.HasSave());
-        // При старте игры — пауза и главное меню
+
         _pauseService.Pause();
         Show();
 
-        // Кнопка "Продолжить" активна только если есть сейв
         _continueButton.interactable = _saveService.HasSave();
 
         _newGameButton.onClick.AddListener(OnNewGameClicked);
@@ -38,7 +37,7 @@ public class MainMenuUI : MonoBehaviour
         _quitButton.onClick.AddListener(OnQuitClicked);
     }
 
-    private void Show()
+    public void Show()
     {
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
@@ -54,8 +53,7 @@ public class MainMenuUI : MonoBehaviour
 
     private void OnNewGameClicked()
     {
-        // Полный сброс прогресса и новая игра
-        _saveLoad.StartNewGame();
+        _saveExecutor.RequestStartNewGame();
 
         Hide();
         _pauseService.Resume();
@@ -65,12 +63,11 @@ public class MainMenuUI : MonoBehaviour
     {
         if (_saveService.HasSave())
         {
-            _saveLoad.LoadLastSave();
+            _saveExecutor.RequestLoadLastSave();
         }
         else
         {
-            // fallback: если почему-то нажали, а сейва нет — новая игра
-            _saveLoad.StartNewGame();
+            _saveExecutor.RequestStartNewGame();
         }
 
         Hide();

@@ -12,6 +12,7 @@ public class PlayerStateController : ITickable
     private readonly PlayerJumpState _jumpState;
     private readonly PlayerAttackState _attackState;
     private readonly PlayerBlockState _blockState;
+    private readonly PlayerWeaponInventory _inventory;
 
     private readonly IPauseService _pauseService;
 
@@ -29,6 +30,7 @@ public class PlayerStateController : ITickable
     {
         _stateMachine = stateMachine;
         _pauseService = pauseService;
+        _inventory = inventory;
 
 
         _idleState = new PlayerIdleState(player.Animator);
@@ -55,14 +57,26 @@ public class PlayerStateController : ITickable
             _stateMachine.SetState(_jumpState);
             return; // Skip movement if jumping
         }
-        
+
+
+
         if (Input.GetMouseButtonDown(0))
         {
-            _stateMachine.SetState(_attackState);
+            var weapon = _inventory.GetActiveWeapon();
+            if (weapon == null)
+            {
+                Debug.Log("[Attack] Нет оружия — атака невозможна");
+                // остаёмся в текущем состоянии (Idle/Move/Block)
+            }
+            else
+            {
+                _stateMachine.SetState(_attackState);
+            }
             return;
-            // Skip other inputs if attacking
         }
-        if(Input.GetMouseButton(1))
+
+
+        if (Input.GetMouseButton(1))
         {
 
             if (!(_stateMachine.CurrentState is PlayerBlockState))

@@ -9,18 +9,19 @@ public class PauseMenuUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button _continueButton;
     [SerializeField] private Button _loadButton;
+    [SerializeField] private Button _saveButton;
     [SerializeField] private Button _quitButton;
 
     private IPauseService _pauseService;
     private ISaveService _saveService;
-    private SaveLoadController _saveLoad;
+    private ISaveExecutor _saveExecutor;
 
     [Inject]
-    public void Construct(IPauseService pauseService, ISaveService saveService, SaveLoadController saveLoad)
+    public void Construct(IPauseService pauseService, ISaveService saveService, ISaveExecutor saveExecutor)
     {
         _pauseService = pauseService;
         _saveService = saveService;
-        _saveLoad = saveLoad;
+        _saveExecutor = saveExecutor;
     }
 
     private void Awake()
@@ -28,6 +29,7 @@ public class PauseMenuUI : MonoBehaviour
         Hide();
 
         _continueButton.onClick.AddListener(OnContinueClicked);
+        _saveButton.onClick.AddListener(OnSaveClicked);
         _loadButton.onClick.AddListener(OnLoadClicked);
         _quitButton.onClick.AddListener(OnQuitClicked);
     }
@@ -46,6 +48,15 @@ public class PauseMenuUI : MonoBehaviour
         _canvasGroup.interactable = false;
     }
 
+    private void OnSaveClicked()
+    {
+        _saveService.Save();
+        Debug.Log("[PauseMenu] Game Saved!");
+
+        Hide();
+        _pauseService.Resume();
+    }
+
     private void OnContinueClicked()
     {
         Hide();
@@ -56,7 +67,7 @@ public class PauseMenuUI : MonoBehaviour
     {
         if (_saveService.HasSave())
         {
-            _saveLoad.LoadLastSave();
+            _saveExecutor.RequestLoadLastSave();
         }
         else
         {

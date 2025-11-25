@@ -16,17 +16,17 @@ public class SaveService : ISaveService
     private readonly PlayerWeaponInventory _inventory;
     private readonly WeaponFactory _factory;
     private readonly WeaponDatabase _weaponDatabase;
-
+    private readonly EnemySaveSystem _enemySave;
+    private readonly PickupSaveSystem _pickupSave;
     // Для автосохранения / отладки можно добавить флаг
     private readonly string _path;
 
-    private readonly EnemySaveSystem _enemySave;
 
     public event Action OnLoadFinished;
 
     [Inject]
     public SaveService(Player player, PlayerHealth health, IStaminaSystem stamina, IUpgradeService upgrades, DiContainer container, EnemySaveSystem enemySave,
-        PlayerWeaponInventory inventory, WeaponFactory factory, WeaponDatabase weaponDatabase)
+        PlayerWeaponInventory inventory, WeaponFactory factory, WeaponDatabase weaponDatabase, PickupSaveSystem pickupSave)
     {
         _player = player;
         _health = health;
@@ -37,6 +37,7 @@ public class SaveService : ISaveService
         _inventory = inventory;
         _factory = factory;
         _weaponDatabase = weaponDatabase;
+        _pickupSave = pickupSave;
 
 
 
@@ -54,34 +55,49 @@ public class SaveService : ISaveService
     {
         var data = new SaveData();
 
+        // === Позиция игрока ===
         var pos = _player.transform.position;
         data.PlayerPosX = pos.x;
         data.PlayerPosY = pos.y;
         data.PlayerPosZ = pos.z;
         data.PlayerRotY = _player.transform.eulerAngles.y;
 
+        // === ХП / стамина текущие===
         data.CurrentHealth = _health.CurrentHealth;
         data.CurrentStamina = _stamina.CurrentStamina;
 
-        // Увеличители урона, подтягиваются из UpgradeService
+        // === Апгрейды === Увеличители урона, подтягиваются из UpgradeService
         data.HealthMultiplier = _upgrades.HealthMultiplier;
         data.DamageMultiplier = _upgrades.DamageMultiplier;
         data.SpeedMultiplier = _upgrades.SpeedMultiplier;
         data.StaminaMultiplier = _upgrades.StaminaMultiplier;
 
-        // Слоты оружия
+        // === Слоты оружия ===
         for (int i = 0; i < 3; i++)
         {
-            data.WeaponSlots[i] = _inventory.Slots[i] != null ? _inventory.Slots[i].Data.Type :WeaponType.None; // Оружие=none?
+            data.WeaponSlots[i] = _inventory.Slots[i] != null ? 
+                _inventory.Slots[i].Data.Type 
+                :WeaponType.None; // Оружие=none?
         }
         data.ActiveWeaponSlot = _inventory.ActiveSlot;
 
+
+        // === Враги ===
         var states = _enemySave.GetAllStates();
         data.DeadEnemies.Clear();
         foreach (var kv in states)
         {
             if (kv.Value) // Dead == true
                 data.DeadEnemies.Add(kv.Key);
+        }
+
+        // === Пикапы (сундуки / оружие на сцене) ===
+        var pickupStates = _pickupSave.GetAllStates();
+        data.CollectedPickups.Clear();
+        foreach (var kv in pickupStates)
+        {
+            if (kv.Value) // собран
+                data.CollectedPickups.Add(kv.Key);
         }
 
         string json = JsonUtility.ToJson(data, true);
@@ -100,16 +116,33 @@ public class SaveService : ISaveService
         string json = File.ReadAllText(_path);
         var data = JsonUtility.FromJson<SaveData>(json);
 
+        if (data == null)
+        {
+            Debug.LogError("[SaveService] Failed to parse save file.");
+            return;
+        }
+
+
+        // === Оружие в слотах ===
         _inventory.ActiveSlot = data.ActiveWeaponSlot;
+
+
+        // Чистит слот именно с подобранным оружием
+        // Если сохранился, взял шмотку из сундука, загрузил сохранение
+        // То шмотка не останется в инвентаре
+        _inventory.Clear();
 
         for (int i = 0; i < 3; i++)
         {
             if (data.WeaponSlots[i] != WeaponType.None) // Оружие может быть "none"
 
-                _inventory.Slots[i] = _factory.Create(_weaponDatabase.GetData(data.WeaponSlots[i]));
+                _inventory.Slots[i] = _factory.Create(
+                    _weaponDatabase.GetData(data.WeaponSlots[i]));
         }
 
 
+
+        // === Враги ===
         var loadedStates = new Dictionary<string, bool>();
         foreach (string id in data.DeadEnemies)
             loadedStates[id] = true;
@@ -117,14 +150,17 @@ public class SaveService : ISaveService
         _enemySave.LoadStates(loadedStates);
 
 
-
-
-        if (data == null)
+        // === Пикапы ===
+        var loadedPickupStates = new Dictionary<string, bool>();
+        if (data.CollectedPickups != null)
         {
-            Debug.LogError("[SaveService] Failed to parse save file.");
-            return;
+            foreach (string id in data.CollectedPickups)
+                loadedPickupStates[id] = true;
         }
+        _pickupSave.LoadStates(loadedPickupStates);
 
+
+        // === Применение Апгрейдов ===
         // 1) Apply upgrades first so MaxHealth/MaxStamina become correct
         ApplyUpgradesFromSave(data);
 
@@ -136,8 +172,42 @@ public class SaveService : ISaveService
             Debug.LogWarning("[SaveService] IStaminaSystem does not implement ForceSetStamina. Stamina may not be restored.");
 
         // 3) Restore player transform
-        _player.transform.position = new Vector3(data.PlayerPosX, data.PlayerPosY, data.PlayerPosZ);
-        _player.transform.eulerAngles = new Vector3(_player.transform.eulerAngles.x, data.PlayerRotY, _player.transform.eulerAngles.z);
+
+
+        // === Позиция / поворот игрока ===
+        var controller = _player.GetComponent<CharacterController>();
+
+        if (controller != null)
+        {
+            controller.enabled = false;
+
+            _player.transform.position = new Vector3(
+                data.PlayerPosX,
+                data.PlayerPosY,
+                data.PlayerPosZ
+            );
+
+            _player.transform.rotation = Quaternion.Euler(
+                0,
+                data.PlayerRotY,
+                0
+            );
+
+            controller.enabled = true;
+        }
+        else
+        {
+            _player.transform.position = new Vector3(
+               data.PlayerPosX,
+               data.PlayerPosY,
+               data.PlayerPosZ);
+
+            _player.transform.rotation = Quaternion.Euler(
+                0,
+                data.PlayerRotY,
+                0
+            );
+        }
 
         Debug.Log("[SaveService] Save loaded.");
 
@@ -163,6 +233,10 @@ public class SaveService : ISaveService
         // Очищаем список убитых врагов
         _enemySave.LoadStates(new Dictionary<string, bool>());
 
+        // Сбрасываем пикапы
+        _pickupSave.LoadStates(new Dictionary<string, bool>());
+
+        // Чистим инвентарь
         _inventory.Clear();
 
         // ДОБАВЛЯЕМ ТОПОР В СЛОТ 0
@@ -179,7 +253,11 @@ public class SaveService : ISaveService
         // UpgradeService implements SetMultipliers (added it below)
         if (_upgrades is UpgradeService concrete)
         {
-            concrete.SetMultipliers(data.HealthMultiplier, data.DamageMultiplier, data.SpeedMultiplier, data.StaminaMultiplier);
+            concrete.SetMultipliers(
+                data.HealthMultiplier, 
+                data.DamageMultiplier, 
+                data.SpeedMultiplier, 
+                data.StaminaMultiplier);
         }
         else
         {
@@ -189,6 +267,7 @@ public class SaveService : ISaveService
             float d = data.DamageMultiplier - 1f;
             float s = data.SpeedMultiplier - 1f;
             float st = data.StaminaMultiplier - 1f;
+
             if (Mathf.Abs(h) > 0.0001f) _upgrades.ApplyUpgrade(UpgradeType.Health, h);
             if (Mathf.Abs(d) > 0.0001f) _upgrades.ApplyUpgrade(UpgradeType.Damage, d);
             if (Mathf.Abs(s) > 0.0001f) _upgrades.ApplyUpgrade(UpgradeType.Speed, s);
