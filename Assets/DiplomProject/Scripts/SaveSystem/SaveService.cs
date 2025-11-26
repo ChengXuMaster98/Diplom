@@ -92,11 +92,10 @@ public class SaveService : ISaveService
         }
 
         // === Пикапы (сундуки / оружие на сцене) ===
-        var pickupStates = _pickupSave.GetAllStates();
         data.CollectedPickups.Clear();
-        foreach (var kv in pickupStates)
+        foreach (var kv in _pickupSave.GetAllStates())
         {
-            if (kv.Value) // собран
+            if (kv.Value)
                 data.CollectedPickups.Add(kv.Key);
         }
 
@@ -152,11 +151,9 @@ public class SaveService : ISaveService
 
         // === Пикапы ===
         var loadedPickupStates = new Dictionary<string, bool>();
-        if (data.CollectedPickups != null)
-        {
-            foreach (string id in data.CollectedPickups)
-                loadedPickupStates[id] = true;
-        }
+        foreach (string id in data.CollectedPickups)
+            loadedPickupStates[id] = true;
+
         _pickupSave.LoadStates(loadedPickupStates);
 
 

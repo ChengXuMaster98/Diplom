@@ -5,6 +5,8 @@ public class SaveLoadController : MonoBehaviour
 {
     private ISaveService _saveService;
     private EnemySpawner[] _spawners;
+    private PickupSpawner[] _pickupSpawners;
+
     private SaveExecutor _saveExecutor;
 
     [Inject]
@@ -17,6 +19,7 @@ public class SaveLoadController : MonoBehaviour
     private void Awake()
     {
         _spawners = FindObjectsOfType<EnemySpawner>();
+        _pickupSpawners = FindObjectsOfType<PickupSpawner>();
     }
 
     private void Start()
@@ -30,8 +33,21 @@ public class SaveLoadController : MonoBehaviour
 
         DestroyAllExistingEnemies();
 
+        // Спавним врагов
         foreach (var spawner in _spawners)
             spawner.TrySpawn();
+
+        // Уничтожаем подобранные ящики с оружием
+        foreach (var pickup in FindObjectsOfType<WeaponPickup>())
+            Destroy(pickup.gameObject);
+        
+        // Уничтожаем подобранные ящики с апгрейдами
+        foreach (var chest in FindObjectsOfType<ChestTrigger>())
+            Destroy(chest.gameObject);
+
+        // Спавним ящики
+        foreach (var p in _pickupSpawners)
+            p.TrySpawn();
 
         var weaponController = FindObjectOfType<PlayerWeaponController>();
         weaponController?.RefreshEquippedWeapon();
@@ -55,6 +71,15 @@ public class SaveLoadController : MonoBehaviour
 
         foreach (var spawner in _spawners)
             spawner.TrySpawn();
+
+        foreach (var pickup in FindObjectsOfType<WeaponPickup>())
+            Destroy(pickup.gameObject);
+
+        foreach (var chest in FindObjectsOfType<ChestTrigger>())
+            Destroy(chest.gameObject);
+
+        foreach (var p in _pickupSpawners)
+            p.TrySpawn();
 
         var weaponController = FindObjectOfType<PlayerWeaponController>();
         weaponController?.RefreshEquippedWeapon();

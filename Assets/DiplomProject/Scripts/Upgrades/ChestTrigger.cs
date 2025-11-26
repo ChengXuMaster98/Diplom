@@ -1,57 +1,39 @@
 using UnityEngine;
 using Zenject;
 
-public class ChestTrigger : MonoBehaviour, ISaveablePickup
+public class ChestTrigger : MonoBehaviour, IPickupListener
 {
-
-
     [SerializeField] private UpgradeUI _upgradeUIPrefab;
 
-    [Tooltip("”никальный ID этого сундука (upg_chest_01 и т.п.)")]
-    [SerializeField] private string _id;
-    public string ID => _id;
-
-
     private DiContainer _container;
-    private PickupSaveSystem _pickupSave;
-
-    private bool _collected = false;
+    private bool _opened = false;
+    private PickupSpawner _spawner;
 
     [Inject]
-    public void Construct(DiContainer container, PickupSaveSystem pickupSave)
+    public void Construct(DiContainer container)
     {
         _container = container;
-        _pickupSave = pickupSave;
     }
 
-    private void Awake()
+    public void Initialize(PickupSpawner spawner)
     {
-        // ≈сли сундук уже был открыт в сохранении Ч удал€ем
-        if (_pickupSave != null && _pickupSave.IsCollected(ID))
-        {
-            _collected = true;
-            Destroy(gameObject);
-        }
+        _spawner = spawner;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_collected) return;
+        if (_opened) return;
         if (!other.CompareTag("Player")) return;
 
-        
-        var ui = _container.InstantiatePrefabForComponent<UpgradeUI>(
-            _upgradeUIPrefab, 
-            Vector3.zero, 
-            Quaternion.identity, 
-            null);
+        var ui = _container.InstantiatePrefabForComponent<UpgradeUI>(_upgradeUIPrefab);
+        _container.Inject(ui.gameObject);
 
         ui.ShowRandomOptions(() =>
         {
-            _collected = true;
+            _opened = true;
 
-            // помечаем сундук как собранный
-            _pickupSave?.MarkCollected(ID);
+            // —ообщаем системе что этот пикап собран
+            _spawner?.MarkCollected();
 
             Destroy(gameObject);
         });
