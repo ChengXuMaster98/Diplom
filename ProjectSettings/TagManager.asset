@@ -7,6 +7,7 @@ TagManager:
   - SpawnPoint
   - Vampire
   - Skeleton
+  - Boss
   layers:
   - Default
   - TransparentFX

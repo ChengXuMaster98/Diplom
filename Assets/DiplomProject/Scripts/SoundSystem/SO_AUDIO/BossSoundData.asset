@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: BossSoundData
   m_EditorClassIdentifier: 
-  Idle: []
-  Attack: []
-  Hurt: []
-  Step: []
-  Death: []
+  Idle:
+  - {fileID: 0}
+  Attack:
+  - {fileID: 0}
+  Hurt:
+  - {fileID: 0}
+  Step:
+  - {fileID: 0}
+  Death:
+  - {fileID: 0}
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

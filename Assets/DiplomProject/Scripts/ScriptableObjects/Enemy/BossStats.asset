@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: BossStats
   m_EditorClassIdentifier: 
   MaxHealth: 150
-  Damage: 30
-  MoveSpeed: 4
+  Damage: 1
+  MoveSpeed: 3
+  AttackRange: 2.2
+  DetectionRadius: 10
+  AttackCooldown: 3
+  PlayerMask:
+    serializedVersion: 2
+    m_Bits: 8
