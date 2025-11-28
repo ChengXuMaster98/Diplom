@@ -13,6 +13,7 @@ public class BossStateFactory : IBossStateFactory
     private readonly IPlayerDamageable _playerDamageable;
     private readonly NavMeshAgent _agent;
     private readonly Transform _transform;
+    private readonly GameWonUI _gameWonUI;
 
     [Inject]
     public BossStateFactory(
@@ -22,7 +23,8 @@ public class BossStateFactory : IBossStateFactory
         IBossAnimator animator,
         IPlayerDamageable playerDamageable,
         NavMeshAgent agent,
-        Enemy enemy)
+        Enemy enemy,
+        GameWonUI gameWonUI)
     {
         _stateMachine = stateMachine;
         _detector = detector;
@@ -31,12 +33,13 @@ public class BossStateFactory : IBossStateFactory
         _playerDamageable = playerDamageable;
         _agent = agent;
         _enemyGO = enemy.gameObject;
+        _gameWonUI = gameWonUI;
     }
 
     public IEnemyState CreateIdleState() => new BossIdleState(_animator, _detector, _stateMachine, this);
     public IEnemyState CreateChaseState() => new BossChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
     public IEnemyState CreateAttackState() => new BossAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
-    public IEnemyState CreateDieState() => new BossDieState(_animator, _enemyGO);
+    public IEnemyState CreateDieState() => new BossDieState(_animator, _enemyGO, _gameWonUI);
 
     public IEnemyState CreateGetDamageState() => new BossGetDamageState(_animator, _stateMachine, this);
 

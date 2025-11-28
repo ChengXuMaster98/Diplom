@@ -88,7 +88,7 @@ public class BossPatrolState : IEnemyState
 
     public void Exit()
     {
-        Debug.Log("[Skeleton] Exit Patrol");
+        //Debug.Log("[Skeleton] Exit Patrol");
         _detector.PlayerDetected -= OnPlayerDetected;
     }
 

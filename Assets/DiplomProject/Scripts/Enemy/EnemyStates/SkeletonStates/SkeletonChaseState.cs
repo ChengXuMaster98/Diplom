@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -11,6 +9,9 @@ using UnityEngine.AI;
     private EnemyStats _enemyStats;
     private readonly ISkeletonStateMachine _stateMachine;
     private readonly ISkeletonStateFactory _stateFactory;
+
+    private float _repathInterval = 0.2f;
+    private float _nextRepathTime;
 
     public SkeletonChaseState(ISkeletonAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats, ISkeletonStateMachine stateMachine,
         ISkeletonStateFactory stateFactory)
@@ -27,13 +28,15 @@ using UnityEngine.AI;
 
     public void Enter()
     {
-        Debug.Log($"[CHASE ENTER] Agent enabled: {_agent.enabled}, isStopped: {_agent.isStopped}, hasPath: {_agent.hasPath}");
+        //Debug.Log($"[CHASE ENTER] Agent enabled: {_agent.enabled}, isStopped: {_agent.isStopped}, hasPath: {_agent.hasPath}");
         _animator.PlayChase();
 
         _agent.isStopped = false;
         _agent.updatePosition = true;
         _agent.updateRotation = true;
         _agent.stoppingDistance = _enemyStats.AttackRange;
+
+        _nextRepathTime = 0f;
     }
 
     public void Tick()
@@ -45,7 +48,7 @@ using UnityEngine.AI;
 
 
         float distance = Vector3.Distance(_agent.transform.position, player.position);
-        Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");
+        //Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");
 
         if (distance <= _enemyStats.AttackRange)
         {
@@ -55,9 +58,12 @@ using UnityEngine.AI;
             _stateMachine.SetState(attackState);
             return;
         }
-
-        _agent.isStopped = false;
-        _agent.SetDestination(player.position);
+        if (Time.time >= _nextRepathTime)
+        {
+            _nextRepathTime = Time.time + _repathInterval;
+            _agent.isStopped = false;
+            _agent.SetDestination(player.position);
+        }
     }
 
     public void Exit()

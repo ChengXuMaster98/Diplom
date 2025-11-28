@@ -26,7 +26,7 @@ using UnityEngine.AI;
         ISkeletonStateFactory stateFactory)
     {
         _playerDamageable = playerDamageable;
-        Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
+        //Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
         _animator = animator;
         _detector = detector;
         _stats = stats;
@@ -49,7 +49,7 @@ using UnityEngine.AI;
 
         _animator.SetAttackHitCallback(PerformAttack);
 
-        Debug.Log("[ATTACK STATE] Entered");
+        //Debug.Log("[ATTACK STATE] Entered");
     }
 
     private void PerformAttack()
@@ -73,7 +73,7 @@ using UnityEngine.AI;
 
     public void Tick()
     {
-        Debug.Log($"[Attack Tick] Player: {_detector.Player}, Damageable: {_playerDamageable != null}");
+        //Debug.Log($"[Attack Tick] Player: {_detector.Player}, Damageable: {_playerDamageable != null}");
         Transform player = _detector.Player;
         if (player == null)
             return;
@@ -89,7 +89,7 @@ using UnityEngine.AI;
         }
         else
         {
-            Debug.Log("[Attack] Player in AttackRange");
+            //Debug.Log("[Attack] Player in AttackRange");
         }
 
         _animator.LookAt(player.position);
@@ -116,7 +116,7 @@ using UnityEngine.AI;
 
         _detector.PlayerLost -= OnPlayerLost;
 
-        Debug.Log("[ATTACK STATE] Exited");
+        //Debug.Log("[ATTACK STATE] Exited");
     }
 
     private void OnPlayerLost()

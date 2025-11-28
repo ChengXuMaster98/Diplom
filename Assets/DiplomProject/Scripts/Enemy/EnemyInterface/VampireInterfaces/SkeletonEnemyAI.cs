@@ -26,11 +26,23 @@ public class SkeletonEnemyAI : EnemyAIBase<SkeletonStateMachine, ISkeletonStateF
 
     protected override void OnPlayerDetected(Transform player)
     {
+        if (!_isAggro)
+        {
+            _isAggro = true;
+            _aggroTracker?.Increment();
+        }
+
         _stateMachine.SetState(_chaseState);
     }
 
     protected override void OnPlayerLost()
     {
+        if (_isAggro)
+        {
+            _isAggro = false;
+            _aggroTracker?.Decrement();
+        }
+
         _stateMachine.SetState(_idleState);
     }
 }

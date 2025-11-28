@@ -65,7 +65,7 @@ public class BossAnimatorController : MonoBehaviour, IBossAnimator
 
     public void PlayChase()
     {
-        Debug.Log("PlayChase called");
+        //Debug.Log("PlayChase called");
         _animator.SetBool("IsPatroling", false);
         _animator.SetBool("IsChasing", true);
     }

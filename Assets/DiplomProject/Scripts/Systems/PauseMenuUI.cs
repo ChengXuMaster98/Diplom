@@ -1,9 +1,13 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class PauseMenuUI : MonoBehaviour
 {
+    public event Action OnMenuOpened;
+    public event Action OnMenuClosed;
+
     [SerializeField] private CanvasGroup _canvasGroup;
 
     [Header("Buttons")]
@@ -39,6 +43,7 @@ public class PauseMenuUI : MonoBehaviour
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
         _canvasGroup.interactable = true;
+        OnMenuOpened?.Invoke();
     }
 
     public void Hide()
@@ -46,6 +51,7 @@ public class PauseMenuUI : MonoBehaviour
         _canvasGroup.alpha = 0f;
         _canvasGroup.blocksRaycasts = false;
         _canvasGroup.interactable = false;
+        OnMenuClosed?.Invoke();
     }
 
     private void OnSaveClicked()

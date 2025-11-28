@@ -28,16 +28,16 @@ public class EnemyPrefabDatabase : ScriptableObject
     {
         if (_lookup == null)
         {
-            Debug.LogError("EnemyPrefabDatabase: _lookup is null! Возможно, OnEnable() не вызвался.");
+            //Debug.LogError("EnemyPrefabDatabase: _lookup is null! Возможно, OnEnable() не вызвался.");
         }
 
         if (_lookup.TryGetValue(type, out var prefab))
         {
-            Debug.Log($"[EnemyPrefabDatabase] Префаб найден: {type}");
+            //Debug.Log($"[EnemyPrefabDatabase] Префаб найден: {type}");
             return prefab;
         }
 
-        Debug.LogError($"[EnemyPrefabDatabase] Prefab not found for type: {type}");
+        //Debug.LogError($"[EnemyPrefabDatabase] Prefab not found for type: {type}");
         return null;
     }
 }

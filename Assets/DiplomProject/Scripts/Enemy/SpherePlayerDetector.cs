@@ -18,6 +18,11 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
     private EnemyStats _stats;
 
+    [SerializeField]
+    private float _checkInterval = 0.2f; // как часто проверяем (сек)
+
+    private float _nextCheckTime;
+
     [Inject]
     public void Construct(EnemyStats stats)
     {
@@ -32,28 +37,42 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
     private void Update()
     {
-        
-        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, _playerMask);
+
+        if (Time.time < _nextCheckTime)
+            return;
+
+        _nextCheckTime = Time.time + _checkInterval;
+        CheckPlayer();
+
+    }
+
+    private void CheckPlayer()
+    {
         bool playerFound = false;
 
-        foreach (var hit in hits)
-        {
-            //Debug.Log(hits.Length);
-            //Debug.Log(hit.name);
+        Collider[] hits = Physics.OverlapSphere(
+            transform.position,
+            _detectionRadius,
+            _playerMask);
 
-            if (hit.CompareTag("Player"))
+        for (int i = 0; i < hits.Length; i++)
+        {
+            var hit = hits[i];
+
+            if (!hit.CompareTag("Player"))
+                continue;
+
+            playerFound = true;
+
+            if (!_isPlayerInRange)
             {
-                playerFound = true;
-                if (!_isPlayerInRange)
-                {
-                    _isPlayerInRange = true;
-                    _player = hit.transform;
-                    PlayerDetected?.Invoke(_player);
-                    Debug.Log(">> PlayerDetected invoked with: " + _player.name);
-                }
-                playerFound = true;
-                break;
+                _isPlayerInRange = true;
+                _player = hit.transform;
+                PlayerDetected?.Invoke(_player);
+                // DevLog.Log($">> PlayerDetected: {_player.name}");
             }
+
+            break;
         }
 
         if (!playerFound && _isPlayerInRange)
@@ -62,6 +81,5 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
             _player = null;
             PlayerLost?.Invoke();
         }
-
     }
 }

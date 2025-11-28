@@ -13,17 +13,22 @@ using Zenject;
     private bool _isDead = false;
     private IEnemyState _dieState;
 
+    protected EnemyAggroTracker _aggroTracker;
+    protected bool _isAggro;
+
     [Inject]
     public virtual void Construct(
         TStateMachine stateMachine,
         TStateFactory stateFactory,
         IPlayerDetector playerDetector,
-        Enemy enemy)
+        Enemy enemy,
+        EnemyAggroTracker aggroTracker)
     {
         _stateMachine = stateMachine;
         _stateFactory = stateFactory;
         _playerDetector = playerDetector;
         _enemy = enemy;
+        _aggroTracker = aggroTracker;
 
         _playerDetector.PlayerDetected += OnPlayerDetected;
         _playerDetector.PlayerLost += OnPlayerLost;
@@ -39,6 +44,15 @@ using Zenject;
             return;
 
         _isDead = true;
+
+
+        //если враг умер во время агро — безопасно декрементим
+        if (_isAggro)
+        {
+            _isAggro = false;
+            _aggroTracker?.Decrement();
+        }
+
 
 
         // создаём dieState один раз

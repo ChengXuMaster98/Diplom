@@ -12,8 +12,8 @@ public class SkeletonPatrolState : IEnemyState
     private Vector3 _origin;
     private bool _originSet;
 
-    private readonly float _patrolRadius = 6f;
-    private readonly float _waitAtPoint = 1.5f;
+    private readonly float _patrolRadius = 4f;
+    private readonly float _waitAtPoint = 3f;
 
     private float _waitTimer;
 
@@ -33,7 +33,7 @@ public class SkeletonPatrolState : IEnemyState
 
     public void Enter()
     {
-        Debug.Log("[Skeleton] Enter Patrol");
+        //Debug.Log("[Skeleton] Enter Patrol");
 
         if (!_originSet)
         {
@@ -88,7 +88,7 @@ public class SkeletonPatrolState : IEnemyState
 
     public void Exit()
     {
-        Debug.Log("[Skeleton] Exit Patrol");
+        //Debug.Log("[Skeleton] Exit Patrol");
         _detector.PlayerDetected -= OnPlayerDetected;
     }
 
@@ -111,7 +111,7 @@ public class SkeletonPatrolState : IEnemyState
 
     private void OnPlayerDetected(Transform player)
     {
-        Debug.Log("[Skeleton] Player detected from Patrol → Chase");
+        //Debug.Log("[Skeleton] Player detected from Patrol → Chase");
         _stateMachine.SetState(_factory.CreateChaseState());
     }
 }

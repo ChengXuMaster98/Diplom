@@ -251,9 +251,9 @@ public class SaveService : ISaveService
         if (_upgrades is UpgradeService concrete)
         {
             concrete.SetMultipliers(
-                data.HealthMultiplier, 
-                data.DamageMultiplier, 
-                data.SpeedMultiplier, 
+                data.HealthMultiplier,
+                data.DamageMultiplier,
+                data.SpeedMultiplier,
                 data.StaminaMultiplier);
         }
         else

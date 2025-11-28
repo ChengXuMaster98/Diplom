@@ -26,11 +26,19 @@ public class UpgradeUI : MonoBehaviour
     private UpgradeDatabase _database;
     private Action _onCollectedCallback;
 
+    private CharacterMovementController _movement;
+
+    private InputService _inputService;
+    private IInputService _input;
+
     [Inject]
-    public void Construct(IUpgradeService upgradeService, UpgradeDatabase database)
+    public void Construct(IUpgradeService upgradeService, UpgradeDatabase database, CharacterMovementController movement, IInputService input)
     {
         _upgradeService = upgradeService;
         _database = database;
+        _movement = movement;
+        _input = input;
+
     }
 
     public void ShowRandomOptions(Action onCollected)
@@ -74,6 +82,12 @@ public class UpgradeUI : MonoBehaviour
         _canvasGroup.blocksRaycasts = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        
+        _movement.BlockMovement();
+        _input.DisableInput();
+
+
     }
 
     private void Close()
@@ -81,7 +95,13 @@ public class UpgradeUI : MonoBehaviour
         _canvasGroup.alpha = 0f;
         _canvasGroup.blocksRaycasts = false;
         Cursor.lockState = CursorLockMode.Locked;
+        
+        
         Cursor.visible = false;
+
+        _input.EnableInput();
+        _movement.UnblockMovement();
+
         Destroy(gameObject);
     }
 }

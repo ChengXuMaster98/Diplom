@@ -1,9 +1,14 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class MainMenuUI : MonoBehaviour
 {
+
+    public event Action OnMenuOpened;
+    public event Action OnMenuClosed;
+
     [SerializeField] private CanvasGroup _canvasGroup;
 
     [Header("Buttons")]
@@ -42,6 +47,7 @@ public class MainMenuUI : MonoBehaviour
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
         _canvasGroup.interactable = true;
+        OnMenuOpened?.Invoke();
     }
 
     private void Hide()
@@ -49,6 +55,7 @@ public class MainMenuUI : MonoBehaviour
         _canvasGroup.alpha = 0f;
         _canvasGroup.blocksRaycasts = false;
         _canvasGroup.interactable = false;
+        OnMenuClosed?.Invoke();
     }
 
     private void OnNewGameClicked()

@@ -56,7 +56,7 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
     }
     public void PlayIdle()
     {
-        Debug.Log("PlayIdle called");
+        //Debug.Log("PlayIdle called");
         _animator.SetBool("IsChasing", false);
         _animator.SetBool("IsPatroling", false);
         //_animator.SetBool("IsIdle", true);
@@ -65,7 +65,7 @@ public class SkeletonAnimatorController : MonoBehaviour, ISkeletonAnimator
 
     public void PlayChase()
     {
-        Debug.Log("PlayChase called");
+        //Debug.Log("PlayChase called");
         _animator.SetBool("IsPatroling", false);
         _animator.SetBool("IsChasing", true);
     }

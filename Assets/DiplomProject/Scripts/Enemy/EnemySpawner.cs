@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (_enemySave.IsDead(enemyId))
         {
-            Debug.Log($"[EnemySpawner] Враг {enemyId} уже убит — не спавним.");
+            //Debug.Log($"[EnemySpawner] Враг {enemyId} уже убит — не спавним.");
             return;
         }
 
@@ -37,14 +37,14 @@ public class EnemySpawner : MonoBehaviour
     public void Spawn(System.Action onDeathCallback)
     {
 
-        Debug.Log($"[EnemySpawner] Спавним врага типа: {type}");
+        //Debug.Log($"[EnemySpawner] Спавним врага типа: {type}");
         var enemy = _enemyFactory.Create(type, transform.position);
         enemy.OnDeath += onDeathCallback;
     }
 
     private void OnEnemyDeath()
     {
-        Debug.Log($"[EnemySpawner] Враг {enemyId} умер");
+        //Debug.Log($"[EnemySpawner] Враг {enemyId} умер");
         _enemySave.MarkDead(enemyId);
     }
 }

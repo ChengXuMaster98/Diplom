@@ -8,6 +8,7 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private Player _player;
     [SerializeField] private EnemyStatsDatabase _enemyStatsDatabase;
     [SerializeField] private EnemyPrefabDatabase _enemyPrefabDatabase;
+    [SerializeField] private MusicDatabase _musicDatabase;
     [SerializeField] private AttackHitBox _attackHitBox;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask Ground;
@@ -46,9 +47,12 @@ public class SceneInstaller : MonoInstaller
         // SaveLoadController, чтобы можно было инжектить в UI и др.
         Container.Bind<SaveLoadController>().FromComponentInHierarchy().AsSingle();
 
-        // UI-меню
+        // UI-менюшки
         Container.Bind<MainMenuUI>().FromComponentInHierarchy().AsSingle();
         Container.Bind<PauseMenuUI>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<GameWonUI>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<GameOverUI>().FromComponentInHierarchy().AsSingle();
+        Container.Bind<UIVisibilityController>().FromComponentInHierarchy().AsSingle();
 
 
         // Контроллер паузы (обрабатывает ESC)
@@ -81,10 +85,18 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<PlayerUIController>().AsSingle();
 
 
-        // Audio
+        //Audio for aggro and Enviroment
+        Container.Bind<EnemyAggroTracker>().AsSingle();
+        Container.BindInterfacesAndSelfTo<MusicController>().AsSingle().NonLazy();
+        Container.Bind<MusicDatabase>().FromInstance(_musicDatabase).AsSingle();
 
+
+
+        // Audio
         Container.Bind<AudioSourcePool>().AsSingle().NonLazy();
         Container.Bind<AudioManager>().AsSingle().NonLazy();
+
+
         Container.Bind<AnimationEventReceiver>().FromComponentInHierarchy().AsSingle();
 
 
@@ -113,7 +125,6 @@ public class SceneInstaller : MonoInstaller
         // Player
         Container.Bind<Player>().FromInstance(_player).AsSingle();
 
-        Container.Bind<GameOverUI>().FromComponentInHierarchy().AsSingle();
 
         // Input
         Container.Bind<IInputService>().To<InputService>().AsSingle();
@@ -122,6 +133,7 @@ public class SceneInstaller : MonoInstaller
 
         // First-person movement controller (Camera + Movement)
         Container.BindInterfacesTo<FirstPersonController>().AsSingle(); // ITickable
+        
         Container.BindInterfacesAndSelfTo<CharacterMovementController>().AsSingle().WithArguments(_camera.transform, _groundCheck, Ground);
 
         // First-person camera setup

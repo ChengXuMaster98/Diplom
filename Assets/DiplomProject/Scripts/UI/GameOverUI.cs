@@ -1,10 +1,15 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Zenject;
 
 public class GameOverUI : MonoBehaviour
 {
+
+    public event Action OnMenuOpened;
+    public event Action OnMenuClosed;
+
     public GameObject gameOverPanel;
     public Button restartButton;
     public GameObject blackScreen;
@@ -14,17 +19,21 @@ public class GameOverUI : MonoBehaviour
     private CharacterMovementController _movementController;
     private PlayerHealth _playerHealth;
 
+    private MusicController _musicController;
+
     [Inject]
     public void Construct(
         ISaveExecutor saveExecutor,
         ISaveService saveService,
         CharacterMovementController movement,
-        PlayerHealth playerHealth)
+        PlayerHealth playerHealth,
+        MusicController musicController)
     {
         _saveExecutor = saveExecutor;
         _saveService = saveService;
         _movementController = movement;
         _playerHealth = playerHealth;
+        _musicController = musicController;
     }
 
     private void Awake()
@@ -45,6 +54,7 @@ public class GameOverUI : MonoBehaviour
 
         restartButton.onClick.RemoveAllListeners();
         restartButton.onClick.AddListener(RestartGame);
+        OnMenuOpened?.Invoke();
     }
 
     private void RestartGame()
@@ -67,5 +77,8 @@ public class GameOverUI : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+
+        _musicController.ResetToAmbient();
+        OnMenuClosed?.Invoke();
     }
 }

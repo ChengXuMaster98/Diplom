@@ -2,5 +2,6 @@ public enum EnemyType
 {
     Vampire,
     Skeleton,
-    Boss
+    Boss,
+    SkinnyOrk
 }

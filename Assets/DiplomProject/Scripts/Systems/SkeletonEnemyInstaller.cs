@@ -9,7 +9,7 @@ public class SkeletonEnemyInstaller : MonoInstaller
     public override void InstallBindings()
     {
 
-        Debug.Log("SkeletonEnemyInstaller BINDING EXECUTED");
+        //Debug.Log("SkeletonEnemyInstaller BINDING EXECUTED");
 
         // Статы
         Container.Bind<EnemyStats>().FromInstance(_enemyStats).AsSingle();

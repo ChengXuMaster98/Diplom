@@ -7,9 +7,12 @@ public class SaveExecutor : ITickable, ISaveExecutor
     private bool _loadRequested;
     private bool _newGameRequested;
 
-    public SaveExecutor(SaveLoadController saveLoadController)
+    private MusicController _musicController;
+
+    public SaveExecutor(SaveLoadController saveLoadController, MusicController musicController)
     {
         _saveLoadController = saveLoadController;
+        _musicController = musicController;
     }
 
     public void RequestLoadLastSave()
@@ -38,6 +41,7 @@ public class SaveExecutor : ITickable, ISaveExecutor
         {
             _loadRequested = false;
             _saveLoadController.LoadLastSave();
+            _musicController.ResetToAmbient();
         }
     }
 }

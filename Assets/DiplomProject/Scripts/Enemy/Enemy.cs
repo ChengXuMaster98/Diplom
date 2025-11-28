@@ -174,6 +174,5 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
         GetComponent<EnemySoundController>()?.PlayDeath();
 
         OnDeath?.Invoke();
-        //Destroy(gameObject);
     }
 }

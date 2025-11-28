@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   WeaponName: 
-  BaseDamage: 100
+  BaseDamage: 0
   CanStun: 0
   StunChance: 0
   StunDuration: 0

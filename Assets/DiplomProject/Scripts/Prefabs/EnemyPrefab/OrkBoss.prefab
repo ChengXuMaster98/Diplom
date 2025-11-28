@@ -3368,6 +3368,8 @@ GameObject:
   - component: {fileID: -6247425072068140421}
   - component: {fileID: 4377577304617556157}
   - component: {fileID: -5027266510587342629}
+  - component: {fileID: 4891602011380071818}
+  - component: {fileID: -5575190444713165385}
   m_Layer: 0
   m_Name: OrkBoss
   m_TagString: Boss
@@ -3623,6 +3625,30 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4891602011380071818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186413494234004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45dd1eaaf5a58034d946f0630ff6761b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-5575190444713165385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1186413494234004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7165af1a821e0854d8b408edaae21eb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1188194207369212
 GameObject:
   m_ObjectHideFlags: 0
