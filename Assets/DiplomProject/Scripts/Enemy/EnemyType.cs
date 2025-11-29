@@ -3,5 +3,6 @@ public enum EnemyType
     Vampire,
     Skeleton,
     Boss,
-    SkinnyOrk
+    SkinnyOrk,
+    Knight
 }
