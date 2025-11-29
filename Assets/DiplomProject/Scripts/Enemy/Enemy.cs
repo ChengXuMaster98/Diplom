@@ -113,24 +113,21 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
         }
     }
 
-    private void ApplyDamageInternal(int damage, bool triggerHitReaction) // Короче, просто костыльная обёртка для DOT урона, чтобы различался обычный урон от DOT.
+    private void ApplyDamageInternal(int damage, bool triggerHitReaction)
     {
         if (IsDead)
-        {
-            Debug.Log($"[Enemy] Уже мертв, урон не применяется");
             return;
-        }
 
         _currentHealth -= damage;
-        _currentHealth = Mathf.Max(_currentHealth, 0);
+        _currentHealth = Mathf.Clamp(_currentHealth, 0, _stats.MaxHealth);
+
+        Debug.Log($"[Enemy] Получен урон: {damage}, Текущий HP: {_currentHealth}");
 
         if (triggerHitReaction)
         {
             GetComponent<EnemySoundController>()?.PlayHurt();
             OnDamaged?.Invoke();
         }
-
-        Debug.Log($"[Enemy] Получен урон: {damage}, Текущий HP: {_currentHealth}");
 
         if (_currentHealth <= 0)
         {
@@ -147,21 +144,7 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
             return;
         }
 
-        _currentHealth -= damage;
-
-        GetComponent<EnemySoundController>()?.PlayHurt();
-
         ApplyDamageInternal(damage, triggerHitReaction: true);
-
-        OnDamaged?.Invoke();
-
-        Debug.Log($"[Enemy] Получен урон: {damage}, Текущий HP: {_currentHealth}");
-
-
-        if (_currentHealth <= 0)
-        {
-            Die();
-        }
     }
 
     private void Die()

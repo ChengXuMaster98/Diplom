@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: VampireStats
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  Damage: 20
+  Damage: 2
   MoveSpeed: 2
   AttackRange: 2.2
   DetectionRadius: 10
