@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class KnightAttackState : IEnemyState
@@ -14,6 +14,8 @@ public class KnightAttackState : IEnemyState
     private float _attackCooldown;
     private int _attacksDone;
     private int _attacksInBurst;
+
+    private Vector3 _lockedTargetPosition;
 
     public KnightAttackState(
         IKnightAnimator animator,
@@ -35,25 +37,39 @@ public class KnightAttackState : IEnemyState
 
     public void Enter()
     {
+        // стопаем и отключаем агента
         _agent.isStopped = true;
+        _agent.updatePosition = false;
+        _agent.updateRotation = false;
+        _agent.ResetPath();
+        _agent.velocity = Vector3.zero;
+
+        _animator.SetRootMotion(true);
+
+        // фиксируем позицию цели на момент начала атаки
+        var player = _detector.Player;
+        _lockedTargetPosition = player != null
+            ? player.position
+            : _animator.Transform.position + _animator.Transform.forward;
+
         _attackCooldown = 0f;
         _attacksDone = 0;
-        _attacksInBurst = Random.Range(1, 3); // 1�2 ����� ��������
+        _attacksInBurst = Random.Range(1, 3);   // от 1 до 2 ударов
 
         _animator.SetAttackHitCallback(PerformAttack);
     }
 
     private void PerformAttack()
     {
-        if (_detector.Player == null) return;
-        if (_playerDamageable == null) return;
-
-        float dist = Vector3.Distance(
-            _detector.Player.position,
-            _animator.Transform.position);
-
-        if (dist > _stats.AttackRange + 0.3f)
+        if (_playerDamageable == null)
             return;
+
+        float dist = Vector3.Distance(_lockedTargetPosition, _animator.Transform.position);
+        if (dist > _stats.AttackRange + 0.3f)
+        {
+            // промах — просто ничего не делаем
+            return;
+        }
 
         _playerDamageable.TakeDamage(_stats.Damage);
     }
@@ -61,41 +77,46 @@ public class KnightAttackState : IEnemyState
     public void Tick()
     {
         var player = _detector.Player;
-        if (player == null)
+
+        // смотрим в ЗАФИКСИРОВАННУЮ позицию
+        _animator.LookAt(_lockedTargetPosition);
+
+        // если игрок совсем убежал далеко — можно выйти в погоню
+        if (player != null)
         {
-            _machine.SetState(_factory.CreateIdleState());
-            return;
+            float distNow = Vector3.Distance(player.position, _animator.Transform.position);
+            if (distNow > _stats.AttackRange)
+            {
+                _machine.SetState(_factory.CreateChaseState());
+                return;
+            }
         }
 
-        _animator.LookAt(player.position);
-
-        float dist = Vector3.Distance(player.position, _animator.Transform.position);
-
-        if (dist > _stats.AttackRange + 0.5f)
-        {
-            _machine.SetState(_factory.CreateChaseState());
-            return;
-        }
-
-        // ��� ���� ��� �����
         _attackCooldown -= Time.deltaTime;
 
         if (_attackCooldown <= 0f && !_animator.IsPlayingAttack())
         {
             _animator.PlayAttack();
             _attacksDone++;
-            _attackCooldown = Random.Range(0.8f, 1.6f); // ����� ����� �������
+            _attackCooldown = Random.Range(0.8f, 1.6f);
 
             if (_attacksDone >= _attacksInBurst)
             {
-                // ����� ����� ������ �����
-                _machine.SetState(_factory.CreateRetreatState());
+                return;
+                //_machine.SetState(_factory.CreateRetreatState());
             }
         }
     }
 
     public void Exit()
     {
+        _animator.SetRootMotion(false);
+
+        // выравниваем NavMeshAgent под фактическую позицию модели
+        _agent.Warp(_animator.Transform.position);
+
+        _agent.updatePosition = true;
+        _agent.updateRotation = true;
         _agent.isStopped = false;
     }
 }

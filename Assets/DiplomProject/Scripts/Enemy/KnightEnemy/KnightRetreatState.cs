@@ -32,22 +32,35 @@ public class KnightRetreatState : IEnemyState
     public void Enter()
     {
         _timer = 0f;
+
         var player = _detector.Player;
         Vector3 current = _agent.transform.position;
 
+        Vector3 dirFromPlayer = Vector3.zero;
+
         if (player != null)
         {
-            Vector3 dirFromPlayer = (current - player.position).normalized;
+            dirFromPlayer = current - player.position;
             dirFromPlayer.y = 0f;
-            _targetPos = current + dirFromPlayer * RetreatDistance;
+
+            if (dirFromPlayer.sqrMagnitude > 0.0001f)
+                dirFromPlayer = dirFromPlayer.normalized;
+            else
+                dirFromPlayer = _agent.transform.forward * -1f;
         }
         else
         {
-            _targetPos = current;
+            dirFromPlayer = _agent.transform.forward * -1f;
         }
 
+        _targetPos = current + dirFromPlayer * RetreatDistance;
+
         _agent.isStopped = false;
+        _agent.updatePosition = true;
+        _agent.updateRotation = true;
         _agent.SetDestination(_targetPos);
+
+        _animator.SetRootMotion(false);
         _animator.PlayRetreat();
     }
 
@@ -55,9 +68,9 @@ public class KnightRetreatState : IEnemyState
     {
         _timer += Time.deltaTime;
 
-        if (_timer >= RetreatDuration || (!_agent.pathPending && _agent.remainingDistance <= 0.2f))
+        if (_timer >= RetreatDuration ||
+           (!_agent.pathPending && _agent.remainingDistance <= 0.2f))
         {
-            // После отхода обратно в кружение
             _machine.SetState(_factory.CreateCircleState());
         }
     }

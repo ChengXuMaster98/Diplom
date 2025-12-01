@@ -37,7 +37,7 @@ public class PlayerStateController : ITickable
         _moveState = new PlayerMoveState(player.Animator, movement);
         _jumpState = new PlayerJumpState(player.Animator, movement);
         _attackState = new PlayerAttackState(player.Animator, staminaConsumer, stateMachine, attackAnimationEventReceiver, sound, inventory);
-        _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine, sound, inventory);
+        _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine, sound, inventory, movement);
 
        container.Unbind<IBlockStatusProvider>();
        container.Bind<IBlockStatusProvider>().FromInstance(_blockState).AsSingle();
@@ -87,6 +87,7 @@ public class PlayerStateController : ITickable
         var moveX = Input.GetAxis(HORIZONTAL_AXIS);
         var moveZ = Input.GetAxis(VERTICAL_AXIS);
         var input = new Vector2(moveX, moveZ);
+
 
         if (input.magnitude == 0)
         {

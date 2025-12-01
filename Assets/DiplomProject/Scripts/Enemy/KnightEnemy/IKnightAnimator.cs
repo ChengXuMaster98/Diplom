@@ -6,13 +6,16 @@ public interface IKnightAnimator
     Transform Transform { get; }
 
     void PlayIdle();
-    void PlayMove();        // общее движение вперёд
-    void PlayCircle();      // кружение/бег вокруг
-    void PlayAttack();
+    void PlayMove();        // движение вперёд
+    void PlayCircle(float side);  // кружение вокруг (лево/право)
     void PlayRetreat();
+
+    void PlayAttack();
     void PlayDie();
     void PlayImpact();
     void PlayStun();
+
+    void SetRootMotion(bool enabled);
 
     void LookAt(Vector3 position);
     bool IsPlayingAttack();

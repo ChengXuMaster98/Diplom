@@ -18,10 +18,6 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
     private EnemyStats _stats;
 
-    [SerializeField]
-    private float _checkInterval = 0.2f; // как часто проверяем (сек)
-
-    private float _nextCheckTime;
 
     [Inject]
     public void Construct(EnemyStats stats)
@@ -37,11 +33,6 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
 
     private void Update()
     {
-
-        if (Time.time < _nextCheckTime)
-            return;
-
-        _nextCheckTime = Time.time + _checkInterval;
         CheckPlayer();
 
     }

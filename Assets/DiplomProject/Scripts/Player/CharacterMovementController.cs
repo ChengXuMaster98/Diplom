@@ -99,7 +99,7 @@ public class CharacterMovementController : ITickable
 
         //Executing the jump
         _controller.Move(velocity * Time.deltaTime);
-        _controller.Move(_direction * _stats.MoveSpeed * Time.deltaTime);
+        //_controller.Move(_direction * _stats.MoveSpeed * Time.deltaTime);
 
         float effectiveSpeed = _stats.MoveSpeed * _upgradeService.SpeedMultiplier;
         _controller.Move(_direction * effectiveSpeed * Time.deltaTime);

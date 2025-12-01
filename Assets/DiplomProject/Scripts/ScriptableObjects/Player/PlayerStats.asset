@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa14f0057c9dab4db1d27b082543d65, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 1500
   attackDamage: 0
   MoveSpeed: 5
   mouseSensitivity: 75

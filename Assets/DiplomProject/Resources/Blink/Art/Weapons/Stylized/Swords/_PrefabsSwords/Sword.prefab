@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4811039161904179929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TipPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3180619292872031068}
   - component: {fileID: 1984979061032301817}
   - component: {fileID: 4353002515478593587}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 2695060938570391839}
   - component: {fileID: 7568989342063709964}
   - component: {fileID: 8676661598927651058}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ElectricIdleFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4959,7 +4959,7 @@ GameObject:
   - component: {fileID: 5327768106250290917}
   - component: {fileID: 82454268370480098}
   - component: {fileID: 2959060472317036923}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5012,7 +5012,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.52
-  m_Height: 1.2748086
+  m_Radius: 0.33457282
+  m_Height: 0.8476446
   m_Direction: 1
-  m_Center: {x: 0.3669107, y: 0.07731112, z: 0}
+  m_Center: {x: 0.3669107, y: 0.35, z: 0}

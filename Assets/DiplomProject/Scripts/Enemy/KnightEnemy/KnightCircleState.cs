@@ -12,6 +12,9 @@ public class KnightCircleState : IEnemyState
 
     private float _timeInState;
     private float _nextAttackTime;
+    private float _side = -1f;              // -1f или 1f
+
+    private const float DesiredDistance = 2.5f;
 
     public KnightCircleState(
         IKnightAnimator animator,
@@ -32,11 +35,18 @@ public class KnightCircleState : IEnemyState
     public void Enter()
     {
         _agent.isStopped = false;
-        _agent.stoppingDistance = 0.0f;
+        _agent.updatePosition = true;
+        _agent.updateRotation = true;
+        _agent.stoppingDistance = 0f;
+
         _timeInState = 0f;
-        // небольшой рандом, когда можно атаковать
         _nextAttackTime = Random.Range(1.0f, 2.0f);
-        _animator.PlayCircle();
+
+        // рандом направления кружения
+        _side = Random.value > 0.5f ? 1f : -1f;
+
+        _animator.SetRootMotion(false);
+        _animator.PlayCircle(_side);
     }
 
     public void Tick()
@@ -50,28 +60,37 @@ public class KnightCircleState : IEnemyState
 
         _timeInState += Time.deltaTime;
 
-        // двигаемся по дуге вокруг игрока
-        Vector3 toPlayer = (player.position - _agent.transform.position);
+        // Вектор на игрока
+        Vector3 toPlayer = player.position - _agent.transform.position;
         toPlayer.y = 0f;
+
         float dist = toPlayer.magnitude;
 
-        if (dist > 3.0f)
+        // если вдруг отошли слишком далеко - опять приближаемся
+        if (dist > DesiredDistance + 1.0f)
         {
-            // слишком далеко → снова подходим
             _machine.SetState(_factory.CreateChaseState());
             return;
         }
 
-        // направление вдоль "орбиты" (перпендикуляр к вектору на игрока)
-        Vector3 tangent = Vector3.Cross(Vector3.up, toPlayer.normalized);
-        // можно рандомизировать левое/правое кружение
-        float side = 1f; // или -1f
-        Vector3 circleTarget = player.position - toPlayer.normalized * 2.2f + tangent * side * 1.5f;
+        Vector3 dirToPlayer = toPlayer.sqrMagnitude > 0.0001f
+            ? toPlayer.normalized
+            : Vector3.forward;
+
+        // вектор вдоль окружности
+        Vector3 tangent = Vector3.Cross(Vector3.up, dirToPlayer) * _side;
+
+        // целевая позиция на дуге
+        Vector3 circleTarget =
+            player.position
+          - dirToPlayer * DesiredDistance
+          + tangent * 1.5f;
 
         _agent.SetDestination(circleTarget);
         _animator.LookAt(player.position);
+        _animator.PlayCircle(_side);   // поддерживаем blend
 
-        // готов ли к атаке?
+        // готов ли к атаке
         if (_timeInState >= _nextAttackTime)
         {
             _machine.SetState(_factory.CreateAttackState());

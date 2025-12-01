@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4557288429454945104}
   - component: {fileID: 7532490619454583685}
   - component: {fileID: 8364427194201144718}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hummer 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5137302732662295927}
   - component: {fileID: 5340960180603069724}
   - component: {fileID: 711610246552146049}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AttackHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

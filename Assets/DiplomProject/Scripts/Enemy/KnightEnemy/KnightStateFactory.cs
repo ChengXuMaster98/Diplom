@@ -53,7 +53,7 @@ public class KnightStateFactory : IKnightStateFactory
 
     public IEnemyState CreatePatrolState()
     {
-        // для Knight можно не использовать Patrol, или реализовать "спокойное блуждание"
+        
         return CreateIdleState();
     }
 

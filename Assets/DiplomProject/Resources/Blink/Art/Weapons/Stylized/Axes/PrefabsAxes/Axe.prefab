@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1996584519274496709}
   - component: {fileID: 1451992451559395048}
   - component: {fileID: 2514128505551991997}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: AttackHItBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 3434584089707925493}
   - component: {fileID: 1731004711075627088}
   - component: {fileID: 4603018383147938970}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
