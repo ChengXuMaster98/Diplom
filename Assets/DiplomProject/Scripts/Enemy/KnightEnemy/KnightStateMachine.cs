@@ -2,6 +2,7 @@ public class KnightStateMachine : IKnightStateMachine
 {
     public IEnemyState CurrentState { get; private set; }
     private IEnemyState _previousState;
+    public bool AttackIntent { get; set; }
 
     public void Initialize(IEnemyState startState)
     {

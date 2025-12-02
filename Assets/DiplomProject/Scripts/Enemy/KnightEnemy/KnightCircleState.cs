@@ -14,6 +14,9 @@ public class KnightCircleState : IEnemyState
     private float _nextAttackTime;
     private float _side = -1f;              // -1f или 1f
 
+    private float _circleTimer;
+    private float _circleDuration;
+
     private const float DesiredDistance = 2.5f;
 
     public KnightCircleState(
@@ -39,8 +42,11 @@ public class KnightCircleState : IEnemyState
         _agent.updateRotation = true;
         _agent.stoppingDistance = 0f;
 
+        _circleTimer = 0f;
+        _circleDuration = Random.Range(1.5f, 2.0f);
+
         _timeInState = 0f;
-        _nextAttackTime = Random.Range(1.0f, 2.0f);
+        _nextAttackTime = Random.Range(1.5f, 2.0f);
 
         // рандом направления кружения
         _side = Random.value > 0.5f ? 1f : -1f;
@@ -58,7 +64,7 @@ public class KnightCircleState : IEnemyState
             return;
         }
 
-        _timeInState += Time.deltaTime;
+        _circleTimer += Time.deltaTime;
 
         // Вектор на игрока
         Vector3 toPlayer = player.position - _agent.transform.position;
@@ -66,10 +72,12 @@ public class KnightCircleState : IEnemyState
 
         float dist = toPlayer.magnitude;
 
-        // если вдруг отошли слишком далеко - опять приближаемся
-        if (dist > DesiredDistance + 1.0f)
+        // если кружение закончилось — атакуем
+        if (_circleTimer >= _circleDuration)
         {
-            _machine.SetState(_factory.CreateChaseState());
+            _machine.AttackIntent = true;
+
+            _machine.SetState(_factory.CreateAttackState());
             return;
         }
 
@@ -91,10 +99,10 @@ public class KnightCircleState : IEnemyState
         _animator.PlayCircle(_side);   // поддерживаем blend
 
         // готов ли к атаке
-        if (_timeInState >= _nextAttackTime)
-        {
-            _machine.SetState(_factory.CreateAttackState());
-        }
+        //if (_timeInState >= _nextAttackTime)
+        //{
+        //    _machine.SetState(_factory.CreateAttackState());
+        //}
     }
 
     public void Exit()

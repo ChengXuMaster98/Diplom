@@ -16,7 +16,7 @@ public class KnightGetDamageState : IEnemyState
 
     public void Enter()
     {
-        _timer = 0.4f;
+        _timer = 0.1f;
         _animator.PlayImpact();
     }
 

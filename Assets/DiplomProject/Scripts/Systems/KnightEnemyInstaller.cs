@@ -25,6 +25,7 @@ public class KnightEnemyInstaller : MonoInstaller
         // базовые компоненты
         Container.Bind<Enemy>().FromComponentInHierarchy().AsSingle();
         Container.Bind<EnemyHealth>().FromComponentInHierarchy().AsSingle();
+
         Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
 
         // AI

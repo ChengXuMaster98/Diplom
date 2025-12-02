@@ -10,8 +10,6 @@ public class KnightApproachState : IEnemyState
     private readonly NavMeshAgent _agent;
     private readonly EnemyStats _stats;
 
-    private const float DesiredDistance = 2.5f;
-
     public KnightApproachState(
         IKnightAnimator animator,
         IKnightStateMachine machine,
@@ -33,7 +31,7 @@ public class KnightApproachState : IEnemyState
         _agent.isStopped = false;
         _agent.updatePosition = true;
         _agent.updateRotation = true;
-        _agent.stoppingDistance = DesiredDistance;
+        _agent.stoppingDistance = _stats.AttackRange;
 
         _animator.SetRootMotion(false);
         _animator.PlayMove();
@@ -52,9 +50,18 @@ public class KnightApproachState : IEnemyState
         _animator.LookAt(player.position);
 
         float dist = Vector3.Distance(_agent.transform.position, player.position);
-        if (dist <= DesiredDistance + 0.2f)
+        if (dist <= _stats.AttackRange + 0.2f)
         {
-            _machine.SetState(_factory.CreateCircleState());
+            if (_machine.AttackIntent)
+            {
+                // если враг собирался атаковать — атакуем сразу
+                _machine.SetState(_factory.CreateAttackState());
+            }
+            else
+            {
+                // обычное поведение
+                _machine.SetState(_factory.CreateCircleState());
+            }
         }
     }
 

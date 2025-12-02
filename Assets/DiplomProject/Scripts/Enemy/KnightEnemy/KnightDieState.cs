@@ -14,8 +14,8 @@ public class KnightDieState : IEnemyState
     public void Enter()
     {
         _animator.PlayDie();
-        if (_animator is KnightAnimatorController k)
-            k.SetDeathEndCallback(OnDeathAnimationEnd);
+        if (_animator is KnightAnimatorController controller)
+            controller.SetDeathEndCallback(OnDeathAnimationEnd);
     }
 
     private void OnDeathAnimationEnd()

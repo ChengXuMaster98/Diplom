@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
@@ -8,8 +9,8 @@ public class KnightStateFactory : IKnightStateFactory
     private readonly EnemyStats _stats;
     private readonly IKnightAnimator _animator;
     private readonly IPlayerDamageable _playerDamageable;
+    private readonly GameObject _enemyGO;
     private readonly NavMeshAgent _agent;
-    private readonly Enemy _enemy;
 
     [Inject]
     public KnightStateFactory(
@@ -27,7 +28,7 @@ public class KnightStateFactory : IKnightStateFactory
         _animator = animator;
         _playerDamageable = playerDamageable;
         _agent = agent;
-        _enemy = enemy;
+        _enemyGO = enemy.gameObject;
     }
 
     public IEnemyState CreateIdleState()
@@ -40,7 +41,7 @@ public class KnightStateFactory : IKnightStateFactory
         => new KnightAttackState(_animator, _machine, this, _detector, _playerDamageable, _stats, _agent);
 
     public IEnemyState CreateDieState()
-        => new KnightDieState(_animator, _enemy.gameObject);
+        => new KnightDieState(_animator, _enemyGO);
 
     public IEnemyState CreateGetDamageState()
         => new KnightGetDamageState(_animator, _machine, this);

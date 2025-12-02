@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aed2e3f0a592c439d1fe154b4de9cd, type: 3}
   m_Name: SkinnyOrk
   m_EditorClassIdentifier: 
-  MaxHealth: 100
-  Damage: 20
+  MaxHealth: 200
+  Damage: 1
   MoveSpeed: 2
   AttackRange: 2.2
   DetectionRadius: 10

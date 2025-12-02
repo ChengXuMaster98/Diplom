@@ -24,7 +24,6 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
 
     public Vector3 CenterPoint => transform.position + Vector3.up * 1.2f;
 
-
     public void Initialize(EnemyStats stats)
     {
         _stats = stats;

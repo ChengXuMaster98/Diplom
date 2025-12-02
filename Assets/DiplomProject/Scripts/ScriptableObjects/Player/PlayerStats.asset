@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fa14f0057c9dab4db1d27b082543d65, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  MaxHealth: 1500
-  attackDamage: 0
+  MaxHealth: 100
+  attackDamage: 20
   MoveSpeed: 5
   mouseSensitivity: 75
-  RotationSpeed: 5
+  RotationSpeed: 3
   JumpHeight: 1
   gravity: -9.81
   HealthRegenRate: 20

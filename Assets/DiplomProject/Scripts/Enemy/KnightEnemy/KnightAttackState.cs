@@ -110,6 +110,8 @@ public class KnightAttackState : IEnemyState
 
     public void Exit()
     {
+        _machine.AttackIntent = false;
+
         _animator.SetRootMotion(false);
 
         // выравниваем NavMeshAgent под фактическую позицию модели
