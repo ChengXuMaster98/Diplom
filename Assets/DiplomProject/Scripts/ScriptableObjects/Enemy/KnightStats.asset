@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aed2e3f0a592c439d1fe154b4de9cd, type: 3}
   m_Name: KnightStats
   m_EditorClassIdentifier: 
-  MaxHealth: 100
+  MaxHealth: 300
   Damage: 45
   MoveSpeed: 15
   AttackRange: 2.6

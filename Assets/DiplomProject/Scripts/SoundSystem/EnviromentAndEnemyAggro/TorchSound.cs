@@ -23,7 +23,7 @@ public class TorchSound : MonoBehaviour
             _db.TorchFire,
             transform.position,
             $"torch_{GetInstanceID()}",
-            0.6f
+            1f
         );
 
         _src.loop = true;
