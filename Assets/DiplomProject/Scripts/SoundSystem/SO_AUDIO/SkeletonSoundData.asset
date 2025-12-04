@@ -12,16 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: SkeletonSoundData
   m_EditorClassIdentifier: 
-  Idle:
-  - {fileID: 0}
+  IdleVocal:
+  - {fileID: 8300000, guid: 4d32b3f8a6e821c48a8944e3d2cb8b6e, type: 3}
+  - {fileID: 8300000, guid: 3c6f563c9b1e9544281465897ad7f2a5, type: 3}
+  AggroVocal:
+  - {fileID: 8300000, guid: 5a941b4d6d7e9c940913edbd871baa76, type: 3}
+  - {fileID: 8300000, guid: de73d90d9d0421646b8cdeed1d479a91, type: 3}
   Attack:
   - {fileID: 0}
   Hurt:
   - {fileID: 8300000, guid: 2997ccb22c18e35448915dee1b60672c, type: 3}
   - {fileID: 8300000, guid: 15d8bc6cd6d45024491dcb3cce93d0e7, type: 3}
-  Step: []
+  Step:
+  - {fileID: 0}
   Death:
   - {fileID: 8300000, guid: 70af5b2fa49fca64488c5a69995c626a, type: 3}
+  IdleMinInterval: 6
+  IdleMaxInterval: 12
+  AggroMinInterval: 2.5
+  AggroMaxInterval: 5
+  AttackMinInterval: 1
+  AttackMaxInterval: 3
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

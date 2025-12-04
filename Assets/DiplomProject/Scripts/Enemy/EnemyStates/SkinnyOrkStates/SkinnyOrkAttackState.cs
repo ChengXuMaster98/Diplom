@@ -12,6 +12,9 @@ public class SkinnyOrkAttackState : IEnemyState
     private readonly ISkinnyOrkStateMachine _stateMachine;
     private readonly ISkinnyOrkStateFactory _stateFactory;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
     private float _attackCooldown;
 
     //private const float AttackToChaseThreshold = 1.2f;
@@ -23,7 +26,8 @@ public class SkinnyOrkAttackState : IEnemyState
         EnemyStats stats,
         ISkinnyOrkStateMachine stateMachine,
         NavMeshAgent agent,
-        ISkinnyOrkStateFactory stateFactory)
+        ISkinnyOrkStateFactory stateFactory,
+        EnemySoundController sound)
     {
         _playerDamageable = playerDamageable;
         Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
@@ -33,6 +37,7 @@ public class SkinnyOrkAttackState : IEnemyState
         _stateMachine = stateMachine;
         _agent = agent;
         _stateFactory = stateFactory;
+        _sound = sound;
 
         _detector.PlayerLost += OnPlayerLost;
     }
@@ -48,6 +53,7 @@ public class SkinnyOrkAttackState : IEnemyState
         _attackCooldown = 0f;
 
         _animator.SetAttackHitCallback(PerformAttack);
+        _vocalTimer = _sound.GetRandomAttackInterval();
 
         Debug.Log("[ATTACK STATE] Entered");
     }
@@ -95,6 +101,14 @@ public class SkinnyOrkAttackState : IEnemyState
         _animator.LookAt(player.position);
 
         _attackCooldown -= Time.deltaTime;
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAttack();
+            _vocalTimer = _sound.GetRandomAttackInterval();
+        }
+
 
         if (_attackCooldown <= 0f && !_animator.IsPlayingAttackAnimation())
         {

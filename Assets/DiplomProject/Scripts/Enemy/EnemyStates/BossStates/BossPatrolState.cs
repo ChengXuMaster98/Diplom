@@ -17,18 +17,24 @@ public class BossPatrolState : IEnemyState
 
     private float _waitTimer;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     public BossPatrolState(
         IBossAnimator animator,
         IBossStateMachine stateMachine,
         IBossStateFactory factory,
         IPlayerDetector detector,
-        NavMeshAgent agent)
+        NavMeshAgent agent,
+        EnemySoundController sound)
     {
         _animator = animator;
         _stateMachine = stateMachine;
         _factory = factory;
         _detector = detector;
         _agent = agent;
+        _sound = sound;
     }
 
     public void Enter()
@@ -46,6 +52,8 @@ public class BossPatrolState : IEnemyState
         _agent.updatePosition = true;
         _agent.updateRotation = true;
         _agent.stoppingDistance = 0f;
+
+        _vocalTimer = _sound.GetRandomIdleInterval();
 
         _waitTimer = 0f;
         SetNextDestination();
@@ -78,6 +86,13 @@ public class BossPatrolState : IEnemyState
                 _waitTimer = 0f;
                 SetNextDestination();
                 _animator.PlayPatrol(); // ← снова запускаем patrol
+            }
+
+            _vocalTimer -= Time.deltaTime;
+            if (_vocalTimer <= 0f)
+            {
+                _sound.PlayIdle();
+                _vocalTimer = _sound.GetRandomIdleInterval();
             }
 
             return;

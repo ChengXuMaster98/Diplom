@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: KnightStats
   m_EditorClassIdentifier: 
   MaxHealth: 300
-  Damage: 45
+  Damage: 40
   MoveSpeed: 15
   AttackRange: 2.6
   DetectionRadius: 10

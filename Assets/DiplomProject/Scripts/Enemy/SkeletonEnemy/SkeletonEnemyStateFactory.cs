@@ -13,6 +13,7 @@ public class SkeletonStateFactory : ISkeletonStateFactory
     private readonly IPlayerDamageable _playerDamageable;
     private readonly NavMeshAgent _agent;
     private readonly Transform _transform;
+    private readonly EnemySoundController _sound;
 
     [Inject]
     public SkeletonStateFactory(
@@ -22,7 +23,8 @@ public class SkeletonStateFactory : ISkeletonStateFactory
         ISkeletonAnimator animator,
         IPlayerDamageable playerDamageable,
         NavMeshAgent agent,
-        Enemy enemy)
+        Enemy enemy,
+        EnemySoundController sound)
     {
         _stateMachine = stateMachine;
         _detector = detector;
@@ -31,11 +33,12 @@ public class SkeletonStateFactory : ISkeletonStateFactory
         _playerDamageable = playerDamageable;
         _agent = agent;
         _enemyGO = enemy.gameObject;
+        _sound = sound;
     }
 
     public IEnemyState CreateIdleState() => new SkeletonIdleState(_animator, _detector, _stateMachine, this);
-    public IEnemyState CreateChaseState() => new SkeletonChaseState(_animator, _agent, _detector, _stats, _stateMachine, this) ;
-    public IEnemyState CreateAttackState() => new SkeletonAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
+    public IEnemyState CreateChaseState() => new SkeletonChaseState(_animator, _agent, _detector, _stats, _stateMachine, this, _sound);
+    public IEnemyState CreateAttackState() => new SkeletonAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this, _sound);
     public IEnemyState CreateDieState() => new SkeletonDieState(_animator, _enemyGO);
 
     public IEnemyState CreateGetDamageState() => new SkeletonGetDamageState(_animator, _stateMachine, this);
@@ -49,5 +52,5 @@ public class SkeletonStateFactory : ISkeletonStateFactory
     }
 
     public IEnemyState CreatePatrolState()
-        => new SkeletonPatrolState(_animator, _stateMachine, this, _detector, _agent);
+        => new SkeletonPatrolState(_animator, _stateMachine, this, _detector, _agent, _sound);
 }

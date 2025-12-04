@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: StaminaRegenUpgrade
   m_EditorClassIdentifier: 
   Type: 3
-  DisplayName: "\"\u0421\u043A\u043E\u0440\u043E\u0441\u0442\u044C \u0440\u0435\u0433\u0435\u043D\u0430
-    \u0441\u0442\u0430\u043C\u0438\u043D\u044B\""
+  DisplayName: "\"\u041C\u0430\u043A\u0441\u0438\u043C\u0443\u043C \u0441\u0442\u0430\u043C\u0438\u043D\u044B\""
   Value: 0.2
   Icon: {fileID: 21300000, guid: cc788d793ad1eae4e9fe24c4dfda66af, type: 3}

@@ -65,8 +65,8 @@ public class PlayerHealth : MonoBehaviour, IInitializable, IPlayerDamageable, IT
 
         _regenTimer += Time.deltaTime;
 
-        // Через 3 секунды после последнего урона запускаем постепенную регенерацию
-        if (_regenTimer >= 3f)
+        // Через -N- секунды после последнего урона запускается постепенную регенерацию
+        if (_regenTimer >= 7f)
         {
             float regenPerSecond = _stats.HealthRegenRate * _upgradeService.HealthMultiplier;
             _currentHealth += Mathf.CeilToInt(regenPerSecond * Time.deltaTime);

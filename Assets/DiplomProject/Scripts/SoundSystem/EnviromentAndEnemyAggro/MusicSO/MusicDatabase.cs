@@ -12,5 +12,6 @@ public class MusicDatabase : ScriptableObject
     [Header("Environment SFX")]
     public AudioClip TorchFire;
     public AudioClip CaveHum;
+    public AudioClip StrangeSound;
 
 }

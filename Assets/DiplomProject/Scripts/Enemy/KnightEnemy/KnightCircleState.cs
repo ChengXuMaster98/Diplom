@@ -10,8 +10,8 @@ public class KnightCircleState : IEnemyState
     private readonly NavMeshAgent _agent;
     private readonly EnemyStats _stats;
 
-    private float _timeInState;
-    private float _nextAttackTime;
+    //private float _timeInState;
+    //private float _nextAttackTime;
     private float _side = -1f;              // -1f или 1f
 
     private float _circleTimer;
@@ -19,13 +19,18 @@ public class KnightCircleState : IEnemyState
 
     private const float DesiredDistance = 2.5f;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     public KnightCircleState(
         IKnightAnimator animator,
         IKnightStateMachine machine,
         IKnightStateFactory factory,
         IPlayerDetector detector,
         NavMeshAgent agent,
-        EnemyStats stats)
+        EnemyStats stats,
+        EnemySoundController sound)
     {
         _animator = animator;
         _machine = machine;
@@ -33,6 +38,7 @@ public class KnightCircleState : IEnemyState
         _detector = detector;
         _agent = agent;
         _stats = stats;
+        _sound = sound;
     }
 
     public void Enter()
@@ -45,8 +51,10 @@ public class KnightCircleState : IEnemyState
         _circleTimer = 0f;
         _circleDuration = Random.Range(1.5f, 2.0f);
 
-        _timeInState = 0f;
-        _nextAttackTime = Random.Range(1.5f, 2.0f);
+        _vocalTimer = _sound.GetRandomIdleInterval();
+
+        //_timeInState = 0f;
+        //_nextAttackTime = Random.Range(1.5f, 2.0f);
 
         // рандом направления кружения
         _side = Random.value > 0.5f ? 1f : -1f;
@@ -71,6 +79,14 @@ public class KnightCircleState : IEnemyState
         toPlayer.y = 0f;
 
         float dist = toPlayer.magnitude;
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayIdle();
+            _vocalTimer = _sound.GetRandomIdleInterval();
+        }
+
 
         // если кружение закончилось — атакуем
         if (_circleTimer >= _circleDuration)

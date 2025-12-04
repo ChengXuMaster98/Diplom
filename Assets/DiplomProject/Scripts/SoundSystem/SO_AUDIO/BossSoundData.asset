@@ -12,16 +12,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: BossSoundData
   m_EditorClassIdentifier: 
-  Idle:
-  - {fileID: 0}
+  IdleVocal:
+  - {fileID: 8300000, guid: d91b48dc175b2f5499a5676b21ba8269, type: 3}
+  - {fileID: 8300000, guid: 5f1a1e48beac45141a01f96659ce0c5b, type: 3}
+  AggroVocal:
+  - {fileID: 8300000, guid: 72b594d82ae282c4f84df9d18be4862e, type: 3}
+  - {fileID: 8300000, guid: a5821b0f3fa7c674fb8b6e29adf1db9d, type: 3}
+  - {fileID: 8300000, guid: d3306ba529a09104787e3c71b1728eab, type: 3}
+  - {fileID: 8300000, guid: c64ba5f8706b27c45b3ea843ab1d25d5, type: 3}
   Attack:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: f87525324db265641a49ab25efdf15c5, type: 3}
+  - {fileID: 8300000, guid: 4bea04c80be9b0448a7eddfd4275a2c1, type: 3}
+  - {fileID: 8300000, guid: 8db94545e59ff4649af24e67e3a1ef03, type: 3}
+  - {fileID: 8300000, guid: b06a9bf725bf1064d8e8379fd8b358d3, type: 3}
   Hurt:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: bff5afc7a2b43d14fa25bbc3a833a3ca, type: 3}
+  - {fileID: 8300000, guid: 3d7ee173deeaa7243832121659b23449, type: 3}
   Step:
   - {fileID: 0}
   Death:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 4f6c8ad5cc404944bb2a5afd0f1929ef, type: 3}
+  IdleMinInterval: 2.5
+  IdleMaxInterval: 5
+  AggroMinInterval: 2.5
+  AggroMaxInterval: 5
+  AttackMinInterval: 1
+  AttackMaxInterval: 3
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

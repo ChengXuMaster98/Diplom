@@ -11,6 +11,9 @@ public class KnightAttackState : IEnemyState
     private readonly EnemyStats _stats;
     private readonly NavMeshAgent _agent;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
     private float _attackCooldown;
     private int _attacksDone;
     private int _attacksInBurst;
@@ -24,7 +27,8 @@ public class KnightAttackState : IEnemyState
         IPlayerDetector detector,
         IPlayerDamageable playerDamageable,
         EnemyStats stats,
-        NavMeshAgent agent)
+        NavMeshAgent agent,
+        EnemySoundController sound)
     {
         _animator = animator;
         _machine = machine;
@@ -33,11 +37,14 @@ public class KnightAttackState : IEnemyState
         _playerDamageable = playerDamageable;
         _stats = stats;
         _agent = agent;
+        _sound = sound;
     }
 
     public void Enter()
     {
-        // стопаем и отключаем агента
+        _vocalTimer = _sound.GetRandomAttackInterval();
+
+        //стоп и отключение агента. Надо попробовать наоборот не отключать может?
         _agent.isStopped = true;
         _agent.updatePosition = false;
         _agent.updateRotation = false;
@@ -46,7 +53,7 @@ public class KnightAttackState : IEnemyState
 
         _animator.SetRootMotion(true);
 
-        // фиксируем позицию цели на момент начала атаки
+        // фиксация позиции цели на момент начала атаки
         var player = _detector.Player;
         _lockedTargetPosition = player != null
             ? player.position
@@ -92,6 +99,15 @@ public class KnightAttackState : IEnemyState
             }
         }
 
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAttack();
+            _vocalTimer = _sound.GetRandomAttackInterval();
+        }
+
+
+
         _attackCooldown -= Time.deltaTime;
 
         if (_attackCooldown <= 0f && !_animator.IsPlayingAttack())
@@ -99,6 +115,7 @@ public class KnightAttackState : IEnemyState
             _animator.PlayAttack();
             _attacksDone++;
             _attackCooldown = Random.Range(0.8f, 1.6f);
+
 
             if (_attacksDone >= _attacksInBurst)
             {

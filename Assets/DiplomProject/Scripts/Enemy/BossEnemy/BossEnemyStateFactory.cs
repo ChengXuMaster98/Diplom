@@ -14,6 +14,9 @@ public class BossStateFactory : IBossStateFactory
     private readonly NavMeshAgent _agent;
     private readonly Transform _transform;
     private readonly GameWonUI _gameWonUI;
+    private readonly EnemySoundController _sound;
+
+
 
     [Inject]
     public BossStateFactory(
@@ -24,7 +27,8 @@ public class BossStateFactory : IBossStateFactory
         IPlayerDamageable playerDamageable,
         NavMeshAgent agent,
         Enemy enemy,
-        GameWonUI gameWonUI)
+        GameWonUI gameWonUI,
+        EnemySoundController sound)
     {
         _stateMachine = stateMachine;
         _detector = detector;
@@ -34,11 +38,12 @@ public class BossStateFactory : IBossStateFactory
         _agent = agent;
         _enemyGO = enemy.gameObject;
         _gameWonUI = gameWonUI;
+        _sound = sound;
     }
 
     public IEnemyState CreateIdleState() => new BossIdleState(_animator, _detector, _stateMachine, this);
-    public IEnemyState CreateChaseState() => new BossChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
-    public IEnemyState CreateAttackState() => new BossAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
+    public IEnemyState CreateChaseState() => new BossChaseState(_animator, _agent, _detector, _stats, _stateMachine, this, _sound);
+    public IEnemyState CreateAttackState() => new BossAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this, _sound);
     public IEnemyState CreateDieState() => new BossDieState(_animator, _enemyGO, _gameWonUI);
 
     public IEnemyState CreateGetDamageState() => new BossGetDamageState(_animator, _stateMachine, this);
@@ -50,5 +55,5 @@ public class BossStateFactory : IBossStateFactory
     }
 
     public IEnemyState CreatePatrolState()
-        => new BossPatrolState(_animator, _stateMachine, this, _detector, _agent);
+        => new BossPatrolState(_animator, _stateMachine, this, _detector, _agent, _sound);
 }

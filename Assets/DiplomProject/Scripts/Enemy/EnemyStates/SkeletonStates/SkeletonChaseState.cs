@@ -13,8 +13,13 @@ using UnityEngine.AI;
     private float _repathInterval = 0.2f;
     private float _nextRepathTime;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
+
     public SkeletonChaseState(ISkeletonAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats, ISkeletonStateMachine stateMachine,
-        ISkeletonStateFactory stateFactory)
+        ISkeletonStateFactory stateFactory, EnemySoundController sound)
     {
         _stateMachine = stateMachine;
         _stateFactory = stateFactory;
@@ -24,6 +29,7 @@ using UnityEngine.AI;
         _enemyStats = enemyStats;
 
         _detector.PlayerLost += OnPlayerLost;
+        _sound = sound;
     }
 
     public void Enter()
@@ -37,6 +43,7 @@ using UnityEngine.AI;
         _agent.stoppingDistance = _enemyStats.AttackRange;
 
         _nextRepathTime = 0f;
+        _vocalTimer = _sound.GetRandomAggroInterval();
     }
 
     public void Tick()
@@ -63,6 +70,14 @@ using UnityEngine.AI;
             _nextRepathTime = Time.time + _repathInterval;
             _agent.isStopped = false;
             _agent.SetDestination(player.position);
+        }
+
+        //Фразы при погоне
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAggroVocal();
+            _vocalTimer = _sound.GetRandomAggroInterval();
         }
     }
 

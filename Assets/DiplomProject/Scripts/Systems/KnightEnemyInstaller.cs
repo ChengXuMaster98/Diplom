@@ -19,6 +19,8 @@ public class KnightEnemyInstaller : MonoInstaller
         Container.Bind<IKnightAnimator>().To<KnightAnimatorController>()
             .FromComponentOnRoot().AsSingle();
 
+        Container.Bind<EnemySoundController>().FromComponentOnRoot().AsSingle();
+
         // NavMeshAgent
         Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
 

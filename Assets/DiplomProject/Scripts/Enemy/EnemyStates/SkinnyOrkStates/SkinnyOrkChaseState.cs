@@ -10,8 +10,12 @@ public class SkinnyOrkChaseState : IEnemyState
     private readonly ISkinnyOrkStateMachine _stateMachine;
     private readonly ISkinnyOrkStateFactory _stateFactory;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     public SkinnyOrkChaseState(ISkinnyOrkAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats, ISkinnyOrkStateMachine stateMachine,
-        ISkinnyOrkStateFactory stateFactory)
+        ISkinnyOrkStateFactory stateFactory, EnemySoundController sound)
     {
         _stateMachine = stateMachine;
         _stateFactory = stateFactory;
@@ -19,6 +23,7 @@ public class SkinnyOrkChaseState : IEnemyState
         _animator = animator;
         _agent = agent;
         _enemyStats = enemyStats;
+        _sound = sound;
 
         _detector.PlayerLost += OnPlayerLost;
     }
@@ -32,6 +37,8 @@ public class SkinnyOrkChaseState : IEnemyState
         _agent.updatePosition = true;
         _agent.updateRotation = true;
         _agent.stoppingDistance = _enemyStats.AttackRange;
+
+        _vocalTimer = _sound.GetRandomAggroInterval();
     }
 
     public void Tick()
@@ -44,6 +51,14 @@ public class SkinnyOrkChaseState : IEnemyState
 
         float distance = Vector3.Distance(_agent.transform.position, player.position);
         //Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAggroVocal();
+            _vocalTimer = _sound.GetRandomAggroInterval();
+        }
+
 
         if (distance <= _enemyStats.AttackRange)
         {

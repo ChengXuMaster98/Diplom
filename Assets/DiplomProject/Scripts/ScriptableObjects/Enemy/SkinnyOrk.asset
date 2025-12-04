@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: SkinnyOrk
   m_EditorClassIdentifier: 
   MaxHealth: 200
-  Damage: 1
-  MoveSpeed: 2
+  Damage: 10
+  MoveSpeed: 3
   AttackRange: 2.2
   DetectionRadius: 10
-  AttackCooldown: 2.1
+  AttackCooldown: 1.4
   PlayerMask:
     serializedVersion: 2
     m_Bits: 8

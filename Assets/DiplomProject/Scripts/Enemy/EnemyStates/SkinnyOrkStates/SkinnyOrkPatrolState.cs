@@ -9,6 +9,10 @@ public class SkinnyOrkPatrolState : IEnemyState
     private readonly IPlayerDetector _detector;
     private readonly NavMeshAgent _agent;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     private Vector3 _origin;
     private bool _originSet;
 
@@ -22,13 +26,15 @@ public class SkinnyOrkPatrolState : IEnemyState
         ISkinnyOrkStateMachine stateMachine,
         ISkinnyOrkStateFactory factory,
         IPlayerDetector detector,
-        NavMeshAgent agent)
+        NavMeshAgent agent,
+        EnemySoundController sound)
     {
         _animator = animator;
         _stateMachine = stateMachine;
         _factory = factory;
         _detector = detector;
         _agent = agent;
+        _sound = sound;
     }
 
     public void Enter()
@@ -47,6 +53,8 @@ public class SkinnyOrkPatrolState : IEnemyState
         _agent.updateRotation = true;
         _agent.stoppingDistance = 0f;
 
+        _vocalTimer = _sound.GetRandomIdleInterval();
+
         _waitTimer = 0f;
         SetNextDestination();
         _animator.PlayPatrol();
@@ -64,6 +72,13 @@ public class SkinnyOrkPatrolState : IEnemyState
 
         if (_agent.pathPending)
             return;
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f )
+        {
+            _sound.PlayIdle();
+            _vocalTimer = _sound.GetRandomIdleInterval();
+        }
 
         if (_agent.remainingDistance <= 0.2f)
         {

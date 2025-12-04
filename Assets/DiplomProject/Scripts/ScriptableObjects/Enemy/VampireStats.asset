@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aed2e3f0a592c439d1fe154b4de9cd, type: 3}
   m_Name: VampireStats
   m_EditorClassIdentifier: 
-  MaxHealth: 100
-  Damage: 2
-  MoveSpeed: 2
+  MaxHealth: 120
+  Damage: 15
+  MoveSpeed: 4
   AttackRange: 2.2
   DetectionRadius: 10
   AttackCooldown: 1

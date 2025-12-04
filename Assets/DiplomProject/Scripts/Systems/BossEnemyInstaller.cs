@@ -24,6 +24,8 @@ public class BossEnemyInstaller : MonoInstaller
         //Вызыет экран победы, когда босс крякнул
         Container.BindInterfacesAndSelfTo<BossDeathListener>().FromComponentInHierarchy().AsSingle();
 
+        Container.Bind<EnemySoundController>().FromComponentOnRoot().AsSingle();
+
 
         Container.BindInterfacesAndSelfTo<BossStateFactory>().AsSingle();
 

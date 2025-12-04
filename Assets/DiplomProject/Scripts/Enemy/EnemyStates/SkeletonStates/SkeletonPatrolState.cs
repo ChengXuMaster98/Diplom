@@ -12,23 +12,28 @@ public class SkeletonPatrolState : IEnemyState
     private Vector3 _origin;
     private bool _originSet;
 
-    private readonly float _patrolRadius = 4f;
+    private readonly float _patrolRadius = 2f;
     private readonly float _waitAtPoint = 3f;
 
     private float _waitTimer;
+
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
 
     public SkeletonPatrolState(
         ISkeletonAnimator animator,
         ISkeletonStateMachine stateMachine,
         ISkeletonStateFactory factory,
         IPlayerDetector detector,
-        NavMeshAgent agent)
+        NavMeshAgent agent,
+        EnemySoundController sound)
     {
         _animator = animator;
         _stateMachine = stateMachine;
         _factory = factory;
         _detector = detector;
         _agent = agent;
+        _sound = sound;
     }
 
     public void Enter()
@@ -46,6 +51,8 @@ public class SkeletonPatrolState : IEnemyState
         _agent.updatePosition = true;
         _agent.updateRotation = true;
         _agent.stoppingDistance = 0f;
+
+        _vocalTimer = _sound.GetRandomIdleInterval();
 
         _waitTimer = 0f;
         SetNextDestination();
@@ -65,6 +72,8 @@ public class SkeletonPatrolState : IEnemyState
         if (_agent.pathPending)
             return;
 
+
+
         if (_agent.remainingDistance <= 0.2f)
         {
             // Если только что дошёл — включаем Idle
@@ -83,7 +92,14 @@ public class SkeletonPatrolState : IEnemyState
             return;
         }
 
-        _animator.PlayPatrol();
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayIdle();
+            _vocalTimer = _sound.GetRandomIdleInterval();
+        }
+
+    _animator.PlayPatrol();
     }
 
     public void Exit()

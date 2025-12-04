@@ -12,11 +12,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: VampireSoundData
   m_EditorClassIdentifier: 
-  Idle: []
-  Attack: []
-  Hurt: []
+  IdleVocal:
+  - {fileID: 8300000, guid: 4548d8b9da8e4894eb2149f3937a5900, type: 3}
+  - {fileID: 8300000, guid: 4f6c8ad5cc404944bb2a5afd0f1929ef, type: 3}
+  - {fileID: 8300000, guid: 09ca2c969aedc6649ab8a85e2c5abae1, type: 3}
+  AggroVocal:
+  - {fileID: 8300000, guid: 83d532fe9c64ebe4a945cb357686eea7, type: 3}
+  - {fileID: 8300000, guid: 83d532fe9c64ebe4a945cb357686eea7, type: 3}
+  Attack:
+  - {fileID: 8300000, guid: 04582e094338b2e4b8d3a1ac3c93350f, type: 3}
+  - {fileID: 8300000, guid: 9433a5adef535cd4ab13cb7d52201e4e, type: 3}
+  - {fileID: 8300000, guid: ba5998306fe306449bb2804bbaa72a8c, type: 3}
+  - {fileID: 8300000, guid: f9b2b9c9b8113824e90d8f2b2f513a72, type: 3}
+  - {fileID: 8300000, guid: 24e51f7a76fb9254291360040251cebf, type: 3}
+  Hurt:
+  - {fileID: 8300000, guid: bff5afc7a2b43d14fa25bbc3a833a3ca, type: 3}
+  - {fileID: 8300000, guid: 73eca32f32987b342ac9649816e05297, type: 3}
   Step: []
-  Death: []
+  Death:
+  - {fileID: 8300000, guid: 3d7ee173deeaa7243832121659b23449, type: 3}
+  IdleMinInterval: 2.5
+  IdleMaxInterval: 5
+  AggroMinInterval: 2.5
+  AggroMaxInterval: 5
+  AttackMinInterval: 1
+  AttackMaxInterval: 3
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

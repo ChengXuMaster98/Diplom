@@ -14,6 +14,9 @@ using UnityEngine.AI;
 
     private float _attackCooldown;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
     //private const float AttackToChaseThreshold = 1.2f;
 
     public SkeletonAttackState(
@@ -23,7 +26,8 @@ using UnityEngine.AI;
         EnemyStats stats,
         ISkeletonStateMachine stateMachine,
         NavMeshAgent agent,
-        ISkeletonStateFactory stateFactory)
+        ISkeletonStateFactory stateFactory,
+        EnemySoundController sound)
     {
         _playerDamageable = playerDamageable;
         //Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
@@ -33,6 +37,7 @@ using UnityEngine.AI;
         _stateMachine = stateMachine;
         _agent = agent;
         _stateFactory = stateFactory;
+        _sound = sound;
 
         _detector.PlayerLost += OnPlayerLost;
     }
@@ -48,6 +53,8 @@ using UnityEngine.AI;
         _attackCooldown = 0f;
 
         _animator.SetAttackHitCallback(PerformAttack);
+
+        _vocalTimer = _sound.GetRandomAttackInterval();
 
         //Debug.Log("[ATTACK STATE] Entered");
     }
@@ -92,6 +99,8 @@ using UnityEngine.AI;
             //Debug.Log("[Attack] Player in AttackRange");
         }
 
+
+
         _animator.LookAt(player.position);
 
         _attackCooldown -= Time.deltaTime;
@@ -103,6 +112,13 @@ using UnityEngine.AI;
             //_playerDamageable.TakeDamage(_stats.Damage);
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
+        }
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAttack();
+            _vocalTimer = _sound.GetRandomAttackInterval();
         }
     }
 

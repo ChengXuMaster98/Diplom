@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   MaxHealth: 100
-  attackDamage: 20
-  MoveSpeed: 5
+  attackDamage: 30
+  MoveSpeed: 3
   mouseSensitivity: 75
   RotationSpeed: 3
   JumpHeight: 1
   gravity: -9.81
-  HealthRegenRate: 20
+  HealthRegenRate: 5

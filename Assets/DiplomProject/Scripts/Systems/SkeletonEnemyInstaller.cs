@@ -23,8 +23,8 @@ public class SkeletonEnemyInstaller : MonoInstaller
 
 
         Container.BindInterfacesAndSelfTo<SkeletonStateFactory>().AsSingle();
-       
-        
+
+        Container.Bind<EnemySoundController>().FromComponentOnRoot().AsSingle();
 
         Container.Bind<ISkeletonAnimator>().To<SkeletonAnimatorController>().FromComponentOnRoot().AsSingle();
 

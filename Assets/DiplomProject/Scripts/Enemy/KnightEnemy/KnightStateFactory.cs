@@ -11,6 +11,8 @@ public class KnightStateFactory : IKnightStateFactory
     private readonly IPlayerDamageable _playerDamageable;
     private readonly GameObject _enemyGO;
     private readonly NavMeshAgent _agent;
+    private readonly Player _player;
+    private readonly EnemySoundController _sound;
 
     [Inject]
     public KnightStateFactory(
@@ -20,7 +22,8 @@ public class KnightStateFactory : IKnightStateFactory
         IKnightAnimator animator,
         IPlayerDamageable playerDamageable,
         NavMeshAgent agent,
-        Enemy enemy)
+        Enemy enemy,
+        EnemySoundController sound)
     {
         _machine = machine;
         _detector = detector;
@@ -29,16 +32,17 @@ public class KnightStateFactory : IKnightStateFactory
         _playerDamageable = playerDamageable;
         _agent = agent;
         _enemyGO = enemy.gameObject;
+        _sound = sound;
     }
 
     public IEnemyState CreateIdleState()
         => new KnightIdleState(_animator, _machine, this, _detector);
 
     public IEnemyState CreateChaseState()
-        => new KnightApproachState(_animator, _machine, this, _detector, _agent, _stats);
+        => new KnightApproachState(_animator, _machine, this, _detector, _agent, _stats, _sound);
 
     public IEnemyState CreateAttackState()
-        => new KnightAttackState(_animator, _machine, this, _detector, _playerDamageable, _stats, _agent);
+        => new KnightAttackState(_animator, _machine, this, _detector, _playerDamageable, _stats, _agent, _sound);
 
     public IEnemyState CreateDieState()
         => new KnightDieState(_animator, _enemyGO);
@@ -59,7 +63,7 @@ public class KnightStateFactory : IKnightStateFactory
     }
 
     public IEnemyState CreateCircleState()
-        => new KnightCircleState(_animator, _machine, this, _detector, _agent, _stats);
+        => new KnightCircleState(_animator, _machine, this, _detector, _agent, _stats, _sound);
 
     public IEnemyState CreateRetreatState()
         => new KnightRetreatState(_animator, _machine, this, _detector, _agent);

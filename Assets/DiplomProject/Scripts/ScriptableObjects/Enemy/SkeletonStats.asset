@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42aed2e3f0a592c439d1fe154b4de9cd, type: 3}
   m_Name: SkeletonStats
   m_EditorClassIdentifier: 
-  MaxHealth: 300
-  Damage: 1
-  MoveSpeed: 2
+  MaxHealth: 140
+  Damage: 20
+  MoveSpeed: 4
   AttackRange: 2.2
   DetectionRadius: 10
   AttackCooldown: 1

@@ -10,6 +10,10 @@ public class VampireEnemyAttackState : IEnemyState
     private readonly IPlayerDetector _detector;
     private readonly VampireEnemyStateMachine _stateMachine;
     private readonly IEnemyStateFactory _stateFactory;
+    
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
 
     private float _attackCooldown;
 
@@ -20,7 +24,8 @@ public class VampireEnemyAttackState : IEnemyState
         EnemyStats stats,
         VampireEnemyStateMachine stateMachine,
         NavMeshAgent agent,
-        IEnemyStateFactory stateFactory)
+        IEnemyStateFactory stateFactory,
+        EnemySoundController sound)
     {
         _playerDamageable = playerDamageable;
         Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
@@ -30,6 +35,7 @@ public class VampireEnemyAttackState : IEnemyState
         _stateMachine = stateMachine;
         _agent = agent;
         _stateFactory = stateFactory;
+        _sound = sound;
 
         _detector.PlayerLost += OnPlayerLost;
     }
@@ -43,6 +49,8 @@ public class VampireEnemyAttackState : IEnemyState
 
         _animator.SetAttackHitCallback(PerformAttack);
         _animator.PlayAttack();
+
+        _vocalTimer = _sound.GetRandomAttackInterval();
 
         Debug.Log("[ATTACK STATE] Entered");
     }
@@ -96,6 +104,14 @@ public class VampireEnemyAttackState : IEnemyState
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
         }
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAttack();
+            _vocalTimer = _sound.GetRandomAttackInterval();
+        }
+
     }
 
     public void Exit()

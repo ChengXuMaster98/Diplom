@@ -12,11 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: KnightSoundData
   m_EditorClassIdentifier: 
-  Idle: []
-  Attack: []
-  Hurt: []
-  Step: []
-  Death: []
+  IdleVocal:
+  - {fileID: 8300000, guid: 35a47113451c4634f9474814b703f008, type: 3}
+  - {fileID: 8300000, guid: d511d66051557a44883ef2dbd7c00e1d, type: 3}
+  AggroVocal:
+  - {fileID: 8300000, guid: e5797567a4e2ece4ea0f8a8930d6a7fa, type: 3}
+  Attack:
+  - {fileID: 8300000, guid: 078e4869ce3fcec43a56abd42979e378, type: 3}
+  - {fileID: 8300000, guid: 8cc282c15a434114aa61b3399f5ee340, type: 3}
+  Hurt:
+  - {fileID: 8300000, guid: 76024b6f269a6a746851e1ba613d793f, type: 3}
+  - {fileID: 8300000, guid: b0c145fc2423fd14bab7ec86020327ca, type: 3}
+  Step:
+  - {fileID: 0}
+  Death:
+  - {fileID: 8300000, guid: 61f51dccec64f2a43b2f4468dbd4dd4e, type: 3}
+  IdleMinInterval: 2.5
+  IdleMaxInterval: 5
+  AggroMinInterval: 2.5
+  AggroMaxInterval: 5
+  AttackMinInterval: 1
+  AttackMaxInterval: 3
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06

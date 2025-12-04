@@ -13,34 +13,27 @@ public class EnemyInstaller : MonoInstaller
 
         Debug.Log("[EnemyInstaller] Выполняется установка зависимостей");
 
-        // Аниматор контроллер врага
-        //Container.Bind<Animator>().FromComponentInHierarchy().AsSingle();
-
-        // EnemyAnimatorController как интерфейс
-        //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_animator, _transform);
 
         Container.Bind<EnemyStats>().FromInstance(_enemyStats).AsSingle();
 
-        //Container.Bind<IPlayerDetector>().To<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
 
         Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().FromComponentInHierarchy().AsSingle();
 
 
-        //Container.BindInterfacesTo<EnemyAnimatorController>().AsSingle().WithArguments(_transform);
         Container.Bind<IEnemyAnimator>().To<EnemyAnimatorController>().FromComponentOnRoot().AsSingle();
+
+        Container.Bind<EnemySoundController>().FromComponentOnRoot().AsSingle();
 
         // Бинд NavMeshAgent и DetectionArea
         Container.Bind<NavMeshAgent>().FromComponentInHierarchy().AsSingle();
 
-        //Container.Bind<SpherePlayerDetector>().FromComponentInChildren().AsSingle();
-        //Container.BindInterfacesAndSelfTo<SpherePlayerDetector>().AsSingle();
+
 
         Container.Bind<IEnemyStateFactory>().To<VampireEnemyStateFactory>().AsSingle();
 
         Container.BindInterfacesTo<VampireStunBinder>().FromNew().AsSingle().NonLazy();
 
         // VFX эффекты
-
         Container.Bind<EnemyVFXController>().FromComponentOnRoot().AsSingle();
 
 

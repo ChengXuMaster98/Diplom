@@ -20,6 +20,8 @@ public class SkinnyOrkEnemyInstaller : MonoInstaller
 
         Container.BindInterfacesAndSelfTo<SkinnyOrkStateMachine>().AsSingle();
 
+        Container.Bind<EnemySoundController>().FromComponentOnRoot().AsSingle();
+
 
 
         Container.BindInterfacesAndSelfTo<SkinnyOrkStateFactory>().AsSingle();

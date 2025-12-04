@@ -28,6 +28,10 @@ public class SkeletonStunState : IEnemyState
 
     public void Enter()
     {
+        _agent.isStopped = true;
+        _agent.updatePosition = false;
+        _agent.updateRotation = false;
+
         Debug.Log($"[STUN] Enter({_duration})");
         _timer = 0;
 
@@ -51,6 +55,8 @@ public class SkeletonStunState : IEnemyState
 
     public void Exit()
     {
-
+        _agent.isStopped = false;
+        _agent.updatePosition = true;
+        _agent.updateRotation = true;
     }
 }

@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a4dbce2aff9ed54ea292f5abdab8f40, type: 3}
   m_Name: HummerWeaponSoundData
   m_EditorClassIdentifier: 
-  Hit: []
-  LightAttack: []
+  Hit:
+  - {fileID: 8300000, guid: c163057046047b042be5c0db920150f8, type: 3}
+  LightAttack:
+  - {fileID: 8300000, guid: 0fdc9ea1e5a777440ae89c0b3611d697, type: 3}
   HeavyAttack: []
-  Block: []
+  Block:
+  - {fileID: 8300000, guid: 9fe20a835795c324b973f6bfc3f2ae18, type: 3}
   FireRateInterval: 0.08

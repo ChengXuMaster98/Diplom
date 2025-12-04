@@ -23,11 +23,11 @@ public class CaveHumSound : MonoBehaviour
             _db.CaveHum,
             transform.position,
             $"hum_{GetInstanceID()}",
-            0.4f
+            4f
         );
 
         _src.loop = true;
-        _src.spatialBlend = 1f;
+        _src.spatialBlend = 4f;
         _src.transform.position = transform.position;
     }
 }

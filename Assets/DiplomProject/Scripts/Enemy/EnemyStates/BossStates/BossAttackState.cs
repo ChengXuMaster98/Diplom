@@ -12,6 +12,10 @@ public class BossAttackState : IEnemyState
     private readonly IBossStateMachine _stateMachine;
     private readonly IBossStateFactory _stateFactory;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     private float _attackCooldown;
 
     //private const float AttackToChaseThreshold = 1.2f;
@@ -23,7 +27,8 @@ public class BossAttackState : IEnemyState
         EnemyStats stats,
         IBossStateMachine stateMachine,
         NavMeshAgent agent,
-        IBossStateFactory stateFactory)
+        IBossStateFactory stateFactory,
+        EnemySoundController sound)
     {
         _playerDamageable = playerDamageable;
         Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
@@ -33,6 +38,7 @@ public class BossAttackState : IEnemyState
         _stateMachine = stateMachine;
         _agent = agent;
         _stateFactory = stateFactory;
+        _sound = sound;
 
         _detector.PlayerLost += OnPlayerLost;
     }
@@ -48,6 +54,8 @@ public class BossAttackState : IEnemyState
         _attackCooldown = 0f;
 
         _animator.SetAttackHitCallback(PerformAttack);
+
+        _vocalTimer = _sound.GetRandomAttackInterval();
 
         Debug.Log("[ATTACK STATE] Entered");
     }
@@ -96,6 +104,7 @@ public class BossAttackState : IEnemyState
 
         _attackCooldown -= Time.deltaTime;
 
+
         if (_attackCooldown <= 0f && !_animator.IsPlayingAttackAnimation())
         {
             _agent.isStopped = true;
@@ -103,6 +112,13 @@ public class BossAttackState : IEnemyState
             //_playerDamageable.TakeDamage(_stats.Damage);
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
+        }
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAttack();
+            _vocalTimer = _sound.GetRandomAttackInterval();
         }
     }
 

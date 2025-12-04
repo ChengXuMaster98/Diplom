@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
             if (duration > _stunTimer)
             {
                 _stunTimer = duration;
-                OnStunned?.Invoke(duration); // обновленный стан
+                OnStunned?.Invoke(duration); // обновляем стан, чтобы не стакался
                 Debug.Log($"[Enemy] Stun refreshed to {duration}s");
             }
 

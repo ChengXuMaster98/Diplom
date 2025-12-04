@@ -10,13 +10,18 @@ public class KnightApproachState : IEnemyState
     private readonly NavMeshAgent _agent;
     private readonly EnemyStats _stats;
 
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
+
+
     public KnightApproachState(
         IKnightAnimator animator,
         IKnightStateMachine machine,
         IKnightStateFactory factory,
         IPlayerDetector detector,
         NavMeshAgent agent,
-        EnemyStats stats)
+        EnemyStats stats,
+        EnemySoundController sound)
     {
         _animator = animator;
         _machine = machine;
@@ -24,6 +29,7 @@ public class KnightApproachState : IEnemyState
         _detector = detector;
         _agent = agent;
         _stats = stats;
+        _sound = sound;
     }
 
     public void Enter()
@@ -35,6 +41,8 @@ public class KnightApproachState : IEnemyState
 
         _animator.SetRootMotion(false);
         _animator.PlayMove();
+
+        _vocalTimer = _sound.GetRandomAggroInterval();
     }
 
     public void Tick()
@@ -48,6 +56,14 @@ public class KnightApproachState : IEnemyState
 
         _agent.SetDestination(player.position);
         _animator.LookAt(player.position);
+
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAggroVocal();
+            _vocalTimer = _sound.GetRandomAggroInterval();
+        }
+
 
         float dist = Vector3.Distance(_agent.transform.position, player.position);
         if (dist <= _stats.AttackRange + 0.2f)
@@ -63,6 +79,7 @@ public class KnightApproachState : IEnemyState
                 _machine.SetState(_factory.CreateCircleState());
             }
         }
+
     }
 
     public void Exit()

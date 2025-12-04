@@ -9,9 +9,11 @@ public class VampireEnemyChaseState : IEnemyState
     private EnemyStats _enemyStats;
     private readonly VampireEnemyStateMachine _stateMachine;
     private readonly IEnemyStateFactory _stateFactory;
+    private readonly EnemySoundController _sound;
+    private float _vocalTimer;
 
     public VampireEnemyChaseState(IEnemyAnimator animator, NavMeshAgent agent, IPlayerDetector detector, EnemyStats enemyStats, VampireEnemyStateMachine stateMachine,
-        IEnemyStateFactory stateFactory)
+        IEnemyStateFactory stateFactory, EnemySoundController sound)
     {
         _agent = agent;
         _animator = animator;
@@ -22,6 +24,7 @@ public class VampireEnemyChaseState : IEnemyState
 
         //_agent.stoppingDistance = _enemyStats.AttackRange;
         _detector.PlayerLost += OnPlayerLost;
+        _sound = sound;
     }
 
     public void Enter()
@@ -33,6 +36,8 @@ public class VampireEnemyChaseState : IEnemyState
         _agent.updatePosition = true;
         _agent.updateRotation = true;
         _agent.stoppingDistance = _enemyStats.AttackRange;
+
+        _vocalTimer = _sound.GetRandomAggroInterval();
     }
 
     public void Tick()
@@ -41,8 +46,15 @@ public class VampireEnemyChaseState : IEnemyState
         if (player == null)
             return;
 
-        
-        
+        //Реплики при агре
+        _vocalTimer -= Time.deltaTime;
+        if (_vocalTimer <= 0f)
+        {
+            _sound.PlayAggroVocal();
+            _vocalTimer = _sound.GetRandomAggroInterval();
+        }
+
+
 
         float distance = Vector3.Distance(_agent.transform.position, player.position);
         //Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");

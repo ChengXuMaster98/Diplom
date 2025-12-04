@@ -10,6 +10,7 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
     private readonly IPlayerDamageable _playerDamageable;
     private readonly VampireEnemyStateMachine _stateMachine;
     private readonly GameObject _enemyGO;
+    private readonly EnemySoundController _sound;
 
     public VampireEnemyStateFactory(
         IEnemyAnimator animator,
@@ -18,7 +19,8 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
         EnemyStats stats,
         IPlayerDamageable playerDamageable,
         VampireEnemyStateMachine stateMachine,
-        Enemy enemy)
+        Enemy enemy,
+        EnemySoundController sound)
     {
         _animator = animator;
         _agent = agent;
@@ -27,11 +29,12 @@ public class VampireEnemyStateFactory : IEnemyStateFactory
         _playerDamageable = playerDamageable;
         _stateMachine = stateMachine;
         _enemyGO = enemy.gameObject;
+        _sound = sound;
     }
 
-    public IEnemyState CreateIdleState() => new VampireEnemyIdleState(_animator, _detector, _stateMachine, this);
-    public IEnemyState CreateChaseState() => new VampireEnemyChaseState(_animator, _agent, _detector, _stats, _stateMachine, this);
-    public IEnemyState CreateAttackState() => new VampireEnemyAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this);
+    public IEnemyState CreateIdleState() => new VampireEnemyIdleState(_animator, _detector, _stateMachine, this, _sound);
+    public IEnemyState CreateChaseState() => new VampireEnemyChaseState(_animator, _agent, _detector, _stats, _stateMachine, this, _sound);
+    public IEnemyState CreateAttackState() => new VampireEnemyAttackState(_playerDamageable, _animator, _detector, _stats, _stateMachine, _agent, this, _sound);
     public IEnemyState CreateDieState() => new VampireEnemyDieState(_animator, _enemyGO);
     public IEnemyState CreateGetDamageState() => new VampireImpactState(_animator, _stateMachine, this);
 

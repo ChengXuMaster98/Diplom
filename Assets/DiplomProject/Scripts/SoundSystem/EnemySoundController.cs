@@ -10,6 +10,8 @@ public class EnemySoundController : MonoBehaviour
     private Transform _self;
     private Camera _listenerCamera;
 
+    public int RandomIdleInterval;
+
     [Inject]
     public void Construct(AudioManager audio)
     {
@@ -18,11 +20,25 @@ public class EnemySoundController : MonoBehaviour
         _listenerCamera = Camera.main;
     }
 
-    public void PlayIdle() => PlayArray(_soundData.Idle);
+    public void PlayIdle() => PlayArray(_soundData.IdleVocal);
+
+    public void PlayAggroVocal() => PlayArray(_soundData.AggroVocal);
+
     public void PlayAttack() => PlayArray(_soundData.Attack);
+
     public void PlayHurt() => PlayArray(_soundData.Hurt);
     public void PlayStep() => PlayArray(_soundData.Step);
     public void PlayDeath() => PlayArray(_soundData.Death);
+
+
+    public float GetRandomIdleInterval()
+       => Random.Range(_soundData.IdleMinInterval, _soundData.IdleMaxInterval);
+
+    public float GetRandomAggroInterval()
+        => Random.Range(_soundData.AggroMinInterval, _soundData.AggroMaxInterval);
+
+    public float GetRandomAttackInterval()
+        => Random.Range(_soundData.AggroMinInterval, _soundData.AttackMaxInterval);
 
     private void PlayArray(AudioClip[] clips)
     {
