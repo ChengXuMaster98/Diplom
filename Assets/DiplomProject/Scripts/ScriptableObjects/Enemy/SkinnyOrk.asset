@@ -16,8 +16,8 @@ MonoBehaviour:
   Damage: 10
   MoveSpeed: 3
   AttackRange: 2.2
-  DetectionRadius: 10
-  AttackCooldown: 1.4
+  DetectionRadius: 6
+  AttackCooldown: 2
   PlayerMask:
     serializedVersion: 2
     m_Bits: 8

@@ -74,7 +74,7 @@ public class KnightAttackState : IEnemyState
         float dist = Vector3.Distance(_lockedTargetPosition, _animator.Transform.position);
         if (dist > _stats.AttackRange + 0.3f)
         {
-            // промах — просто ничего не делаем
+            // промах
             return;
         }
 
@@ -85,7 +85,8 @@ public class KnightAttackState : IEnemyState
     {
         var player = _detector.Player;
 
-        // смотрим в ЗАФИКСИРОВАННУЮ позицию
+        // взгляд в зафиксированную позицию
+
         _animator.LookAt(_lockedTargetPosition);
 
         // если игрок совсем убежал далеко — можно выйти в погоню

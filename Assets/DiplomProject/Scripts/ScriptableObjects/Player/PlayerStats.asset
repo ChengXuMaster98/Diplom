@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 100
   attackDamage: 30
-  MoveSpeed: 3
+  MoveSpeed: 4
   mouseSensitivity: 75
   RotationSpeed: 3
-  JumpHeight: 1
+  JumpHeight: 2
   gravity: -9.81
   HealthRegenRate: 5

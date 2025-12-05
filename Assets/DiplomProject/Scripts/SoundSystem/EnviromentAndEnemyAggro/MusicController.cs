@@ -20,7 +20,7 @@ public class MusicController : IInitializable, IDisposable
 
     public void Initialize()
     {
-        // Создаём объект для музыки
+        // Здесь создаётсяо объект для музыки
         var go = new GameObject("[MusicController]");
         UnityEngine.Object.DontDestroyOnLoad(go);
 
@@ -32,7 +32,7 @@ public class MusicController : IInitializable, IDisposable
 
         PlayAmbient();
 
-        // Подписка на изменение агро
+        // Подписка на изменение агра
         _aggro.OnAggroCountChanged += OnAggroChanged;
     }
 
@@ -49,13 +49,13 @@ public class MusicController : IInitializable, IDisposable
         _aggro.OnAggroCountChanged -= OnAggroChanged;
     }
 
-    private void Configure(AudioSource src)
-    {
-        src.playOnAwake = false;
-        src.loop = true;
-        src.spatialBlend = 0f;
-        src.volume = 0.09f;
-    }
+    //private void Configure(AudioSource src)
+    //{
+    //    src.playOnAwake = false;
+    //    src.loop = true;
+    //    src.spatialBlend = 0f;
+    //    src.volume = 0.09f;
+    //}
 
 
     // ------------------------------

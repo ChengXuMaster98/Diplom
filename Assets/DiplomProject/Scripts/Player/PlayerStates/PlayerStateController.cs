@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using Zenject;
 
 public class PlayerStateController : ITickable
@@ -68,8 +68,8 @@ public class PlayerStateController : ITickable
             var weapon = _inventory.GetActiveWeapon();
             if (weapon == null)
             {
-                Debug.Log("[Attack] Нет оружия — атака невозможна");
-                // остаёмся в текущем состоянии (Idle/Move/Block)
+                Debug.Log("[Attack] РќРµС‚ РѕСЂСѓР¶РёСЏ вЂ” Р°С‚Р°РєР° РЅРµРІРѕР·РјРѕР¶РЅР°");
+                // РѕСЃС‚Р°С‘РјСЃСЏ РІ С‚РµРєСѓС‰РµРј СЃРѕСЃС‚РѕСЏРЅРёРё (Idle/Move/Block)
             }
             else
             {

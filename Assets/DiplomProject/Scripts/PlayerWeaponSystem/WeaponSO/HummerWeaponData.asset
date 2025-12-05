@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   WeaponName: 
-  BaseDamage: 25
+  BaseDamage: 20
   CanStun: 1
-  StunChance: 100
-  StunDuration: 3
+  StunChance: 0.3
+  StunDuration: 5
   CanElectroDOT: 0
   DOTDamagePerSecond: 0
   DOTDuration: 0

@@ -40,7 +40,7 @@ public class PlayerAttackState : IPlayerState
         {
             Debug.Log("Not enough stamina for attack");
 
-            _animator.SetTrigger(Attack);
+            //_animator.SetTrigger(Attack);
 
             _stateMachine.RevertToPreviousState();
             return;

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerDashState : IPlayerState
@@ -46,8 +47,13 @@ public class PlayerDashState : IPlayerState
 
         if (!_stamina.CanDash())
         {
-            _stateMachine.RevertToPreviousState();
+
+            Debug.Log("Not enough stamina for dash");
+
+            //_stateMachine.RevertToPreviousState();
+            _completed = true;    // ← разрешаем немедленный выход из DashState
             return;
+
         }
 
         _stamina.ConsumeStaminaForDash();

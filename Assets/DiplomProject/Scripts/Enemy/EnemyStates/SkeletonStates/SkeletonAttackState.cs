@@ -17,7 +17,6 @@ using UnityEngine.AI;
     private readonly EnemySoundController _sound;
     private float _vocalTimer;
 
-    //private const float AttackToChaseThreshold = 1.2f;
 
     public SkeletonAttackState(
         IPlayerDamageable playerDamageable,
@@ -109,7 +108,7 @@ using UnityEngine.AI;
         {
             _agent.isStopped = true;
             Debug.Log("[ATTACK] Performing attack!");
-            //_playerDamageable.TakeDamage(_stats.Damage);
+
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
         }

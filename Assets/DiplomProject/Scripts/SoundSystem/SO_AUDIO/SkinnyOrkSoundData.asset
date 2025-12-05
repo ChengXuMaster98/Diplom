@@ -12,11 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebc5c79de732cc04a9d42487af435d8e, type: 3}
   m_Name: SkinnyOrkSoundData
   m_EditorClassIdentifier: 
-  Idle: []
-  Attack: []
-  Hurt: []
+  IdleVocal:
+  - {fileID: 8300000, guid: 6125943eeb65d3e46b27dd23b3d62dcd, type: 3}
+  - {fileID: 8300000, guid: e480f345f45bb274c9d7ccf28973ad1d, type: 3}
+  AggroVocal:
+  - {fileID: 8300000, guid: e5797567a4e2ece4ea0f8a8930d6a7fa, type: 3}
+  Attack:
+  - {fileID: 8300000, guid: 560199ea589081743b69cd4a22576327, type: 3}
+  - {fileID: 8300000, guid: d84973364952de041b0bdb47d551da11, type: 3}
+  Hurt:
+  - {fileID: 8300000, guid: b86d37de0a8725b48a980fcdaa5cd669, type: 3}
+  - {fileID: 8300000, guid: ecdfd5e5b9384fc4caaafd89eb34578f, type: 3}
   Step: []
-  Death: []
+  Death:
+  - {fileID: 8300000, guid: 76024b6f269a6a746851e1ba613d793f, type: 3}
+  IdleMinInterval: 1.5
+  IdleMaxInterval: 5
+  AggroMinInterval: 2.5
+  AggroMaxInterval: 5
+  AttackMinInterval: 0.5
+  AttackMaxInterval: 1
   StepInterval: 0.55
   MaxDistance: 20
   MinVolume: 0.06
