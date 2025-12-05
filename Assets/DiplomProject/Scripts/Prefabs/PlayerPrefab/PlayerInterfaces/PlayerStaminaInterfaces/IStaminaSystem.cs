@@ -14,5 +14,9 @@ public interface IStaminaSystem
     bool CanPerformBlock();
 
     void SpendStaminaForBlock();
+
+    bool CanPerformDash();
+
+    void SpendStaminaForDash();
     void Tick();
 }

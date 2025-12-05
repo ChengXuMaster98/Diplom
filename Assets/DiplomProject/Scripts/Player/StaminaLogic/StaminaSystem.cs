@@ -27,6 +27,21 @@ public class StaminaSystem : IStaminaSystem, ITickable, IForceSetStamina
     public bool CanPerformAttack()
     => CurrentStamina >= _config.AttackCoast;
 
+    public bool CanPerformDash()
+    => CurrentStamina >= _config.DashCoast;
+
+    public void SpendStaminaForDash()
+    {
+        if (!CanPerformDash())
+            throw new
+        InvalidOperationException("Not enough stamina to perrform block");
+        CurrentStamina -= _config.DashCoast;
+        CurrentStamina = Mathf.Max(0, CurrentStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina);
+
+        Debug.Log($"После траты стамины: {CurrentStamina}");
+    }
+
     public void SpendStaminaForBlock()
     {
         if (!CanPerformBlock())

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -21,9 +22,11 @@ public class PlayerSoundController : MonoBehaviour, IPlayerAudio
 
     // API
     public void PlayStep() => PlayArray(_soundData.Step);
-    public void PlayIdle() => PlayArray(_soundData.Idle);
+    public void PlayDash() => PlayArray(_soundData.Dash);
     public void PlayHurt() => PlayArray(_soundData.Hurt);
     public void PlayDeath() => PlayArray(_soundData.Death);
+
+    public void PlayAttack() => PlayArray(_soundData.Attack);
 
     private void PlayArray(AudioClip[] clips)
     {

@@ -1,7 +1,7 @@
 public interface IPlayerSoundController
 {
     void PlayStep();
-    void PlayIdle();
+    void PlayDash();
     void PlayHurt();
     void PlayDeath();
 

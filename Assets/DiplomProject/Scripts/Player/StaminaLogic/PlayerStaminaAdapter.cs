@@ -10,6 +10,24 @@ public class PlayerStaminaAdapter : IPlayerStaminaConsumer
         Debug.Log("Стамина адаптер создан");
     }
 
+    public bool CanDash()
+    {
+        bool canDash = _staminaSystem.CanPerformDash();
+
+        Debug.Log($"CanDash: {canDash}, Current Stamina: {_staminaSystem.CurrentStamina}");
+
+        return canDash;
+    }
+
+    public void ConsumeStaminaForDash()
+    {
+        Debug.Log($"Consuming stamina for dash. Before: {_staminaSystem.CurrentStamina}");
+
+        _staminaSystem.SpendStaminaForDash();
+
+        Debug.Log($"After Consumption: {_staminaSystem.CurrentStamina}");
+    }
+
     public bool CanBlock()
     {
         bool canBlock = _staminaSystem.CanPerformBlock();

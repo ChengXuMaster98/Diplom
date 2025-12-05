@@ -4,6 +4,7 @@ using Zenject;
 
 public class SceneInstaller : MonoInstaller
 {
+    [Header("Player related")]
     [SerializeField] private PlayerStats _playerStats;
     [SerializeField] private Player _player;
     [SerializeField] private EnemyStatsDatabase _enemyStatsDatabase;
@@ -12,29 +13,26 @@ public class SceneInstaller : MonoInstaller
     [SerializeField] private AttackHitBox _attackHitBox;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask Ground;
+    [SerializeField] private StaminaConfig _staminaConfig;
+    [SerializeField] private UpgradeDatabase _upgradeDatabase;
+    public WeaponDatabase weaponDatabase;
 
-    //ThirdPersonCamera
+    [Header("Third person camera")]
     [SerializeField] private Camera _camera;
     [SerializeField] private Transform _cameraTarget;
     [SerializeField] private CinemachineFreeLook _freeLookCamera;
 
-    //FirstPersonCamera
+    [Header("First person camera")]
     [SerializeField] private CinemachineVirtualCamera _firstPersonCamera;
     [SerializeField] private Transform _fpsCameraHolder;
     [SerializeField] private Transform _bodyTransform;
     [SerializeField] private Transform _head;
 
 
-    [SerializeField] private StaminaConfig _staminaConfig;
-
-    [SerializeField] private UpgradeDatabase _upgradeDatabase;
-
-
+    [Header("Player UI")]
     [SerializeField] private HealthBar _healthBar;
     [SerializeField] private StaminaBar _staminaBar;
     [SerializeField] private LowHealthEffect _lowHealthEffect;
-
-    public WeaponDatabase weaponDatabase;
 
     public override void InstallBindings()
     {
@@ -103,7 +101,12 @@ public class SceneInstaller : MonoInstaller
         Container.Bind<WeaponSoundController>().FromComponentInHierarchy().AsSingle();
 
 
-        Container.Bind<IPlayerAudio>().To<PlayerSoundController>().FromComponentInHierarchy().AsSingle();
+
+        Container.Bind<IPlayerAudio>()
+    .To<PlayerSoundController>()
+    .FromComponentInHierarchy()
+    .AsSingle();
+
 
 
         // ScriptableObject
@@ -114,7 +117,7 @@ public class SceneInstaller : MonoInstaller
 
 
         Container.BindInterfacesAndSelfTo<StaminaSystem>().AsSingle();
-        //Container.BindTickableExecutionOrder<StaminaSystem>(-100);
+
 
         Container.Bind<IPlayerStaminaConsumer>().To<PlayerStaminaAdapter>().AsSingle();
 
@@ -132,7 +135,7 @@ public class SceneInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<UpgradeService>().AsSingle().NonLazy();
 
         // First-person movement controller (Camera + Movement)
-        Container.BindInterfacesTo<FirstPersonController>().AsSingle(); // ITickable
+        Container.BindInterfacesTo<FirstPersonController>().AsSingle();
         
         Container.BindInterfacesAndSelfTo<CharacterMovementController>().AsSingle().WithArguments(_camera.transform, _groundCheck, Ground);
 
@@ -143,7 +146,6 @@ public class SceneInstaller : MonoInstaller
         // Third-person camera (если используешь)
         Container.Bind<CinemachineFreeLook>().FromInstance(_freeLookCamera).AsSingle();
         
-        //Container.Bind<Transform>().FromInstance(_freeLookCamera.transform).AsSingle(); // cameraTransform
         Container.BindInterfacesTo<ThirdPersonCameraController>().AsSingle().WithArguments(_cameraTarget);
 
 
@@ -159,7 +161,5 @@ public class SceneInstaller : MonoInstaller
         // Player FSM
         Container.Bind<PlayerStateMachine>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayerStateController>().AsSingle();
-        //Container.Bind<PlayerAttackState>().AsSingle();
-        //Container.Bind<PlayerJumpState>().AsSingle();
     }
 }

@@ -16,3 +16,4 @@ MonoBehaviour:
   _staminaRegenPerSecond: 15
   _attackCoast: 30
   _blockCoast: 20
+  _dashCoast: 20

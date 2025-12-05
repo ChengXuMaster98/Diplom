@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public Animator Animator;
     public Collider AttackCollider;
 
+    public Cinemachine.CinemachineVirtualCamera VirtualCamera;
 
     [field: SerializeField] public CharacterController Controller { get; private set; }
     [field: SerializeField] public Transform BodyTransform { get; private set; }

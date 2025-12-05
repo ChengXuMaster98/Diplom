@@ -9,4 +9,8 @@ using UnityEngine;
 
     bool CanBlock();
     void ConsumeStaminaForBlock();
+
+    bool CanDash();
+
+    void ConsumeStaminaForDash();
 }

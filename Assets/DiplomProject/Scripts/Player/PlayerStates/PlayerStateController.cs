@@ -12,6 +12,7 @@ public class PlayerStateController : ITickable
     private readonly PlayerJumpState _jumpState;
     private readonly PlayerAttackState _attackState;
     private readonly PlayerBlockState _blockState;
+    private readonly PlayerDashState _dashState;
     private readonly PlayerWeaponInventory _inventory;
 
     private readonly IPauseService _pauseService;
@@ -26,7 +27,8 @@ public class PlayerStateController : ITickable
         DiContainer container,
         WeaponSoundController sound,
         PlayerWeaponInventory inventory,
-        IPauseService pauseService)
+        IPauseService pauseService,
+        Cinemachine.CinemachineVirtualCamera camera)
     {
         _stateMachine = stateMachine;
         _pauseService = pauseService;
@@ -38,9 +40,10 @@ public class PlayerStateController : ITickable
         _jumpState = new PlayerJumpState(player.Animator, movement);
         _attackState = new PlayerAttackState(player.Animator, staminaConsumer, stateMachine, attackAnimationEventReceiver, sound, inventory);
         _blockState = new PlayerBlockState(player.Animator, staminaConsumer, stateMachine, sound, inventory, movement);
+        _dashState = new PlayerDashState(player.Animator, movement, staminaConsumer, stateMachine, player, camera);
 
-       container.Unbind<IBlockStatusProvider>();
-       container.Bind<IBlockStatusProvider>().FromInstance(_blockState).AsSingle();
+        container.Unbind<IBlockStatusProvider>();
+        container.Bind<IBlockStatusProvider>().FromInstance(_blockState).AsSingle();
 
 
 
@@ -73,6 +76,18 @@ public class PlayerStateController : ITickable
                 _stateMachine.SetState(_attackState);
             }
             return;
+        }
+
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (Input.GetKeyDown(KeyCode.A) ||
+                Input.GetKeyDown(KeyCode.D) ||
+                Input.GetKeyDown(KeyCode.S))
+            {
+                _stateMachine.SetState(_dashState);
+
+                return;
+            }
         }
 
 

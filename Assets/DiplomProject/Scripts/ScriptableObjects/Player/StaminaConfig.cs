@@ -7,10 +7,13 @@ public class StaminaConfig: ScriptableObject
     [SerializeField] private float _staminaRegenPerSecond = 20f;
     [SerializeField] private float _attackCoast = 30f;
     [SerializeField] private float _blockCoast = 1f;
+    [SerializeField] private float _dashCoast = 1f;
 
     public float MaxStamina => _maxStamina;
     public float StaminaRegenPerSecond => _staminaRegenPerSecond;
     public float AttackCoast => _attackCoast;
 
     public float BlockCoast => _blockCoast;
+
+    public float DashCoast => _dashCoast;
 }

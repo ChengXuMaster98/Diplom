@@ -23,6 +23,8 @@ public class CharacterMovementController : ITickable
 
     Vector3 velocity;
 
+    public CharacterController Controller => _controller;
+
     bool isGrounded;
     bool isMoving;
     private bool _canJump;
@@ -75,6 +77,12 @@ public class CharacterMovementController : ITickable
     public void UnblockMovement()
     {
         _movementBlocked = false;
+    }
+
+    public void ForceDash(Vector3 dir)
+    {
+        Vector3 dash = dir.normalized * 2f; // сила дэша
+        _controller.Move(dash);
     }
 
     public void Tick()
