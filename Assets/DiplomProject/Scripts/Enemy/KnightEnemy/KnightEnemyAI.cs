@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class KnightEnemyAI : EnemyAIBase<IKnightStateMachine, IKnightStateFactory>
+public class KnightEnemyAI : EnemyAIBase<KnightStateMachine, IKnightStateFactory>
 {
     private IEnemyState _idleState;
     private IEnemyState _approachState;  // גלוסעמ Chase
@@ -20,6 +20,8 @@ public class KnightEnemyAI : EnemyAIBase<IKnightStateMachine, IKnightStateFactor
         _getDamageState = _stateFactory.CreateGetDamageState();
         _dieState = _stateFactory.CreateDieState();
 
+
+        _enemy.OnStunned += OnStunned;
         _stateMachine.Initialize(_idleState);
     }
 
@@ -32,4 +34,11 @@ public class KnightEnemyAI : EnemyAIBase<IKnightStateMachine, IKnightStateFactor
     {
         _stateMachine.SetState(_idleState);
     }
+
+   private void OnStunned(float duration)
+   {
+       Debug.Log($"[AI] Received stun for {duration}s");
+       var stunState = _stateFactory.CreateStunState(duration);
+       _stateMachine.SetState(stunState);
+   }
 }

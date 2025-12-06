@@ -16,7 +16,7 @@ MonoBehaviour:
   WeaponName: 
   BaseDamage: 20
   CanStun: 1
-  StunChance: 0.3
+  StunChance: 0.35
   StunDuration: 5
   CanElectroDOT: 0
   DOTDamagePerSecond: 0

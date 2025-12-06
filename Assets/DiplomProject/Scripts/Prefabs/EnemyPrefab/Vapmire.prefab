@@ -12070,13 +12070,13 @@ GameObject:
   - component: {fileID: 7114115682643546241}
   - component: {fileID: 9077128375306796328}
   - component: {fileID: -5057268135802422578}
+  - component: {fileID: 5428681123220994880}
   - component: {fileID: 5626399375636317741}
   - component: {fileID: 5651574404718724129}
-  - component: {fileID: -1292860489363783877}
-  - component: {fileID: 6586469361191915720}
   - component: {fileID: 485123798980917343}
   - component: {fileID: 2386627906522633105}
   - component: {fileID: 8056910551888256209}
+  - component: {fileID: -7064074158714834742}
   m_Layer: 0
   m_Name: Vapmire
   m_TagString: Vampire
@@ -12212,6 +12212,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f816e5d5ef289041920963772e390e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5428681123220994880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403837724672572775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02d864bff9be4a43a61535aafcca03e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5626399375636317741
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12238,45 +12250,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92ce0e66cee4b454ab10b611a8f71377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-1292860489363783877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403837724672572775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c02d864bff9be4a43a61535aafcca03e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!54 &6586469361191915720
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5403837724672572775}
-  serializedVersion: 4
-  m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 8
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &485123798980917343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12290,6 +12263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundData: {fileID: 11400000, guid: 74b155064c28d1545a221a2a554ea4ab, type: 2}
+  RandomIdleInterval: 0
 --- !u!114 &2386627906522633105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12317,6 +12291,33 @@ MonoBehaviour:
   _bloodFX: {fileID: 694571387503140122}
   _stunFX: {fileID: 5126001923800172795}
   _electricFX: {fileID: 2131726849669710074}
+--- !u!54 &-7064074158714834742
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5403837724672572775}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5425151454104052109
 GameObject:
   m_ObjectHideFlags: 0

@@ -138,7 +138,7 @@ public class PlayerDashState : IPlayerState
             yield return null;
         }
 
-        // полная очистка шейка
+        // полная очистка тряски
         if (noise != null)
         {
             noise.m_AmplitudeGain = 0f;

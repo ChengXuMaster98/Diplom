@@ -22,7 +22,7 @@ public class AttackHitBox : MonoBehaviour
         if (other.TryGetComponent<IEnemy>(out var enemy))
         {
             _weapon.Attack(enemy);    // теперь урон идёт через конкретное оружие
-            Debug.Log($"Hit enemy using {_weapon.Data.WeaponName}");
+
             var soundCtrl = GetComponentInParent<WeaponSoundController>();
             if (soundCtrl != null && _weapon.Data.SoundData != null)
             {

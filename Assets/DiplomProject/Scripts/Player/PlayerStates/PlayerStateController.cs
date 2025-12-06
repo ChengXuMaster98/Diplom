@@ -78,16 +78,18 @@ public class PlayerStateController : ITickable
             return;
         }
 
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            if (Input.GetKeyDown(KeyCode.A) ||
-                Input.GetKeyDown(KeyCode.D) ||
-                Input.GetKeyDown(KeyCode.S))
-            {
-                _stateMachine.SetState(_dashState);
+        bool directionHeld =
+    Input.GetKey(KeyCode.A) ||
+    Input.GetKey(KeyCode.D) ||
+    Input.GetKey(KeyCode.S) ||
+    Input.GetKey(KeyCode.W);
 
-                return;
-            }
+        bool dashTriggered = Input.GetKeyDown(KeyCode.LeftControl);
+
+        if (directionHeld && dashTriggered)
+        {
+            _stateMachine.SetState(_dashState);
+            return;
         }
 
 
