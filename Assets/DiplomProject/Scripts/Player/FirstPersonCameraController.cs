@@ -14,8 +14,8 @@ public class FirstPersonController : ITickable
     private float _xRotation = 0f;
     //private float _yRotation = 0f;
 
-    public float topClamp = -90f;
-    public float bottomClamp = 90f;
+    public float topClamp = -60f;
+    public float bottomClamp = 60f;
 
 
     public FirstPersonController(

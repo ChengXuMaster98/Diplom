@@ -84,7 +84,7 @@ public class PlayerStateController : ITickable
     Input.GetKey(KeyCode.S) ||
     Input.GetKey(KeyCode.W);
 
-        bool dashTriggered = Input.GetKeyDown(KeyCode.LeftControl);
+        bool dashTriggered = Input.GetKeyDown(KeyCode.LeftAlt);
 
         if (directionHeld && dashTriggered)
         {
