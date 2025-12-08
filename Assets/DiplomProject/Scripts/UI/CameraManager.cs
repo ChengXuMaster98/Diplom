@@ -16,8 +16,7 @@ public class CameraManager : MonoBehaviour
     public LayerMask tppMask;     // Всё (или всё кроме FPS-рук, если будут)
     public LayerMask weaponMask;  // Только оружие
 
-    private const float TopClamp = -50f;
-    private const float BottomClamp = 50f;
+
 
     private bool _isFirstPerson = true;
 
