@@ -18,8 +18,6 @@ public class BossAttackState : IEnemyState
 
     private float _attackCooldown;
 
-    //private const float AttackToChaseThreshold = 1.2f;
-
     public BossAttackState(
         IPlayerDamageable playerDamageable,
         IBossAnimator animator,
@@ -87,7 +85,6 @@ public class BossAttackState : IEnemyState
             return;
 
         float distance = Vector3.Distance(player.position, _animator.Transform.position);
-        //float buffer = 0.5f;
 
         if (distance > _stats.AttackRange)
         {
@@ -109,7 +106,7 @@ public class BossAttackState : IEnemyState
         {
             _agent.isStopped = true;
             Debug.Log("[ATTACK] Performing attack!");
-            //_playerDamageable.TakeDamage(_stats.Damage);
+
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
         }

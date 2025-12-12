@@ -29,7 +29,7 @@ using UnityEngine.AI;
         EnemySoundController sound)
     {
         _playerDamageable = playerDamageable;
-        //Debug.Log($"[AttackState] PlayerDamageable is null? {_playerDamageable == null}");
+
         _animator = animator;
         _detector = detector;
         _stats = stats;
@@ -55,7 +55,6 @@ using UnityEngine.AI;
 
         _vocalTimer = _sound.GetRandomAttackInterval();
 
-        //Debug.Log("[ATTACK STATE] Entered");
     }
 
     private void PerformAttack()
@@ -79,13 +78,13 @@ using UnityEngine.AI;
 
     public void Tick()
     {
-        //Debug.Log($"[Attack Tick] Player: {_detector.Player}, Damageable: {_playerDamageable != null}");
+
         Transform player = _detector.Player;
         if (player == null)
             return;
 
         float distance = Vector3.Distance(player.position, _animator.Transform.position);
-        //float buffer = 0.5f;
+
 
         if (distance > _stats.AttackRange)
         {
@@ -95,7 +94,7 @@ using UnityEngine.AI;
         }
         else
         {
-            //Debug.Log("[Attack] Player in AttackRange");
+            Debug.Log("[Attack] Player in AttackRange");
         }
 
 
@@ -131,7 +130,6 @@ using UnityEngine.AI;
 
         _detector.PlayerLost -= OnPlayerLost;
 
-        //Debug.Log("[ATTACK STATE] Exited");
     }
 
     private void OnPlayerLost()

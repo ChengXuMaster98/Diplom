@@ -43,7 +43,7 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
     {
         if (IsDead) return;
 
-        // Если уже оглушён, то обновляем ТОЛЬКО если новое время дольше
+        // Если уже оглушён, то обновляем только если новое время дольше
         if (_stunTimer > 0f)
         {
             if (duration > _stunTimer)
@@ -53,10 +53,10 @@ public class Enemy : MonoBehaviour, IEnemy, IStunnable, IDamageOverTime
                 Debug.Log($"[Enemy] Stun refreshed to {duration}s");
             }
 
-            return; // Если новый стан слабее — ничего не делаем
+            return; // Если новый стан слабее — ничего не происходит
         }
 
-        // Если НЕ был оглушён — просто ставим таймер
+        // Если НЕ был оглушён — просто ставится таймер
         _stunTimer = duration;
         OnStunned?.Invoke(duration);
         Debug.Log($"[Enemy] Stunned for {duration}s");

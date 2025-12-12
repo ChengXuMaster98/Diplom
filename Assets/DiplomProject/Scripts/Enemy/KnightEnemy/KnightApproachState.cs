@@ -70,12 +70,12 @@ public class KnightApproachState : IEnemyState
         {
             if (_machine.AttackIntent)
             {
-                // если враг собирался атаковать — атакуем сразу
+
                 _machine.SetState(_factory.CreateAttackState());
             }
             else
             {
-                // обычное поведение
+
                 _machine.SetState(_factory.CreateCircleState());
             }
         }

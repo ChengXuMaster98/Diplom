@@ -59,7 +59,6 @@ public class EnemyAI : MonoBehaviour, IInitializable, ITickable
 
         _isDead = true;
 
-        // создаём dieState один раз
         _dieState = _stateFactory.CreateDieState();
 
         // Переходим в состояние смерти

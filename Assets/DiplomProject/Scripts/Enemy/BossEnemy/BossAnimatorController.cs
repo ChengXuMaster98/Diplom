@@ -16,7 +16,7 @@ public class BossAnimatorController : MonoBehaviour, IBossAnimator
         _onAttackHit = onHit;
     }
 
-    public void SetDeathEndCallback(Action onDeathEnd) // 👈 вызывать из DieState
+    public void SetDeathEndCallback(Action onDeathEnd)
     {
         _onDeathAnimationEnd = onDeathEnd;
     }
@@ -59,13 +59,10 @@ public class BossAnimatorController : MonoBehaviour, IBossAnimator
         Debug.Log("PlayIdle called");
         _animator.SetBool("IsChasing", false);
         _animator.SetBool("IsPatroling", false);
-        //_animator.SetBool("IsIdle", true);
-        //_animator.SetBool("IsChasing", false);
     }
 
     public void PlayChase()
     {
-        //Debug.Log("PlayChase called");
         _animator.SetBool("IsPatroling", false);
         _animator.SetBool("IsChasing", true);
     }

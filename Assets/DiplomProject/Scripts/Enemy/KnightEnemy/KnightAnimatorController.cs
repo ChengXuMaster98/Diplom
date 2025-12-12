@@ -4,12 +4,10 @@ using UnityEngine;
 public class KnightAnimatorController : MonoBehaviour, IKnightAnimator
 {
     [SerializeField] private Animator _animator;
-    [SerializeField] private Transform _model;   // корневая кость персонажа / объект модели
-
+    [SerializeField] private Transform _model;
     private Action _onAttackHit;
     private Action _onDeathAnimationEnd;
 
-    // Animator parameters
     private static readonly int MoveXHash = Animator.StringToHash("MoveX");
     private static readonly int MoveYHash = Animator.StringToHash("MoveY");
     private static readonly int AttackHash = Animator.StringToHash("Attack");
@@ -35,7 +33,7 @@ public class KnightAnimatorController : MonoBehaviour, IKnightAnimator
 
     public void PlayCircle(float side)
     {
-        // side = -1 (влево) или 1 (вправо)
+
         _animator.SetFloat(MoveXHash, side * 0.7f);
         _animator.SetFloat(MoveYHash, 0.7f);
     }
@@ -58,7 +56,7 @@ public class KnightAnimatorController : MonoBehaviour, IKnightAnimator
     {
         var s = _animator.GetCurrentAnimatorStateInfo(0);
 
-        // поставь сюда реальные имена твоих attack-клипов
+
         return s.IsName("BaseAttack") ||
                s.IsName("Attack2") ||
                s.IsName("Attack3");

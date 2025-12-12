@@ -17,7 +17,7 @@ public class SkinnyOrkAttackState : IEnemyState
 
     private float _attackCooldown;
 
-    //private const float AttackToChaseThreshold = 1.2f;
+
 
     public SkinnyOrkAttackState(
         IPlayerDamageable playerDamageable,
@@ -85,7 +85,7 @@ public class SkinnyOrkAttackState : IEnemyState
             return;
 
         float distance = Vector3.Distance(player.position, _animator.Transform.position);
-        //float buffer = 0.5f;
+
 
         if (distance > _stats.AttackRange)
         {
@@ -114,7 +114,7 @@ public class SkinnyOrkAttackState : IEnemyState
         {
             _agent.isStopped = true;
             Debug.Log("[ATTACK] Performing attack!");
-            //_playerDamageable.TakeDamage(_stats.Damage);
+
             _animator.PlayAttack();
             _attackCooldown = _stats.AttackCooldown;
         }

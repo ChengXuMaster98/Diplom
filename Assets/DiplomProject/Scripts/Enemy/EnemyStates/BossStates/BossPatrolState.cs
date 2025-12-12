@@ -103,7 +103,7 @@ public class BossPatrolState : IEnemyState
 
     public void Exit()
     {
-        //Debug.Log("[Skeleton] Exit Patrol");
+
         _detector.PlayerDetected -= OnPlayerDetected;
     }
 
@@ -119,7 +119,7 @@ public class BossPatrolState : IEnemyState
         }
         else
         {
-            // fallback — просто идём в исходную точку
+            // fallback — просто идёт в исходную точку
             _agent.SetDestination(_origin);
         }
     }

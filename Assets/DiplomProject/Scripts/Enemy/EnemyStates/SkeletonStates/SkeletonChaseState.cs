@@ -34,7 +34,7 @@ using UnityEngine.AI;
 
     public void Enter()
     {
-        //Debug.Log($"[CHASE ENTER] Agent enabled: {_agent.enabled}, isStopped: {_agent.isStopped}, hasPath: {_agent.hasPath}");
+
         _animator.PlayChase();
 
         _agent.isStopped = false;
@@ -55,7 +55,7 @@ using UnityEngine.AI;
 
 
         float distance = Vector3.Distance(_agent.transform.position, player.position);
-        //Debug.Log($"[CHASE TICK] Distance to player: {distance}, AttackRange: {_enemyStats.AttackRange}, Agent isStopped: {_agent.isStopped}");
+
 
         if (distance <= _enemyStats.AttackRange)
         {

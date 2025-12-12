@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
+using Zenject.SpaceFighter;
 
 public class KnightCircleState : IEnemyState
 {
@@ -53,9 +54,6 @@ public class KnightCircleState : IEnemyState
 
         _vocalTimer = _sound.GetRandomIdleInterval();
 
-        //_timeInState = 0f;
-        //_nextAttackTime = Random.Range(1.5f, 2.0f);
-
         // рандом направления кружения
         _side = Random.value > 0.5f ? 1f : -1f;
 
@@ -88,7 +86,7 @@ public class KnightCircleState : IEnemyState
         }
 
 
-        // если кружение закончилось — атакуем
+        // если кружение закончилось — атакуеь
         if (_circleTimer >= _circleDuration)
         {
             _machine.AttackIntent = true;
@@ -112,13 +110,7 @@ public class KnightCircleState : IEnemyState
 
         _agent.SetDestination(circleTarget);
         _animator.LookAt(player.position);
-        _animator.PlayCircle(_side);   // поддерживаем blend
-
-        // готов ли к атаке
-        //if (_timeInState >= _nextAttackTime)
-        //{
-        //    _machine.SetState(_factory.CreateAttackState());
-        //}
+        _animator.PlayCircle(_side);
     }
 
     public void Exit()

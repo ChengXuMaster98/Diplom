@@ -16,7 +16,7 @@ public class EnemyAnimatorController: MonoBehaviour, IEnemyAnimator
         _onAttackHit = onHit;
     }
 
-    public void SetDeathEndCallback(Action onDeathEnd) // 👈 вызывать из DieState
+    public void SetDeathEndCallback(Action onDeathEnd) // Вызывается из Die
     {
         _onDeathAnimationEnd = onDeathEnd;
     }

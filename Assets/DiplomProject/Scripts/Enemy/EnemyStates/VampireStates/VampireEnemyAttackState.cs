@@ -79,7 +79,6 @@ public class VampireEnemyAttackState : IEnemyState
             return;
 
         float distance = Vector3.Distance(player.position, _animator.Transform.position);
-        //float buffer = 0.1f;
 
         if (distance > _stats.AttackRange)
         {

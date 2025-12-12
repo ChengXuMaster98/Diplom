@@ -38,7 +38,7 @@ public class SkeletonPatrolState : IEnemyState
 
     public void Enter()
     {
-        //Debug.Log("[Skeleton] Enter Patrol");
+
 
         if (!_originSet)
         {
@@ -104,7 +104,7 @@ public class SkeletonPatrolState : IEnemyState
 
     public void Exit()
     {
-        //Debug.Log("[Skeleton] Exit Patrol");
+
         _detector.PlayerDetected -= OnPlayerDetected;
     }
 
@@ -127,7 +127,6 @@ public class SkeletonPatrolState : IEnemyState
 
     private void OnPlayerDetected(Transform player)
     {
-        //Debug.Log("[Skeleton] Player detected from Patrol → Chase");
         _stateMachine.SetState(_factory.CreateChaseState());
     }
 }

@@ -1,6 +1,4 @@
-using Unity.VisualScripting;
 using UnityEngine;
-using Zenject;
 public class AttackAnimationEventReceiver : MonoBehaviour
 {
     private AttackHitBox _attackHitBox;

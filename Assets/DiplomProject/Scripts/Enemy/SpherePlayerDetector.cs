@@ -60,7 +60,6 @@ public class SpherePlayerDetector : MonoBehaviour, IPlayerDetector, IInitializab
                 _isPlayerInRange = true;
                 _player = hit.transform;
                 PlayerDetected?.Invoke(_player);
-                // DevLog.Log($">> PlayerDetected: {_player.name}");
             }
 
             break;

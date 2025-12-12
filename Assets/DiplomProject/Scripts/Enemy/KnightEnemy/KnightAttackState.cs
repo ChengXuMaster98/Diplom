@@ -121,7 +121,7 @@ public class KnightAttackState : IEnemyState
             if (_attacksDone >= _attacksInBurst)
             {
                 return;
-                //_machine.SetState(_factory.CreateRetreatState());
+
             }
         }
     }
@@ -132,7 +132,7 @@ public class KnightAttackState : IEnemyState
 
         _animator.SetRootMotion(false);
 
-        // выравниваем NavMeshAgent под фактическую позицию модели
+        // выравнивание NavMeshAgent под фактическую позицию модели
         _agent.Warp(_animator.Transform.position);
 
         _agent.updatePosition = true;
